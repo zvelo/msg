@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package msg;
+
+import "dataset.proto";
+import "status.proto";
+
+message QueryResult {
+  bytes request_id         = 1; // Request ID for tracking requests
+  string tracking_id       = 2; // Provided by user to link to responses
+  string url               = 3;
+  Status status            = 4; // This is the zvelo internal status.
+  Status request_status    = 5; // This is the status of the HTTP request, if one was made.
+  repeated DataSetType request_dataset = 6;
+  DataSet response_dataset = 7;
+}

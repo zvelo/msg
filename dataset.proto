@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package msg;
+
+enum DataSetType {
+  CATEGORIZATION = 0;
+  ADFRAUD        = 1;
+  // 2 and 3 are reserved
+  MALICIOUS      = 4;
+}
+
+message DataSet {
+  message Categorization {
+    repeated int32 id = 1;
+  }
+
+  message AdFraud {
+    bool fraud = 1;
+    string signature = 2;
+  }
+
+  message Malicious {
+    int32 category   = 1;
+    string signature  = 2;
+  }
+
+  Categorization categorization   = 1;
+  AdFraud        adfraud  = 2;
+  // 3 and 4 are reserved
+  Malicious      malicious = 5;
+}
