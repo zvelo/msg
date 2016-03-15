@@ -18,7 +18,7 @@ type QueryURLRequests struct {
 	Dataset        []DataSetType `protobuf:"varint,2,rep,name=dataset,enum=msg.DataSetType" json:"dataset,omitempty"`
 	Callback       string        `protobuf:"bytes,3,opt,name=callback" json:"callback,omitempty"`
 	Poll           bool          `protobuf:"varint,4,opt,name=poll" json:"poll,omitempty"`
-	PartialResults bool          `protobuf:"varint,5,opt,name=partial_results,json=partialResults" json:"partial_results,omitempty"`
+	PartialResults bool          `protobuf:"varint,5,opt,name=partial_results" json:"partial_results,omitempty"`
 	Accept         string        `protobuf:"bytes,6,opt,name=accept" json:"accept,omitempty"`
 }
 
@@ -32,7 +32,7 @@ type QueryContentRequests struct {
 	Dataset        []DataSetType                      `protobuf:"varint,2,rep,name=dataset,enum=msg.DataSetType" json:"dataset,omitempty"`
 	Callback       string                             `protobuf:"bytes,3,opt,name=callback" json:"callback,omitempty"`
 	Poll           bool                               `protobuf:"varint,4,opt,name=poll" json:"poll,omitempty"`
-	PartialResults bool                               `protobuf:"varint,5,opt,name=partial_results,json=partialResults" json:"partial_results,omitempty"`
+	PartialResults bool                               `protobuf:"varint,5,opt,name=partial_results" json:"partial_results,omitempty"`
 	Accept         string                             `protobuf:"bytes,6,opt,name=accept" json:"accept,omitempty"`
 }
 
@@ -72,11 +72,11 @@ func (m *QueryContentRequests_URLContent) GetHeader() map[string]string {
 
 type QueryReply struct {
 	Status    *Status  `protobuf:"bytes,1,opt,name=status" json:"status,omitempty"`
-	RequestId [][]byte `protobuf:"bytes,2,rep,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	RequestId [][]byte `protobuf:"bytes,2,rep,name=request_id,proto3" json:"request_id,omitempty"`
 	// the target of QueryStatus, to ensure that the QueryStatus call
 	// goes to the same cluster as the original call.
 	// Will only be set if user set p=true in request.
-	StatusUrl string `protobuf:"bytes,3,opt,name=status_url,json=statusUrl" json:"status_url,omitempty"`
+	StatusUrl string `protobuf:"bytes,3,opt,name=status_url" json:"status_url,omitempty"`
 }
 
 func (m *QueryReply) Reset()                    { *m = QueryReply{} }
