@@ -22,6 +22,7 @@ message DataSet {
   message Malicious {
     int32 category   = 1;
     string signature  = 2;
+    bool verdict = 3;
   }
 
   Categorization categorization   = 1;
