@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package msg;
 
-import "msg/dataset.proto";
-import "msg/status.proto";
+import "zvelo.io/msg/dataset.proto";
+import "zvelo.io/msg/status.proto";
 
 message QueryResult {
   bytes request_id                     = 1; // Request ID for tracking requests
