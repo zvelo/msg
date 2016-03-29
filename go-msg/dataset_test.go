@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func testDS(t *testing.T, ds *DataSet) {
+func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 	// iterate through each valid dataset type
 	for dstID := range DataSetType_name {
 		dst := DataSetType(dstID)
@@ -13,6 +13,18 @@ func testDS(t *testing.T, ds *DataSet) {
 		i, err := ds.FieldByType(dst)
 		if err != nil {
 			t.Error("DataSetByType returned error", err)
+		}
+
+		if i == nil && !expectNil {
+			t.Error("did not expect nil dataset field")
+		}
+
+		if i != nil && expectNil {
+			t.Error("got unexpected nil dataset field")
+		}
+
+		if expectNil {
+			return
 		}
 
 		switch dst {
@@ -43,6 +55,15 @@ func testDS(t *testing.T, ds *DataSet) {
 			if r != ds.Malicious {
 				t.Error("t != ds.Malicious")
 			}
+		case DataSetType_ECHO:
+			r, ok := i.(*DataSet_Echo)
+			if !ok {
+				t.Error("type of i not *DataSet_Echo")
+			}
+
+			if r != ds.Echo {
+				t.Error("t != ds.Echo")
+			}
 		default:
 			t.Errorf("unexpected dataset type: %s", dst)
 		}
@@ -54,11 +75,12 @@ func TestDataSetByType(t *testing.T) {
 		Categorization: &DataSet_Categorization{},
 		Adfraud:        &DataSet_AdFraud{},
 		Malicious:      &DataSet_Malicious{},
-	})
+		Echo:           &DataSet_Echo{},
+	}, false)
 }
 
 func TestNilDataSetByType(t *testing.T) {
-	testDS(t, &DataSet{})
+	testDS(t, &DataSet{}, true)
 }
 
 func TestDataSetByTypeErr(t *testing.T) {

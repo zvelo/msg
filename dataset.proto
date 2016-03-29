@@ -7,6 +7,7 @@ enum DataSetType {
   ADFRAUD        = 1;
   // 2 and 3 are reserved
   MALICIOUS      = 4;
+  ECHO           = 5; // for internal zvelo use only
 }
 
 message DataSet {
@@ -15,18 +16,24 @@ message DataSet {
   }
 
   message AdFraud {
-    bool fraud = 1;
+    bool   fraud     = 1;
     string signature = 2;
   }
 
   message Malicious {
-    int32 category   = 1;
-    string signature  = 2;
-    bool verdict = 3;
+    int32  category  = 1;
+    string signature = 2;
+    bool   verdict   = 3;
   }
 
-  Categorization categorization   = 1;
-  AdFraud        adfraud  = 2;
+  message Echo {
+    string request_id = 1;
+    string url        = 2;
+  }
+
+  Categorization categorization = 1;
+  AdFraud        adfraud        = 2;
   // 3 and 4 are reserved
-  Malicious      malicious = 5;
+  Malicious      malicious      = 5;
+  Echo           echo           = 6;
 }

@@ -41,6 +41,10 @@ func (m *DataSet) FieldByType(dsType DataSetType) (interface{}, error) {
 	})
 
 	if v.IsValid() {
+		if v.IsNil() {
+			return nil, nil
+		}
+
 		return v.Interface(), nil
 	}
 
