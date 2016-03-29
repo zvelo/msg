@@ -73,9 +73,9 @@ func TestDataSetByTypeErr(t *testing.T) {
 		t.Error("expected DataSetByType to return nil interface when err != nil ")
 	}
 
-	e, ok := err.(ErrInvalidDataSetType)
+	e, ok := err.(errInvalidDataSetType)
 	if !ok {
-		t.Error("error was not of type ErrInvalidDataSetType")
+		t.Error("error was not of type errInvalidDataSetType")
 	}
 
 	const errMsg0 = "invalid dataset type: -1"

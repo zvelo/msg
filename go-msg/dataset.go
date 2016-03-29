@@ -6,11 +6,11 @@ import (
 	"strings"
 )
 
-// ErrInvalidDataSetType indicates an invalid int was used as a DataSetType enum
+// errInvalidDataSetType indicates an invalid int was used as a DataSetType enum
 // value
-type ErrInvalidDataSetType DataSetType
+type errInvalidDataSetType DataSetType
 
-func (e ErrInvalidDataSetType) Error() string {
+func (e errInvalidDataSetType) Error() string {
 	return fmt.Sprintf("invalid dataset type: %d", int32(e))
 }
 
@@ -28,7 +28,7 @@ var (
 func (m *DataSet) FieldByType(dsType DataSetType) (interface{}, error) {
 	name, ok := DataSetType_name[int32(dsType)]
 	if !ok {
-		return nil, ErrInvalidDataSetType(dsType)
+		return nil, errInvalidDataSetType(dsType)
 	}
 
 	if m == nil {
