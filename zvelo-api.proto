@@ -32,13 +32,13 @@ message QueryContentRequests {
 }
 
 message QueryReply {
-  Status status             = 1; // The zvelo internal status.
-  repeated bytes request_id = 2; // The request_ids are reurned in the same order as the requested URLs.
+  Status status              = 1; // The zvelo internal status.
+  repeated string request_id = 2; // The request_ids are reurned in the same order as the requested URLs.
 
   // the target of QueryStatus, to ensure that the QueryStatus call
   // goes to the same cluster as the original call.
   // Will only be set if user set p=true in request.
-  string status_url         = 3;
+  string status_url          = 3;
 }
 
 // Callback Rules:
