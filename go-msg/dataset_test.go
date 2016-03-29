@@ -2,6 +2,7 @@ package msg
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -132,4 +133,36 @@ func ExampleDataSet_FieldByType() {
 
 	fmt.Printf("c == ds.Categorization => %v\n", c == ds.Categorization)
 	// Output: c == ds.Categorization => true
+}
+
+func testDataSetType(t *testing.T, dstValue int32, dstName string) {
+	dst, err := NewDataSetType(strings.ToLower(dstName))
+	if err != nil {
+		t.Error("unexpected error")
+	}
+
+	if DataSetType(dstValue) != dst {
+		t.Error("unexpected dataset type value")
+	}
+}
+
+func TestNewDataSetType(t *testing.T) {
+	for dstValue, dstName := range DataSetType_name {
+		testDataSetType(t, dstValue, dstName)
+		testDataSetType(t, dstValue, strings.ToLower(dstName))
+		testDataSetType(t, dstValue, strings.ToUpper(dstName))
+	}
+
+	dst, err := NewDataSetType("invalid dataset type name")
+	if err == nil {
+		t.Error("NewDataSetType should have returned an error")
+	}
+
+	if err != ErrInvalidDataSetType {
+		t.Error("NewDataSetType returned the wrong error")
+	}
+
+	if dst != DataSetType(-1) {
+		t.Error("NewDataSetType returned wrong response")
+	}
 }

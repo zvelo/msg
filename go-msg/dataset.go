@@ -16,8 +16,9 @@ func (e errInvalidDataSetType) Error() string {
 
 // Various errors
 var (
-	ErrNilDataSet   = fmt.Errorf("dataset was nil")
-	ErrInvalidField = fmt.Errorf("dataset type does not exist in dataset definition")
+	ErrNilDataSet         = fmt.Errorf("dataset was nil")
+	ErrInvalidField       = fmt.Errorf("dataset type does not exist in dataset definition")
+	ErrInvalidDataSetType = fmt.Errorf("invalid dataset type")
 )
 
 // FieldByType returns one of the field values of a DataSet based on a
@@ -52,4 +53,18 @@ func (m *DataSet) FieldByType(dsType DataSetType) (interface{}, error) {
 	// DataSetType was provided, but DataSet has no cooresponding
 	// (case-insensitive) field name
 	return nil, ErrInvalidField
+}
+
+// NewDataSetType returns the cooresponding DataSetType given a string. It is
+// case insensitive.
+func NewDataSetType(name string) (DataSetType, error) {
+	name = strings.ToLower(name)
+
+	for dst, dstName := range DataSetType_name {
+		if name == strings.ToLower(dstName) {
+			return DataSetType(dst), nil
+		}
+	}
+
+	return DataSetType(-1), ErrInvalidDataSetType
 }
