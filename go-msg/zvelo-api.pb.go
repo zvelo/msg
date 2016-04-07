@@ -18,28 +18,28 @@ type QueryURLRequests struct {
 	Dataset        []DataSetType `protobuf:"varint,2,rep,name=dataset,enum=msg.DataSetType" json:"dataset,omitempty"`
 	Callback       string        `protobuf:"bytes,3,opt,name=callback" json:"callback,omitempty"`
 	Poll           bool          `protobuf:"varint,4,opt,name=poll" json:"poll,omitempty"`
-	PartialResults bool          `protobuf:"varint,5,opt,name=partial_results,json=partialResults" json:"partial_results,omitempty"`
+	PartialResults bool          `protobuf:"varint,5,opt,name=partial_results" json:"partial_results,omitempty"`
 	Accept         string        `protobuf:"bytes,6,opt,name=accept" json:"accept,omitempty"`
 }
 
 func (m *QueryURLRequests) Reset()                    { *m = QueryURLRequests{} }
 func (m *QueryURLRequests) String() string            { return proto.CompactTextString(m) }
 func (*QueryURLRequests) ProtoMessage()               {}
-func (*QueryURLRequests) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
+func (*QueryURLRequests) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
 
 type QueryContentRequests struct {
 	Content        []*QueryContentRequests_URLContent `protobuf:"bytes,1,rep,name=content" json:"content,omitempty"`
 	Dataset        []DataSetType                      `protobuf:"varint,2,rep,name=dataset,enum=msg.DataSetType" json:"dataset,omitempty"`
 	Callback       string                             `protobuf:"bytes,3,opt,name=callback" json:"callback,omitempty"`
 	Poll           bool                               `protobuf:"varint,4,opt,name=poll" json:"poll,omitempty"`
-	PartialResults bool                               `protobuf:"varint,5,opt,name=partial_results,json=partialResults" json:"partial_results,omitempty"`
+	PartialResults bool                               `protobuf:"varint,5,opt,name=partial_results" json:"partial_results,omitempty"`
 	Accept         string                             `protobuf:"bytes,6,opt,name=accept" json:"accept,omitempty"`
 }
 
 func (m *QueryContentRequests) Reset()                    { *m = QueryContentRequests{} }
 func (m *QueryContentRequests) String() string            { return proto.CompactTextString(m) }
 func (*QueryContentRequests) ProtoMessage()               {}
-func (*QueryContentRequests) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
+func (*QueryContentRequests) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
 
 func (m *QueryContentRequests) GetContent() []*QueryContentRequests_URLContent {
 	if m != nil {
@@ -60,7 +60,7 @@ func (m *QueryContentRequests_URLContent) Reset()         { *m = QueryContentReq
 func (m *QueryContentRequests_URLContent) String() string { return proto.CompactTextString(m) }
 func (*QueryContentRequests_URLContent) ProtoMessage()    {}
 func (*QueryContentRequests_URLContent) Descriptor() ([]byte, []int) {
-	return fileDescriptor3, []int{1, 0}
+	return fileDescriptor4, []int{1, 0}
 }
 
 func (m *QueryContentRequests_URLContent) GetHeader() map[string]string {
@@ -72,17 +72,17 @@ func (m *QueryContentRequests_URLContent) GetHeader() map[string]string {
 
 type QueryReply struct {
 	Status    *Status  `protobuf:"bytes,1,opt,name=status" json:"status,omitempty"`
-	RequestId []string `protobuf:"bytes,2,rep,name=request_id,json=requestId" json:"request_id,omitempty"`
+	RequestId []string `protobuf:"bytes,2,rep,name=request_id" json:"request_id,omitempty"`
 	// the target of QueryStatus, to ensure that the QueryStatus call
 	// goes to the same cluster as the original call.
 	// Will only be set if user set p=true in request.
-	StatusUrl string `protobuf:"bytes,3,opt,name=status_url,json=statusUrl" json:"status_url,omitempty"`
+	StatusUrl string `protobuf:"bytes,3,opt,name=status_url" json:"status_url,omitempty"`
 }
 
 func (m *QueryReply) Reset()                    { *m = QueryReply{} }
 func (m *QueryReply) String() string            { return proto.CompactTextString(m) }
 func (*QueryReply) ProtoMessage()               {}
-func (*QueryReply) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{2} }
+func (*QueryReply) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{2} }
 
 func (m *QueryReply) GetStatus() *Status {
 	if m != nil {
@@ -98,7 +98,7 @@ func init() {
 	proto.RegisterType((*QueryReply)(nil), "msg.QueryReply")
 }
 
-var fileDescriptor3 = []byte{
+var fileDescriptor4 = []byte{
 	// 400 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xcc, 0x93, 0xc1, 0x6a, 0xdb, 0x40,
 	0x10, 0x86, 0x91, 0x64, 0xcb, 0xf6, 0xa8, 0xb5, 0xcd, 0x62, 0x8a, 0x10, 0x14, 0x8c, 0x5b, 0x68,
