@@ -14,18 +14,18 @@ var _ = fmt.Errorf
 var _ = math.Inf
 
 type QueryResult struct {
-	RequestId       string        `protobuf:"bytes,1,opt,name=request_id,json=requestId" json:"request_id,omitempty"`
-	TrackingId      string        `protobuf:"bytes,2,opt,name=tracking_id,json=trackingId" json:"tracking_id,omitempty"`
+	RequestId       string        `protobuf:"bytes,1,opt,name=request_id" json:"request_id,omitempty"`
+	TrackingId      string        `protobuf:"bytes,2,opt,name=tracking_id" json:"tracking_id,omitempty"`
 	Status          *Status       `protobuf:"bytes,4,opt,name=status" json:"status,omitempty"`
-	RequestDataset  []DataSetType `protobuf:"varint,6,rep,name=request_dataset,json=requestDataset,enum=msg.DataSetType" json:"request_dataset,omitempty"`
-	ResponseDataset *DataSet      `protobuf:"bytes,7,opt,name=response_dataset,json=responseDataset" json:"response_dataset,omitempty"`
+	RequestDataset  []DataSetType `protobuf:"varint,6,rep,name=request_dataset,enum=msg.DataSetType" json:"request_dataset,omitempty"`
+	ResponseDataset *DataSet      `protobuf:"bytes,7,opt,name=response_dataset" json:"response_dataset,omitempty"`
 	Url             string        `protobuf:"bytes,8,opt,name=url" json:"url,omitempty"`
 }
 
 func (m *QueryResult) Reset()                    { *m = QueryResult{} }
 func (m *QueryResult) String() string            { return proto.CompactTextString(m) }
 func (*QueryResult) ProtoMessage()               {}
-func (*QueryResult) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
+func (*QueryResult) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
 
 func (m *QueryResult) GetStatus() *Status {
 	if m != nil {
@@ -45,7 +45,7 @@ func init() {
 	proto.RegisterType((*QueryResult)(nil), "msg.QueryResult")
 }
 
-var fileDescriptor1 = []byte{
+var fileDescriptor2 = []byte{
 	// 236 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x4c, 0x90, 0x31, 0x4f, 0xc3, 0x30,
 	0x10, 0x85, 0xd5, 0x3a, 0x98, 0xf6, 0x5c, 0x5a, 0xcb, 0x93, 0x55, 0x09, 0x51, 0xc1, 0xd2, 0x29,

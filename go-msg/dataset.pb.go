@@ -2,23 +2,6 @@
 // source: dataset.proto
 // DO NOT EDIT!
 
-/*
-Package msg is a generated protocol buffer package.
-
-It is generated from these files:
-	dataset.proto
-	query_result.proto
-	status.proto
-	zvelo-api.proto
-
-It has these top-level messages:
-	DataSet
-	QueryResult
-	Status
-	QueryURLRequests
-	QueryContentRequests
-	QueryReply
-*/
 package msg
 
 import proto "github.com/golang/protobuf/proto"
@@ -29,10 +12,6 @@ import math "math"
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the proto package it is being compiled against.
-const _ = proto.ProtoPackageIsVersion1
 
 type DataSetType int32
 
@@ -60,7 +39,7 @@ var DataSetType_value = map[string]int32{
 func (x DataSetType) String() string {
 	return proto.EnumName(DataSetType_name, int32(x))
 }
-func (DataSetType) EnumDescriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
+func (DataSetType) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
 
 type DataSet struct {
 	Categorization *DataSet_Categorization `protobuf:"bytes,1,opt,name=categorization" json:"categorization,omitempty"`
@@ -73,7 +52,7 @@ type DataSet struct {
 func (m *DataSet) Reset()                    { *m = DataSet{} }
 func (m *DataSet) String() string            { return proto.CompactTextString(m) }
 func (*DataSet) ProtoMessage()               {}
-func (*DataSet) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
+func (*DataSet) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
 
 func (m *DataSet) GetCategorization() *DataSet_Categorization {
 	if m != nil {
@@ -110,7 +89,7 @@ type DataSet_Categorization struct {
 func (m *DataSet_Categorization) Reset()                    { *m = DataSet_Categorization{} }
 func (m *DataSet_Categorization) String() string            { return proto.CompactTextString(m) }
 func (*DataSet_Categorization) ProtoMessage()               {}
-func (*DataSet_Categorization) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0, 0} }
+func (*DataSet_Categorization) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 0} }
 
 type DataSet_AdFraud struct {
 	Fraud     bool   `protobuf:"varint,1,opt,name=fraud" json:"fraud,omitempty"`
@@ -120,7 +99,7 @@ type DataSet_AdFraud struct {
 func (m *DataSet_AdFraud) Reset()                    { *m = DataSet_AdFraud{} }
 func (m *DataSet_AdFraud) String() string            { return proto.CompactTextString(m) }
 func (*DataSet_AdFraud) ProtoMessage()               {}
-func (*DataSet_AdFraud) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0, 1} }
+func (*DataSet_AdFraud) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 1} }
 
 type DataSet_Malicious struct {
 	Category  int32  `protobuf:"varint,1,opt,name=category" json:"category,omitempty"`
@@ -131,17 +110,17 @@ type DataSet_Malicious struct {
 func (m *DataSet_Malicious) Reset()                    { *m = DataSet_Malicious{} }
 func (m *DataSet_Malicious) String() string            { return proto.CompactTextString(m) }
 func (*DataSet_Malicious) ProtoMessage()               {}
-func (*DataSet_Malicious) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0, 2} }
+func (*DataSet_Malicious) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 2} }
 
 type DataSet_Echo struct {
-	RequestId string `protobuf:"bytes,1,opt,name=request_id,json=requestId" json:"request_id,omitempty"`
+	RequestId string `protobuf:"bytes,1,opt,name=request_id" json:"request_id,omitempty"`
 	Url       string `protobuf:"bytes,2,opt,name=url" json:"url,omitempty"`
 }
 
 func (m *DataSet_Echo) Reset()                    { *m = DataSet_Echo{} }
 func (m *DataSet_Echo) String() string            { return proto.CompactTextString(m) }
 func (*DataSet_Echo) ProtoMessage()               {}
-func (*DataSet_Echo) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0, 3} }
+func (*DataSet_Echo) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 3} }
 
 func init() {
 	proto.RegisterType((*DataSet)(nil), "msg.DataSet")
@@ -152,7 +131,7 @@ func init() {
 	proto.RegisterEnum("msg.DataSetType", DataSetType_name, DataSetType_value)
 }
 
-var fileDescriptor0 = []byte{
+var fileDescriptor1 = []byte{
 	// 359 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x7c, 0x52, 0x4d, 0x6b, 0xea, 0x40,
 	0x14, 0x7d, 0x1a, 0x63, 0xcc, 0x15, 0x25, 0xef, 0x22, 0x8f, 0x90, 0xf7, 0x1e, 0x48, 0xa1, 0x20,
