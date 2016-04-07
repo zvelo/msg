@@ -1,3 +1,8 @@
+2016-04-07  Bob Uhl <buhl@zvelo.com>
+
+  * Start feature "Add bulk categorizations to zvelo.io/msg"
+  https://www.pivotaltracker.com/story/show/117147861
+
 2016-03-16  RJ Nanjegowda <rnanjegowda@zvelo.com>
 
   * Start feature "Modify DS for Malicious"
