@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package msg;
+
+import "dataset.proto";
+
+message Categorization {
+  string url = 1;
+  DataSet dataset = 2;
+}
+
+message Categorizations {
+  repeated Categorization categorizations = 1;
+}

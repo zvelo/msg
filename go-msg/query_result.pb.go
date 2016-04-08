@@ -25,7 +25,7 @@ type QueryResult struct {
 func (m *QueryResult) Reset()                    { *m = QueryResult{} }
 func (m *QueryResult) String() string            { return proto.CompactTextString(m) }
 func (*QueryResult) ProtoMessage()               {}
-func (*QueryResult) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
+func (*QueryResult) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
 
 func (m *QueryResult) GetStatus() *Status {
 	if m != nil {
@@ -45,7 +45,7 @@ func init() {
 	proto.RegisterType((*QueryResult)(nil), "msg.QueryResult")
 }
 
-var fileDescriptor1 = []byte{
+var fileDescriptor2 = []byte{
 	// 236 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x4c, 0x90, 0x31, 0x4f, 0xc3, 0x30,
 	0x10, 0x85, 0xd5, 0x3a, 0x98, 0xf6, 0x5c, 0x5a, 0xcb, 0x93, 0x55, 0x09, 0x51, 0xc1, 0xd2, 0x29,
