@@ -14,11 +14,11 @@ var _ = fmt.Errorf
 var _ = math.Inf
 
 type QueryResult struct {
-	RequestId       string        `protobuf:"bytes,1,opt,name=request_id" json:"request_id,omitempty"`
-	TrackingId      string        `protobuf:"bytes,2,opt,name=tracking_id" json:"tracking_id,omitempty"`
+	RequestId       string        `protobuf:"bytes,1,opt,name=request_id,json=requestId" json:"request_id,omitempty"`
+	TrackingId      string        `protobuf:"bytes,2,opt,name=tracking_id,json=trackingId" json:"tracking_id,omitempty"`
 	Status          *Status       `protobuf:"bytes,4,opt,name=status" json:"status,omitempty"`
-	RequestDataset  []DataSetType `protobuf:"varint,6,rep,name=request_dataset,enum=msg.DataSetType" json:"request_dataset,omitempty"`
-	ResponseDataset *DataSet      `protobuf:"bytes,7,opt,name=response_dataset" json:"response_dataset,omitempty"`
+	RequestDataset  []DataSetType `protobuf:"varint,6,rep,name=request_dataset,json=requestDataset,enum=msg.DataSetType" json:"request_dataset,omitempty"`
+	ResponseDataset *DataSet      `protobuf:"bytes,7,opt,name=response_dataset,json=responseDataset" json:"response_dataset,omitempty"`
 	Url             string        `protobuf:"bytes,8,opt,name=url" json:"url,omitempty"`
 }
 

@@ -4,6 +4,12 @@
   https://www.pivotaltracker.com/story/show/117147861
   https://github.com/zvelo/msg/pull/5
 
+2016-04-04  Joshua Rubin <jrubin@zvelo.com>
+
+  * Start feature "Update Status message"
+  https://www.pivotaltracker.com/story/show/116933673
+  https://github.com/zvelo/msg/pull/4
+
 2016-03-16  RJ Nanjegowda <rnanjegowda@zvelo.com>
 
   * Start feature "Modify DS for Malicious"

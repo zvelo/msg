@@ -113,7 +113,7 @@ func (*DataSet_Malicious) ProtoMessage()               {}
 func (*DataSet_Malicious) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 2} }
 
 type DataSet_Echo struct {
-	RequestId string `protobuf:"bytes,1,opt,name=request_id" json:"request_id,omitempty"`
+	RequestId string `protobuf:"bytes,1,opt,name=request_id,json=requestId" json:"request_id,omitempty"`
 	Url       string `protobuf:"bytes,2,opt,name=url" json:"url,omitempty"`
 }
 

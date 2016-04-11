@@ -25,4 +25,6 @@ message Status {
 
   Code code = 1;
   string message = 2;
+  Status fetch_status = 3;
+  string location = 4;
 }
