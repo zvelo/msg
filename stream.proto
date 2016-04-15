@@ -29,7 +29,7 @@ message Stream {
   }
 
   string uuid                             = 1;
-  Status stream_status              = 2;
+  Status stream_status                    = 2;
   StreamRequest stream_request            = 3;
   string org                              = 5;
   string user                             = 6;
