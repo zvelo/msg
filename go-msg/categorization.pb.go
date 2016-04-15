@@ -7,9 +7,11 @@ Package msg is a generated protocol buffer package.
 
 It is generated from these files:
 	categorization.proto
+	category.proto
 	dataset.proto
 	query_result.proto
 	status.proto
+	stream.proto
 	zvelo-api.proto
 
 It has these top-level messages:
@@ -18,6 +20,10 @@ It has these top-level messages:
 	DataSet
 	QueryResult
 	Status
+	StreamRequest
+	StreamUpdateRequest
+	Stream
+	StreamReply
 	QueryURLRequests
 	QueryContentRequests
 	QueryReply

@@ -3,7 +3,6 @@ package msg
 import (
 	"fmt"
 	"io"
-	"strconv"
 	"strings"
 )
 
@@ -75,12 +74,11 @@ func (m DataSet) Pretty(w io.Writer, prefix string) error {
 
 // Pretty writes a human readable representation of Categorization to w
 func (m DataSet_Categorization) Pretty(w io.Writer, prefix string) error {
-	cats := make([]string, len(m.Id))
-	for i, id := range m.Id {
-		// TODO(jrubin) decode category ids
-		cats[i] = strconv.Itoa(int(id))
+	cats := make([]string, len(m.Category))
+	for i, id := range m.Category {
+		cats[i] = "\"" + id.Long() + "\""
 	}
-	_, err := fmt.Fprintf(w, "%sCategorization: %s\n", prefix, strings.Join(cats, ", "))
+	_, err := fmt.Fprintf(w, "%sCategorization: %s\n", prefix, strings.Join(cats, " : "))
 	return err
 }
 

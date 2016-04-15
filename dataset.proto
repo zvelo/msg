@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package msg;
 
+import "category.proto";
+
 enum DataSetType {
   CATEGORIZATION = 0;
   ADFRAUD        = 1;
@@ -12,7 +14,7 @@ enum DataSetType {
 
 message DataSet {
   message Categorization {
-    repeated int32 id = 1;
+    repeated Category category = 1;
   }
 
   message AdFraud {
@@ -21,14 +23,13 @@ message DataSet {
   }
 
   message Malicious {
-    int32  category  = 1;
-    string signature = 2;
-    bool   verdict   = 3;
+    Category category  = 1;
+    string   signature = 2;
+    bool     verdict   = 3;
   }
 
   message Echo {
-    string request_id = 1;
-    string url        = 2;
+    string url = 1;
   }
 
   Categorization categorization = 1;
