@@ -19,7 +19,7 @@ message StreamUpdateRequest {
 }
 
 message Stream {
-  enum StreamStatus {
+  enum Status {
     CREATED  = 0;
     RUNNING  = 1;
     PAUSED   = 2;
@@ -29,7 +29,7 @@ message Stream {
   }
 
   string uuid                             = 1;
-  StreamStatus stream_status              = 2;
+  Status stream_status              = 2;
   StreamRequest stream_request            = 3;
   string org                              = 5;
   string user                             = 6;
