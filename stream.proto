@@ -2,8 +2,10 @@ syntax = "proto3";
 
 package msg;
 
-import "dataset.proto";
-import "status.proto";
+option go_package = "zvelo.io/msg";
+
+import "zvelo.io/msg/dataset.proto";
+import "zvelo.io/msg/status.proto";
 import "google/protobuf/timestamp.proto";
 
 message StreamRequest {

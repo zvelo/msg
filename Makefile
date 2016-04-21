@@ -1,11 +1,9 @@
-PROTO_FILES=$(sort $(wildcard *.proto))
+PROTO_FILES=$(wildcard *.proto)
+PB_FILES=$(patsubst %.proto,%.pb.go,$(PROTO_FILES))
 
-all: msg
+all: $(PB_FILES)
 
-msg: .msg
+$(PB_FILES): %.pb.go: %.proto
+	@cd ../.. && protoc --go_out=. $(patsubst %,zvelo.io/msg/%,$(PROTO_FILES))
 
-.msg: $(PROTO_FILES)
-	protoc -I. --go_out=plugins=grpc:go-msg $(PROTO_FILES)
-	@touch .msg
-
-.PHONY: all msg
+.PHONY: all

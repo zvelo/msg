@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package msg;
 
-import "dataset.proto";
+option go_package = "zvelo.io/msg";
+
+import "zvelo.io/msg/dataset.proto";
 
 message Categorization {
   string url = 1;

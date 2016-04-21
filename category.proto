@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package msg;
 
+option go_package = "zvelo.io/msg";
+
 enum Category {
   UNKNOWN = 0;
   ABORTION_4 = 10001;
