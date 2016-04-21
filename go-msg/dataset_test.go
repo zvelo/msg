@@ -166,3 +166,165 @@ func TestNewDataSetType(t *testing.T) {
 		t.Error("NewDataSetType returned wrong response")
 	}
 }
+
+func TestMergeDatasets(t *testing.T) {
+	d1 := &DataSet{
+		Categorization: &DataSet_Categorization{
+			Category: []Category{1},
+		},
+	}
+	d2 := &DataSet{
+		Adfraud: &DataSet_AdFraud{
+			Fraud: true,
+		},
+	}
+
+	if d1.Categorization == nil {
+		t.Error("d1.Categorization should not be nil")
+	}
+
+	if d2.Adfraud == nil {
+		t.Error("d2.Adfraud should not be nil")
+	}
+
+	if d2.Categorization != nil {
+		t.Error("d2.Categorization should be nil")
+	}
+
+	if d1.Adfraud != nil {
+		t.Error("d1.Adfraud should be nil")
+	}
+
+	d3 := MergeDatasets(d1, d2)
+
+	if d3.Categorization == nil {
+		t.Error("d3.Categorization should not be nil")
+	}
+
+	if d3.Categorization.Category[0] != 1 {
+		t.Error("d3.Categorization.Category[0] should equal 1")
+	}
+
+	if d3.Adfraud == nil {
+		t.Error("d3.Adfraud should not be nil")
+	}
+
+	if !d3.Adfraud.Fraud {
+		t.Error("d3.Adfraud.Fraud should be true")
+	}
+}
+
+func TestMergeDatasetsOneEmpty(t *testing.T) {
+	d1 := &DataSet{}
+	d2 := &DataSet{
+		Adfraud: &DataSet_AdFraud{
+			Fraud: true,
+		},
+	}
+
+	if d1.Categorization != nil {
+		t.Error("d1.Categorization should be nil")
+	}
+
+	if d2.Adfraud == nil {
+		t.Error("d2.Adfraud should not be nil")
+	}
+
+	if d2.Categorization != nil {
+		t.Error("d2.Categorization should be nil")
+	}
+
+	if d1.Adfraud != nil {
+		t.Error("d1.Adfraud should be nil")
+	}
+
+	d3 := MergeDatasets(d1, d2)
+
+	if d3.Categorization != nil {
+		t.Error("d3.Categorization should be nil")
+	}
+
+	if d3.Adfraud == nil {
+		t.Error("d3.Adfraud should not be nil")
+	}
+
+	if !d3.Adfraud.Fraud {
+		t.Error("d3.Adfraud.Fraud should be true")
+	}
+}
+
+func TestMergeDatasetsBothEmpty(t *testing.T) {
+	d1 := &DataSet{}
+	d2 := &DataSet{}
+
+	if d1.Categorization != nil {
+		t.Error("d1.Categorization should be nil")
+	}
+
+	if d1.Adfraud != nil {
+		t.Error("d1.Adfraud should be nil")
+	}
+
+	if d2.Categorization != nil {
+		t.Error("d2.Categorization should be nil")
+	}
+
+	if d2.Adfraud != nil {
+		t.Error("d2.Adfraud should be nil")
+	}
+
+	d3 := MergeDatasets(d1, d2)
+
+	if d3.Categorization != nil {
+		t.Error("d3.Categorization should be nil")
+	}
+
+	if d3.Adfraud != nil {
+		t.Error("d3.Adfraud should be nil")
+	}
+}
+
+func TestMergeDatasetsOneNil(t *testing.T) {
+	var d1 *DataSet
+	d2 := &DataSet{
+		Adfraud: &DataSet_AdFraud{
+			Fraud: true,
+		},
+	}
+
+	if d2.Adfraud == nil {
+		t.Error("d2.Adfraud should not be nil")
+	}
+
+	if d2.Categorization != nil {
+		t.Error("d2.Categorization should be nil")
+	}
+
+	d3 := MergeDatasets(d1, d2)
+
+	if d3.Categorization != nil {
+		t.Error("d3.Categorization should be nil")
+	}
+
+	if d3.Adfraud == nil {
+		t.Error("d3.Adfraud should not be nil")
+	}
+
+	if !d3.Adfraud.Fraud {
+		t.Error("d3.Adfraud.Fraud should be true")
+	}
+}
+
+func TestMergeDatasetsBothNil(t *testing.T) {
+	var d1 *DataSet
+	var d2 *DataSet
+	d3 := MergeDatasets(d1, d2)
+
+	if d3.Categorization != nil {
+		t.Error("d3.Categorization should be nil")
+	}
+
+	if d3.Adfraud != nil {
+		t.Error("d3.Adfraud should be nil")
+	}
+}
