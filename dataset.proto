@@ -9,9 +9,11 @@ import "zvelo.io/msg/category.proto";
 enum DataSetType {
   CATEGORIZATION = 0;
   ADFRAUD        = 1;
-  // 2 and 3 are reserved
+  // 2 is reserved
+  KEYWORD        = 3;
   MALICIOUS      = 4;
   ECHO           = 5; // for internal zvelo use only
+  SENTIMENT      = 6; // returns keywords & sentiment
 }
 
 message DataSet {
@@ -24,6 +26,10 @@ message DataSet {
     string signature = 2;
   }
 
+  message Sentiment {
+    float score = 1;
+  }
+
   message Malicious {
     Category category  = 1;
     string   signature = 2;
@@ -34,9 +40,11 @@ message DataSet {
     string url = 1;
   }
 
-  Categorization categorization = 1;
-  AdFraud        adfraud        = 2;
-  // 3 and 4 are reserved
-  Malicious      malicious      = 5;
-  Echo           echo           = 6;
+  Categorization         categorization = 1;
+  AdFraud                adfraud        = 2;
+  // 3 is reserved
+  // if SENTIMENT is not requested, keywords will map to nil values  
+  map<string, Sentiment> keyword        = 4;
+  Malicious              malicious      = 5;
+  Echo                   echo           = 6;
 }

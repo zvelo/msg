@@ -45,7 +45,7 @@ var Stream_Status_value = map[string]int32{
 func (x Stream_Status) String() string {
 	return proto.EnumName(Stream_Status_name, int32(x))
 }
-func (Stream_Status) EnumDescriptor() ([]byte, []int) { return fileDescriptor5, []int{2, 0} }
+func (Stream_Status) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{2, 0} }
 
 type StreamRequest struct {
 	CustomerTrackingId string        `protobuf:"bytes,1,opt,name=customer_tracking_id,json=customerTrackingId" json:"customer_tracking_id,omitempty"`
@@ -57,7 +57,7 @@ type StreamRequest struct {
 func (m *StreamRequest) Reset()                    { *m = StreamRequest{} }
 func (m *StreamRequest) String() string            { return proto.CompactTextString(m) }
 func (*StreamRequest) ProtoMessage()               {}
-func (*StreamRequest) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
+func (*StreamRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
 
 type StreamUpdateRequest struct {
 	Uuid          string         `protobuf:"bytes,1,opt,name=uuid" json:"uuid,omitempty"`
@@ -67,7 +67,7 @@ type StreamUpdateRequest struct {
 func (m *StreamUpdateRequest) Reset()                    { *m = StreamUpdateRequest{} }
 func (m *StreamUpdateRequest) String() string            { return proto.CompactTextString(m) }
 func (*StreamUpdateRequest) ProtoMessage()               {}
-func (*StreamUpdateRequest) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{1} }
+func (*StreamUpdateRequest) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{1} }
 
 func (m *StreamUpdateRequest) GetStreamRequest() *StreamRequest {
 	if m != nil {
@@ -88,7 +88,7 @@ type Stream struct {
 func (m *Stream) Reset()                    { *m = Stream{} }
 func (m *Stream) String() string            { return proto.CompactTextString(m) }
 func (*Stream) ProtoMessage()               {}
-func (*Stream) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{2} }
+func (*Stream) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{2} }
 
 func (m *Stream) GetStreamRequest() *StreamRequest {
 	if m != nil {
@@ -112,7 +112,7 @@ type StreamReply struct {
 func (m *StreamReply) Reset()                    { *m = StreamReply{} }
 func (m *StreamReply) String() string            { return proto.CompactTextString(m) }
 func (*StreamReply) ProtoMessage()               {}
-func (*StreamReply) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{3} }
+func (*StreamReply) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{3} }
 
 func (m *StreamReply) GetStatus() *Status {
 	if m != nil {
@@ -136,7 +136,7 @@ func init() {
 	proto.RegisterEnum("msg.Stream_Status", Stream_Status_name, Stream_Status_value)
 }
 
-var fileDescriptor5 = []byte{
+var fileDescriptor4 = []byte{
 	// 455 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x8c, 0x52, 0x4d, 0x8f, 0x93, 0x50,
 	0x14, 0x95, 0xd2, 0xd2, 0x99, 0x4b, 0xdb, 0x34, 0x4f, 0x63, 0x90, 0x8d, 0x13, 0xdc, 0x4c, 0x5c,

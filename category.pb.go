@@ -1496,13 +1496,13 @@ var Category_value = map[string]int32{
 func (x Category) String() string {
 	return proto.EnumName(Category_name, int32(x))
 }
-func (Category) EnumDescriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
+func (Category) EnumDescriptor() ([]byte, []int) { return fileDescriptor6, []int{0} }
 
 func init() {
 	proto.RegisterEnum("msg.Category", Category_name, Category_value)
 }
 
-var fileDescriptor1 = []byte{
+var fileDescriptor6 = []byte{
 	// 3867 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x4c, 0x59, 0xd9, 0xd3, 0x14, 0x47,
 	0x72, 0x77, 0x84, 0xed, 0x3d, 0xbe, 0x95, 0xd7, 0xf2, 0xf7, 0xea, 0xff, 0xc0, 0x0f, 0xbb, 0xb1,
