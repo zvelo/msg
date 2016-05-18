@@ -15,11 +15,6 @@ message StreamRequest {
   repeated DataSetType dataset = 4; // list of datasets to get for each URL
 }
 
-message StreamUpdateRequest {
-  string uuid                  = 1;
-  StreamRequest stream_request = 2;
-}
-
 message Stream {
   enum Status {
     CREATED  = 0;
