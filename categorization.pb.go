@@ -23,6 +23,7 @@ It has these top-level messages:
 	StreamRequest
 	Stream
 	StreamReply
+	StreamsReply
 	QueryURLRequests
 	QueryContentRequests
 	QueryReply

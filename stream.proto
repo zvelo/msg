@@ -37,3 +37,8 @@ message StreamReply {
   Status status = 1;
   Stream stream = 2;
 }
+
+message StreamsReply {
+    Status status = 1;
+    repeated Stream streams = 2;
+}
