@@ -51,7 +51,7 @@ type DataSet struct {
 	Categorization *DataSet_Categorization `protobuf:"bytes,1,opt,name=categorization" json:"categorization,omitempty"`
 	Adfraud        *DataSet_AdFraud        `protobuf:"bytes,2,opt,name=adfraud" json:"adfraud,omitempty"`
 	// 3 is reserved
-	// if SENTIMENT is not requested, keywords will map to nil values
+	// if SENTIMENT is not requested, keywords will map to zero values
 	Keyword   map[string]*DataSet_Sentiment `protobuf:"bytes,4,rep,name=keyword" json:"keyword,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	Malicious *DataSet_Malicious            `protobuf:"bytes,5,opt,name=malicious" json:"malicious,omitempty"`
 	Echo      *DataSet_Echo                 `protobuf:"bytes,6,opt,name=echo" json:"echo,omitempty"`
