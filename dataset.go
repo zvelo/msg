@@ -29,10 +29,6 @@ var (
 // returns an interface{} that can be type asserted into the appropriate message
 // type.
 func (m *DataSet) FieldByType(dsType DataSetType) (interface{}, error) {
-	switch dsType {
-	case DataSetType_KEYWORD, DataSetType_SENTIMENT:
-		return m.Keyword, nil
-	}
 	name, ok := DataSetType_name[int32(dsType)]
 	if !ok {
 		return nil, errInvalidDataSetType(dsType)
@@ -40,6 +36,11 @@ func (m *DataSet) FieldByType(dsType DataSetType) (interface{}, error) {
 
 	if m == nil {
 		return nil, ErrNilDataSet
+	}
+
+	switch dsType {
+	case DataSetType_KEYWORD, DataSetType_SENTIMENT:
+		return m.Keyword, nil
 	}
 
 	name = strings.ToLower(name)
