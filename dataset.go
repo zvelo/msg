@@ -40,6 +40,9 @@ func (m *DataSet) FieldByType(dsType DataSetType) (interface{}, error) {
 
 	switch dsType {
 	case DataSetType_KEYWORD, DataSetType_SENTIMENT:
+		if m.Keyword == nil {
+			return nil, nil
+		}
 		return m.Keyword, nil
 	}
 

@@ -21,7 +21,7 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 		}
 
 		if i != nil && expectNil {
-			t.Errorf("got unexpected nil dataset field %v", i)
+			t.Errorf("got unexpected nil dataset field %#v", i)
 		}
 
 		if expectNil {
