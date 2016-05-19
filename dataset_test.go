@@ -64,6 +64,18 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 
 			if r != ds.Echo {
 				t.Error("t != ds.Echo")
+
+			}
+		case DataSetType_KEYWORD:
+			_, ok := i.(map[string]*DataSet_Sentiment)
+			if !ok {
+				t.Errorf("type of i not *DataSet_Keyword")
+			}
+
+		case DataSetType_SENTIMENT:
+			_, ok := i.(map[string]*DataSet_Sentiment)
+			if !ok {
+				t.Errorf("type of i not *DataSet_Keyword")
 			}
 		default:
 			t.Errorf("unexpected dataset type: %s", dst)
@@ -77,6 +89,7 @@ func TestDataSetByType(t *testing.T) {
 		Adfraud:        &DataSet_AdFraud{},
 		Malicious:      &DataSet_Malicious{},
 		Echo:           &DataSet_Echo{},
+		Keyword:        make(map[string]*DataSet_Sentiment),
 	}, false)
 }
 
