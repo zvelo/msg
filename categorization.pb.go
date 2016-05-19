@@ -2,6 +2,32 @@
 // source: zvelo.io/msg/categorization.proto
 // DO NOT EDIT!
 
+/*
+Package msg is a generated protocol buffer package.
+
+It is generated from these files:
+	zvelo.io/msg/categorization.proto
+	zvelo.io/msg/category.proto
+	zvelo.io/msg/stream.proto
+	zvelo.io/msg/zvelo-api.proto
+	zvelo.io/msg/dataset.proto
+	zvelo.io/msg/query_result.proto
+	zvelo.io/msg/status.proto
+
+It has these top-level messages:
+	Categorization
+	Categorizations
+	StreamRequest
+	Stream
+	StreamReply
+	StreamsReply
+	QueryURLRequests
+	QueryContentRequests
+	QueryReply
+	DataSet
+	QueryResult
+	Status
+*/
 package msg
 
 import proto "github.com/golang/protobuf/proto"
@@ -13,6 +39,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type Categorization struct {
 	Url     string   `protobuf:"bytes,1,opt,name=url" json:"url,omitempty"`
 	Dataset *DataSet `protobuf:"bytes,2,opt,name=dataset" json:"dataset,omitempty"`
@@ -21,7 +51,7 @@ type Categorization struct {
 func (m *Categorization) Reset()                    { *m = Categorization{} }
 func (m *Categorization) String() string            { return proto.CompactTextString(m) }
 func (*Categorization) ProtoMessage()               {}
-func (*Categorization) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
+func (*Categorization) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
 
 func (m *Categorization) GetDataset() *DataSet {
 	if m != nil {
@@ -37,7 +67,7 @@ type Categorizations struct {
 func (m *Categorizations) Reset()                    { *m = Categorizations{} }
 func (m *Categorizations) String() string            { return proto.CompactTextString(m) }
 func (*Categorizations) ProtoMessage()               {}
-func (*Categorizations) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{1} }
+func (*Categorizations) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
 
 func (m *Categorizations) GetCategorizations() []*Categorization {
 	if m != nil {
@@ -51,7 +81,7 @@ func init() {
 	proto.RegisterType((*Categorizations)(nil), "msg.Categorizations")
 }
 
-var fileDescriptor5 = []byte{
+var fileDescriptor0 = []byte{
 	// 165 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0x52, 0xac, 0x2a, 0x4b, 0xcd,
 	0xc9, 0xd7, 0xcb, 0xcc, 0xd7, 0xcf, 0x2d, 0x4e, 0xd7, 0x4f, 0x4e, 0x2c, 0x49, 0x4d, 0xcf, 0x2f,
