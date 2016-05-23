@@ -38,12 +38,8 @@ func (m *DataSet) FieldByType(dsType DataSetType) (interface{}, error) {
 		return nil, ErrNilDataSet
 	}
 
-	switch dsType {
-	case DataSetType_KEYWORD, DataSetType_SENTIMENT:
-		if m.Keyword == nil {
-			return nil, nil
-		}
-		return m.Keyword, nil
+	if dsType == DataSetType_SENTIMENT {
+		name = DataSetType_name[int32(DataSetType_KEYWORD)]
 	}
 
 	name = strings.ToLower(name)
