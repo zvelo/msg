@@ -47,6 +47,11 @@ message DataSet {
   Categorization         categorization = 1;
   AdFraud                adfraud        = 2;
   // 3 is reserved
+  // We expect that only keyword or sentiment will
+  // be populated at a given point in time to not
+  // duplicate data. If sentiment is not nil, then
+  // it contains all of the keywords in its map,
+  // and as such we don't have to populate Keyword.
   Keyword                keyword        = 4;
   Malicious              malicious      = 5;
   Echo                   echo           = 6;

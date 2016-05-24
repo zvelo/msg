@@ -51,6 +51,11 @@ type DataSet struct {
 	Categorization *DataSet_Categorization `protobuf:"bytes,1,opt,name=categorization" json:"categorization,omitempty"`
 	Adfraud        *DataSet_AdFraud        `protobuf:"bytes,2,opt,name=adfraud" json:"adfraud,omitempty"`
 	// 3 is reserved
+	// We expect that only keyword or sentiment will
+	// be populated at a given point in time to not
+	// duplicate data. If sentiment is not nil, then
+	// it contains all of the keywords in its map,
+	// and as such we don't have to populate Keyword.
 	Keyword   *DataSet_Keyword   `protobuf:"bytes,4,opt,name=keyword" json:"keyword,omitempty"`
 	Malicious *DataSet_Malicious `protobuf:"bytes,5,opt,name=malicious" json:"malicious,omitempty"`
 	Echo      *DataSet_Echo      `protobuf:"bytes,6,opt,name=echo" json:"echo,omitempty"`
