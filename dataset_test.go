@@ -67,13 +67,13 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 
 			}
 		case DataSetType_KEYWORD:
-			_, ok := i.(map[string]*DataSet_Sentiment)
+			_, ok := i.(*DataSet_Keyword)
 			if !ok {
 				t.Errorf("type of i not *DataSet_Keyword")
 			}
 
 		case DataSetType_SENTIMENT:
-			_, ok := i.(map[string]*DataSet_Sentiment)
+			_, ok := i.(*DataSet_Sentiment)
 			if !ok {
 				t.Errorf("type of i not *DataSet_Keyword")
 			}
@@ -89,7 +89,8 @@ func TestDataSetByType(t *testing.T) {
 		Adfraud:        &DataSet_AdFraud{},
 		Malicious:      &DataSet_Malicious{},
 		Echo:           &DataSet_Echo{},
-		Keyword:        make(map[string]*DataSet_Sentiment),
+		Keyword:        &DataSet_Keyword{},
+		Sentiment:      &DataSet_Sentiment{},
 	}, false)
 }
 

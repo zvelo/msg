@@ -25,7 +25,7 @@ type QueryURLRequests struct {
 func (m *QueryURLRequests) Reset()                    { *m = QueryURLRequests{} }
 func (m *QueryURLRequests) String() string            { return proto.CompactTextString(m) }
 func (*QueryURLRequests) ProtoMessage()               {}
-func (*QueryURLRequests) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
+func (*QueryURLRequests) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{0} }
 
 type QueryContentRequests struct {
 	Content        []*QueryContentRequests_URLContent `protobuf:"bytes,1,rep,name=content" json:"content,omitempty"`
@@ -39,7 +39,7 @@ type QueryContentRequests struct {
 func (m *QueryContentRequests) Reset()                    { *m = QueryContentRequests{} }
 func (m *QueryContentRequests) String() string            { return proto.CompactTextString(m) }
 func (*QueryContentRequests) ProtoMessage()               {}
-func (*QueryContentRequests) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{1} }
+func (*QueryContentRequests) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{1} }
 
 func (m *QueryContentRequests) GetContent() []*QueryContentRequests_URLContent {
 	if m != nil {
@@ -60,7 +60,7 @@ func (m *QueryContentRequests_URLContent) Reset()         { *m = QueryContentReq
 func (m *QueryContentRequests_URLContent) String() string { return proto.CompactTextString(m) }
 func (*QueryContentRequests_URLContent) ProtoMessage()    {}
 func (*QueryContentRequests_URLContent) Descriptor() ([]byte, []int) {
-	return fileDescriptor3, []int{1, 0}
+	return fileDescriptor6, []int{1, 0}
 }
 
 func (m *QueryContentRequests_URLContent) GetHeader() map[string]string {
@@ -82,7 +82,7 @@ type QueryReply struct {
 func (m *QueryReply) Reset()                    { *m = QueryReply{} }
 func (m *QueryReply) String() string            { return proto.CompactTextString(m) }
 func (*QueryReply) ProtoMessage()               {}
-func (*QueryReply) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{2} }
+func (*QueryReply) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{2} }
 
 func (m *QueryReply) GetStatus() *Status {
 	if m != nil {
@@ -98,7 +98,7 @@ func init() {
 	proto.RegisterType((*QueryReply)(nil), "msg.QueryReply")
 }
 
-var fileDescriptor3 = []byte{
+var fileDescriptor6 = []byte{
 	// 418 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xcc, 0x53, 0xcf, 0xcb, 0xd3, 0x40,
 	0x10, 0x25, 0x49, 0xbf, 0x7c, 0xed, 0x44, 0x62, 0x59, 0x8a, 0xc4, 0xa0, 0x50, 0xaa, 0xa0, 0x08,

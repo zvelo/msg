@@ -38,10 +38,6 @@ func (m *DataSet) FieldByType(dsType DataSetType) (interface{}, error) {
 		return nil, ErrNilDataSet
 	}
 
-	if dsType == DataSetType_SENTIMENT {
-		name = DataSetType_name[int32(DataSetType_KEYWORD)]
-	}
-
 	name = strings.ToLower(name)
 	v := reflect.ValueOf(*m).FieldByNameFunc(func(val string) bool {
 		return strings.ToLower(val) == name

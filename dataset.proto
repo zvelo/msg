@@ -27,7 +27,11 @@ message DataSet {
   }
 
   message Sentiment {
-    float score = 1;
+    map<string, float> sentiment = 1;
+  }
+
+  message Keyword {
+      repeated string keyword = 1;
   }
 
   message Malicious {
@@ -43,8 +47,8 @@ message DataSet {
   Categorization         categorization = 1;
   AdFraud                adfraud        = 2;
   // 3 is reserved
-  // if SENTIMENT is not requested, keywords will map to zero values  
-  map<string, Sentiment> keyword        = 4;
+  Keyword                keyword        = 4;
   Malicious              malicious      = 5;
   Echo                   echo           = 6;
+  Sentiment              sentiment      = 7;
 }

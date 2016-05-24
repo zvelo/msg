@@ -8,15 +8,18 @@ Package msg is a generated protocol buffer package.
 It is generated from these files:
 	zvelo.io/msg/categorization.proto
 	zvelo.io/msg/category.proto
-	zvelo.io/msg/stream.proto
-	zvelo.io/msg/zvelo-api.proto
 	zvelo.io/msg/dataset.proto
 	zvelo.io/msg/query_result.proto
 	zvelo.io/msg/status.proto
+	zvelo.io/msg/stream.proto
+	zvelo.io/msg/zvelo-api.proto
 
 It has these top-level messages:
 	Categorization
 	Categorizations
+	DataSet
+	QueryResult
+	Status
 	StreamRequest
 	Stream
 	StreamReply
@@ -24,9 +27,6 @@ It has these top-level messages:
 	QueryURLRequests
 	QueryContentRequests
 	QueryReply
-	DataSet
-	QueryResult
-	Status
 */
 package msg
 
