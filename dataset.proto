@@ -18,20 +18,20 @@ enum DataSetType {
 
 message DataSet {
   message Categorization {
-    repeated Category category = 1;
+    repeated Category values = 1;
   }
 
   message AdFraud {
-    bool   fraud     = 1;
+    bool   verdict     = 1;
     string signature = 2;
   }
 
   message Sentiment {
-    map<string, float> sentiment = 1;
+    map<string, float> values = 1;
   }
 
   message Keyword {
-      repeated string keyword = 1;
+      repeated string values = 1;
   }
 
   message Malicious {
