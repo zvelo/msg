@@ -75,7 +75,7 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 		case DataSetType_SENTIMENT:
 			_, ok := i.(*DataSet_Sentiment)
 			if !ok {
-				t.Errorf("type of i not *DataSet_Keyword")
+				t.Errorf("type of i not *DataSet_Sentiment")
 			}
 		default:
 			t.Errorf("unexpected dataset type: %s", dst)
