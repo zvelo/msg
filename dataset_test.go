@@ -21,7 +21,7 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 		}
 
 		if i != nil && expectNil {
-			t.Error("got unexpected nil dataset field")
+			t.Errorf("got unexpected nil dataset field %#v", i)
 		}
 
 		if expectNil {
@@ -64,6 +64,18 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 
 			if r != ds.Echo {
 				t.Error("t != ds.Echo")
+
+			}
+		case DataSetType_KEYWORD:
+			_, ok := i.(*DataSet_Keyword)
+			if !ok {
+				t.Errorf("type of i not *DataSet_Keyword")
+			}
+
+		case DataSetType_SENTIMENT:
+			_, ok := i.(*DataSet_Sentiment)
+			if !ok {
+				t.Errorf("type of i not *DataSet_Sentiment")
 			}
 		default:
 			t.Errorf("unexpected dataset type: %s", dst)
@@ -77,6 +89,8 @@ func TestDataSetByType(t *testing.T) {
 		Adfraud:        &DataSet_AdFraud{},
 		Malicious:      &DataSet_Malicious{},
 		Echo:           &DataSet_Echo{},
+		Keyword:        &DataSet_Keyword{},
+		Sentiment:      &DataSet_Sentiment{},
 	}, false)
 }
 
@@ -170,12 +184,12 @@ func TestNewDataSetType(t *testing.T) {
 func TestMergeDatasets(t *testing.T) {
 	d1 := &DataSet{
 		Categorization: &DataSet_Categorization{
-			Category: []Category{1},
+			Values: []Category{1},
 		},
 	}
 	d2 := &DataSet{
 		Adfraud: &DataSet_AdFraud{
-			Fraud: true,
+			Verdict: true,
 		},
 	}
 
@@ -201,16 +215,16 @@ func TestMergeDatasets(t *testing.T) {
 		t.Error("d3.Categorization should not be nil")
 	}
 
-	if d3.Categorization.Category[0] != 1 {
-		t.Error("d3.Categorization.Category[0] should equal 1")
+	if d3.Categorization.Values[0] != 1 {
+		t.Error("d3.Categorization.Values[0] should equal 1")
 	}
 
 	if d3.Adfraud == nil {
 		t.Error("d3.Adfraud should not be nil")
 	}
 
-	if !d3.Adfraud.Fraud {
-		t.Error("d3.Adfraud.Fraud should be true")
+	if !d3.Adfraud.Verdict {
+		t.Error("d3.Adfraud.Verdict should be true")
 	}
 }
 
@@ -218,7 +232,7 @@ func TestMergeDatasetsOneEmpty(t *testing.T) {
 	d1 := &DataSet{}
 	d2 := &DataSet{
 		Adfraud: &DataSet_AdFraud{
-			Fraud: true,
+			Verdict: true,
 		},
 	}
 
@@ -248,8 +262,8 @@ func TestMergeDatasetsOneEmpty(t *testing.T) {
 		t.Error("d3.Adfraud should not be nil")
 	}
 
-	if !d3.Adfraud.Fraud {
-		t.Error("d3.Adfraud.Fraud should be true")
+	if !d3.Adfraud.Verdict {
+		t.Error("d3.Adfraud.Verdict should be true")
 	}
 }
 
@@ -288,7 +302,7 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 	var d1 *DataSet
 	d2 := &DataSet{
 		Adfraud: &DataSet_AdFraud{
-			Fraud: true,
+			Verdict: true,
 		},
 	}
 
@@ -310,8 +324,8 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 		t.Error("d3.Adfraud should not be nil")
 	}
 
-	if !d3.Adfraud.Fraud {
-		t.Error("d3.Adfraud.Fraud should be true")
+	if !d3.Adfraud.Verdict {
+		t.Error("d3.Adfraud.Verdict should be true")
 	}
 }
 

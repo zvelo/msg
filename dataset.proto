@@ -9,19 +9,29 @@ import "zvelo.io/msg/category.proto";
 enum DataSetType {
   CATEGORIZATION = 0;
   ADFRAUD        = 1;
-  // 2 and 3 are reserved
+  // 2 is reserved
+  KEYWORD        = 3;
   MALICIOUS      = 4;
   ECHO           = 5; // for internal zvelo use only
+  SENTIMENT      = 6; // returns keywords & sentiment
 }
 
 message DataSet {
   message Categorization {
-    repeated Category category = 1;
+    repeated Category values = 1;
   }
 
   message AdFraud {
-    bool   fraud     = 1;
+    bool   verdict     = 1;
     string signature = 2;
+  }
+
+  message Sentiment {
+    map<string, float> values = 1;
+  }
+
+  message Keyword {
+      repeated string values = 1;
   }
 
   message Malicious {
@@ -34,9 +44,16 @@ message DataSet {
     string url = 1;
   }
 
-  Categorization categorization = 1;
-  AdFraud        adfraud        = 2;
-  // 3 and 4 are reserved
-  Malicious      malicious      = 5;
-  Echo           echo           = 6;
+  Categorization         categorization = 1;
+  AdFraud                adfraud        = 2;
+  // 3 is reserved
+  // We expect that only keyword or sentiment will
+  // be populated at a given point in time to not
+  // duplicate data. If sentiment is not nil, then
+  // it contains all of the keywords in its map,
+  // and as such we don't have to populate Keyword.
+  Keyword                keyword        = 4;
+  Malicious              malicious      = 5;
+  Echo                   echo           = 6;
+  Sentiment              sentiment      = 7;
 }

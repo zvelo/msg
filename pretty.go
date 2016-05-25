@@ -74,8 +74,8 @@ func (m DataSet) Pretty(w io.Writer, prefix string) error {
 
 // Pretty writes a human readable representation of Categorization to w
 func (m DataSet_Categorization) Pretty(w io.Writer, prefix string) error {
-	cats := make([]string, len(m.Category))
-	for i, id := range m.Category {
+	cats := make([]string, len(m.Values))
+	for i, id := range m.Values {
 		cats[i] = "\"" + id.Long() + "\""
 	}
 	_, err := fmt.Fprintf(w, "%sCategorization: %s\n", prefix, strings.Join(cats, " : "))
@@ -86,10 +86,10 @@ func (m DataSet_Categorization) Pretty(w io.Writer, prefix string) error {
 func (m DataSet_AdFraud) Pretty(w io.Writer, prefix string) error {
 	_, err := fmt.Fprintf(w,
 		"%sAd Fraud:\n"+
-			"%s  Fraud: %v\n"+
+			"%s  Verdict: %v\n"+
 			"%s  Signature: %s\n",
 		prefix,
-		prefix, m.Fraud,
+		prefix, m.Verdict,
 		prefix, m.Signature,
 	)
 	return err
@@ -114,6 +114,24 @@ func (m DataSet_Malicious) Pretty(w io.Writer, prefix string) error {
 // Pretty writes a human readable representation of Echo to w
 func (m DataSet_Echo) Pretty(w io.Writer, prefix string) error {
 	_, err := fmt.Fprintf(w, "%sEcho: %s\n", prefix, m.Url)
+	return err
+}
+
+// Pretty writes a human readable representation of Keyword to w
+func (m DataSet_Keyword) Pretty(w io.Writer, prefix string) error {
+	_, err := fmt.Fprintf(w, "%sKeywords: %s\n", prefix, strings.Join(m.Values, " : "))
+	return err
+}
+
+// Pretty writes a human readable representation of Sentiment to w
+func (m DataSet_Sentiment) Pretty(w io.Writer, prefix string) error {
+	sentiments := make([]string, len(m.Values))
+	i := 0
+	for keyword, sentiment := range m.Values {
+		sentiments[i] = fmt.Sprintf("\"%s\" : %f", keyword, sentiment)
+		i++
+	}
+	_, err := fmt.Fprintf(w, "%sSentiment: %s\n", prefix, strings.Join(sentiments, "\n"))
 	return err
 }
 
