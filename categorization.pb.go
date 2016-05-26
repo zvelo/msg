@@ -21,9 +21,9 @@ It has these top-level messages:
 	QueryResult
 	Status
 	StreamRequest
-	StreamUpdateRequest
 	Stream
 	StreamReply
+	StreamsReply
 	QueryURLRequests
 	QueryContentRequests
 	QueryReply
