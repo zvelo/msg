@@ -9,6 +9,7 @@ It is generated from these files:
 	zvelo.io/msg/category.proto
 	zvelo.io/msg/dataset.proto
 	zvelo.io/msg/query_result.proto
+	zvelo.io/msg/seed_result.proto
 	zvelo.io/msg/status.proto
 	zvelo.io/msg/stream.proto
 	zvelo.io/msg/stream_result.proto
@@ -17,6 +18,8 @@ It is generated from these files:
 It has these top-level messages:
 	DataSet
 	QueryResult
+	SeedResult
+	SeedResults
 	Status
 	StreamRequest
 	Stream

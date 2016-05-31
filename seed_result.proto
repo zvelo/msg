@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package msg;
+
+option go_package = "zvelo.io/msg";
+
+import "zvelo.io/msg/dataset.proto";
+
+message SeedResult {
+  string url = 1;
+  DataSet dataset = 2;
+}
+
+message SeedResults {
+  repeated SeedResult values = 1;
+}
