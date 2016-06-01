@@ -6,11 +6,11 @@ option go_package = "zvelo.io/msg";
 
 import "zvelo.io/msg/dataset.proto";
 
-message Categorization {
+message SeedResult {
   string url = 1;
   DataSet dataset = 2;
 }
 
-message Categorizations {
-  repeated Categorization categorizations = 1;
+message SeedResults {
+  repeated SeedResult values = 1;
 }
