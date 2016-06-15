@@ -103,6 +103,8 @@ func init() {
 	proto.RegisterEnum("msg.Status_Code", Status_Code_name, Status_Code_value)
 }
 
+func init() { proto.RegisterFile("zvelo.io/msg/status.proto", fileDescriptor4) }
+
 var fileDescriptor4 = []byte{
 	// 427 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x4c, 0x52, 0xcd, 0x6e, 0xd4, 0x30,

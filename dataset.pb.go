@@ -184,6 +184,8 @@ func init() {
 	proto.RegisterEnum("msg.DataSetType", DataSetType_name, DataSetType_value)
 }
 
+func init() { proto.RegisterFile("zvelo.io/msg/dataset.proto", fileDescriptor1) }
+
 var fileDescriptor1 = []byte{
 	// 489 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x7c, 0x53, 0xd1, 0x8e, 0x93, 0x40,

@@ -143,6 +143,8 @@ func init() {
 	proto.RegisterEnum("msg.Stream_Status", Stream_Status_name, Stream_Status_value)
 }
 
+func init() { proto.RegisterFile("zvelo.io/msg/stream.proto", fileDescriptor5) }
+
 var fileDescriptor5 = []byte{
 	// 460 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x94, 0x52, 0xc1, 0x6e, 0xd3, 0x40,

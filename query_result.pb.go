@@ -45,6 +45,8 @@ func init() {
 	proto.RegisterType((*QueryResult)(nil), "msg.QueryResult")
 }
 
+func init() { proto.RegisterFile("zvelo.io/msg/query_result.proto", fileDescriptor2) }
+
 var fileDescriptor2 = []byte{
 	// 259 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x54, 0x90, 0x31, 0x4f, 0xc3, 0x30,
