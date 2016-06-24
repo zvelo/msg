@@ -1,3 +1,8 @@
+2016-06-24  Michael Robinson <mrobinson@zvelo.com>
+
+  * Start feature "add content query content-type to msg"
+  https://www.pivotaltracker.com/story/show/122225855
+
 2016-05-13  Bob Uhl <buhl@zvelo.com>
 
   * Start feature "Create messages for zNouns &amp; zSent datasets"
