@@ -10,6 +10,13 @@ message Status {
     OK = 200;
     CREATED = 201;
     ACCEPTED = 202;
+    MULTIPLE_CHOICES   = 300;
+    MOVED_PERMANENTLY  = 301;
+    FOUND             = 302;
+    SEE_OTHER          = 303;
+    NOT_MODIFIED       = 304;
+    USE_PROXY          = 305;
+    TEMPORARY_REDIRECT = 307;
     BAD_REQUEST = 400;
     UNAUTHORIZED = 401;
     FORBIDDEN = 403;
