@@ -1,9 +1,17 @@
 PROTO_FILES=$(wildcard *.proto)
-PB_FILES=$(patsubst %.proto,%.pb.go,$(PROTO_FILES))
+GO_PB_FILES=$(patsubst %.proto,%.pb.go,$(PROTO_FILES))
+PY_PB_FILES=$(patsubst %.proto,%_pb2.py,$(PROTO_FILES))
 
-all: $(PB_FILES)
+default: go
+go: $(GO_PB_FILES)
+python: $(PY_PB_FILES)
 
-$(PB_FILES): %.pb.go: %.proto
-	@cd ../.. && protoc --go_out=. $(patsubst %,zvelo.io/msg/%,$(PROTO_FILES))
+$(GO_PB_FILES): %.pb.go: %.proto
+	ln -sf zvelo.io ../../zvelo
+	cd ../.. && protoc --go_out=. $(patsubst %,zvelo/msg/%,$(PROTO_FILES))
 
-.PHONY: all
+$(PY_PB_FILES): %_pb2.py: %.proto
+	ln -sf zvelo.io ../../zvelo
+	cd ../.. && python -m grpc.tools.protoc --python_out=. --grpc_python_out=. -I. $(patsubst %,zvelo/msg/%,$(PROTO_FILES))
+
+.PHONY: default go python

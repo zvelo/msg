@@ -4,7 +4,7 @@ package msg;
 
 option go_package = "zvelo.io/msg";
 
-import "zvelo.io/msg/category.proto";
+import "zvelo/msg/category.proto";
 
 enum DataSetType {
   CATEGORIZATION = 0;

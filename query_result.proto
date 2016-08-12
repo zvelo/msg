@@ -4,8 +4,8 @@ package msg;
 
 option go_package = "zvelo.io/msg";
 
-import "zvelo.io/msg/dataset.proto";
-import "zvelo.io/msg/status.proto";
+import "zvelo/msg/dataset.proto";
+import "zvelo/msg/status.proto";
 
 message QueryResult {
   string request_id                    = 1; // Request ID for tracking requests

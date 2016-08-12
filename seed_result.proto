@@ -4,7 +4,7 @@ package msg;
 
 option go_package = "zvelo.io/msg";
 
-import "zvelo.io/msg/dataset.proto";
+import "zvelo/msg/dataset.proto";
 
 message SeedResult {
   string url = 1;
