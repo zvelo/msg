@@ -2,6 +2,7 @@
 
   * Start feature "regenerate protobufs in msg"
   https://www.pivotaltracker.com/story/show/128511299
+  https://github.com/zvelo/msg/pull/14
 
 2016-07-05  Steven Bogacz <sbogacz@zvelo.com>
 
