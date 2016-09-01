@@ -1,3 +1,8 @@
+2016-09-01  RJ Nanjegowda <rnanjegowda@zvelo.com>
+
+  * Start feature "update MD dataset to remove  signature field"
+  https://www.pivotaltracker.com/story/show/129615811
+
 2016-07-05  Steven Bogacz <sbogacz@zvelo.com>
 
   * Start feature "Add redirect codes to status message"
