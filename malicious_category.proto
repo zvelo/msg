@@ -5,14 +5,14 @@ package msg;
 option go_package = "zvelo.io/msg";
 
 enum MaliciousCategory {
-  T_SKIP = 0;
-  T_BOTS_4 = 10293;
-  T_CANDC_4 = 10294;
-  T_COMPR_4 = 10295;
-  T_MALHOME_4 = 10296;
-  T_MAL_4 = 10297;
-  T_FRAUD_4 = 10298;
-  T_SPAM_4 = 10299;
-  T_SPYWARE_4 = 10300;
-  T_UNKNOWN = -1;
+  SKIP = 0;
+  BOTS = 10293;
+  CANDC = 10294;
+  COMPR = 10295;
+  MALHOME = 10296;
+  MAL = 10297;
+  FRAUD = 10298;
+  SPAM = 10299;
+  SPYWARE = 10300;
+  UNK = -1;
 }
