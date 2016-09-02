@@ -10,5 +10,5 @@ var MaliciousCategoryLong = map[MaliciousCategory]string{
 	MaliciousCategory_FRAUD:   "Phishing/Fraud",
 	MaliciousCategory_SPAM:    "Spam URLs",
 	MaliciousCategory_SPYWARE: "Spyware & Questionable Software",
-	MaliciousCategory_UNK:     "Unknown Category",
+	MaliciousCategory_UNK:     "Unknown",
 }
