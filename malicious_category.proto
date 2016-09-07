@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package msg;
+
+option go_package = "zvelo.io/msg";
+
+enum MaliciousCategory {
+  SKIP = 0;
+  BOTS_4 = 10293;
+  CANDC_4 = 10294;
+  COMPR_4 = 10295;
+  MALHOME_4 = 10296;
+  MAL_4 = 10297;
+  FRAUD_4 = 10298;
+  SPAM_4 = 10299;
+  SPYWARE_4 = 10300;
+  UNK = -1;
+}
