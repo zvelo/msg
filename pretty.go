@@ -100,11 +100,9 @@ func (m DataSet_Malicious) Pretty(w io.Writer, prefix string) error {
 	_, err := fmt.Fprintf(w,
 		"%sMalicious:\n"+
 			"%s  Category: %d\n"+
-			"%s  Signature: %s\n"+
 			"%s  Verdict: %v\n",
 		prefix,
 		prefix, m.Category,
-		prefix, m.Signature,
 		prefix, m.Verdict,
 	)
 
