@@ -21,7 +21,7 @@ type StreamResult struct {
 func (m *StreamResult) Reset()                    { *m = StreamResult{} }
 func (m *StreamResult) String() string            { return proto.CompactTextString(m) }
 func (*StreamResult) ProtoMessage()               {}
-func (*StreamResult) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{0} }
+func (*StreamResult) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{0} }
 
 func (m *StreamResult) GetDataset() *DataSet {
 	if m != nil {
@@ -37,7 +37,7 @@ type StreamResults struct {
 func (m *StreamResults) Reset()                    { *m = StreamResults{} }
 func (m *StreamResults) String() string            { return proto.CompactTextString(m) }
 func (*StreamResults) ProtoMessage()               {}
-func (*StreamResults) Descriptor() ([]byte, []int) { return fileDescriptor7, []int{1} }
+func (*StreamResults) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{1} }
 
 func (m *StreamResults) GetValues() []*StreamResult {
 	if m != nil {
@@ -51,9 +51,9 @@ func init() {
 	proto.RegisterType((*StreamResults)(nil), "msg.StreamResults")
 }
 
-func init() { proto.RegisterFile("zvelo/msg/stream_result.proto", fileDescriptor7) }
+func init() { proto.RegisterFile("zvelo/msg/stream_result.proto", fileDescriptor6) }
 
-var fileDescriptor7 = []byte{
+var fileDescriptor6 = []byte{
 	// 175 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0x92, 0xad, 0x2a, 0x4b, 0xcd,
 	0xc9, 0xd7, 0xcf, 0x2d, 0x4e, 0xd7, 0x2f, 0x2e, 0x29, 0x4a, 0x4d, 0xcc, 0x8d, 0x2f, 0x4a, 0x2d,

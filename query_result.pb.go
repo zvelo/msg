@@ -25,7 +25,7 @@ type QueryResult struct {
 func (m *QueryResult) Reset()                    { *m = QueryResult{} }
 func (m *QueryResult) String() string            { return proto.CompactTextString(m) }
 func (*QueryResult) ProtoMessage()               {}
-func (*QueryResult) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
+func (*QueryResult) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
 
 func (m *QueryResult) GetStatus() *Status {
 	if m != nil {
@@ -45,9 +45,9 @@ func init() {
 	proto.RegisterType((*QueryResult)(nil), "msg.QueryResult")
 }
 
-func init() { proto.RegisterFile("zvelo/msg/query_result.proto", fileDescriptor3) }
+func init() { proto.RegisterFile("zvelo/msg/query_result.proto", fileDescriptor2) }
 
-var fileDescriptor3 = []byte{
+var fileDescriptor2 = []byte{
 	// 265 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x4c, 0x90, 0xc1, 0x4f, 0xb3, 0x40,
 	0x14, 0xc4, 0x43, 0xe1, 0xe3, 0xa3, 0x8f, 0x86, 0x92, 0x3d, 0x28, 0x69, 0x34, 0x12, 0xbd, 0x70,
