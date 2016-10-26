@@ -9,7 +9,7 @@ python: $(PY_PB_FILES)
 $(GO_PB_FILES): %.pb.go: %.proto
 	rm -f ../../zvelo
 	ln -sf zvelo.io ../../zvelo
-	cd ../.. && protoc --go_out=. $(patsubst %,zvelo/msg/%,$(PROTO_FILES))
+	cd ../.. && protoc --go_out=plugins=grpc:. $(patsubst %,zvelo/msg/%,$(PROTO_FILES))
 	rm -f ../../zvelo
 
 $(PY_PB_FILES): %_pb2.py: %.proto
