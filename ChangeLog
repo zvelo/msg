@@ -1,3 +1,8 @@
+2016-10-26  Bob Uhl <buhl@zvelo.com>
+
+  * Start feature "Add stream service &amp; calls to msg"
+  https://www.pivotaltracker.com/story/show/133195821
+
 2016-09-01  RJ Nanjegowda <rnanjegowda@zvelo.com>
 
   * Start feature "update MD dataset to remove  signature field"
