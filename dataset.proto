@@ -1,11 +1,10 @@
 syntax = "proto3";
 
-package msg;
+package zvelo.msg;
 
 option go_package = "zvelo.io/msg";
 
 import "zvelo/msg/category.proto";
-import "zvelo/msg/malicious_category.proto";
 
 enum DataSetType {
   CATEGORIZATION = 0;
@@ -36,7 +35,7 @@ message DataSet {
   }
 
   message Malicious {
-    MaliciousCategory category  = 1;
+    Category category  = 1;
     // 2 reserved for signature
     bool     verdict   = 3;
   }
