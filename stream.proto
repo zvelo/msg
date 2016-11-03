@@ -3,42 +3,16 @@ syntax = "proto3";
 package zvelo.msg;
 
 option go_package = "zvelo.io/msg";
-
 import "zvelo/msg/dataset.proto";
-import "zvelo/msg/status.proto";
-import "google/protobuf/timestamp.proto";
 
-message StreamRequest {
-  string customer_tracking_id  = 1;
-  string endpoint              = 2;
-  string accept                = 3; // Content-Type to be sent in streamed messages
-  repeated DataSetType dataset = 4; // list of datasets to get for each URL
+message StreamResult {
+  string url = 1;
+  DataSet dataset = 2;
 }
 
-message Stream {
-  enum Status {
-    CREATED  = 0;
-    RUNNING  = 1;
-    PAUSED   = 2;
-    RETRYING = 3;
-    ENDED    = 4;
-    FAILED   = 5;
-  }
-
-  string uuid                             = 1;
-  Status stream_status                    = 2;
-  StreamRequest stream_request            = 3;
-  string org                              = 5;
-  string user                             = 6;
-  google.protobuf.Timestamp creation_date = 7;
+message StreamParams {
 }
 
-message StreamReply {
-  Status status = 1;
-  Stream stream = 2;
-}
-
-message StreamsReply {
-    Status status = 1;
-    repeated Stream streams = 2;
+service Stream {
+  rpc Events(StreamParams) returns (stream StreamResult) {}
 }
