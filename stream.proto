@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package msg;
+package zvelo.msg;
 
 option go_package = "zvelo.io/msg";
 import "zvelo/msg/dataset.proto";
