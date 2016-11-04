@@ -172,7 +172,7 @@ var Status_Code_value = map[string]int32{
 func (x Status_Code) String() string {
 	return proto.EnumName(Status_Code_name, int32(x))
 }
-func (Status_Code) EnumDescriptor() ([]byte, []int) { return fileDescriptor4, []int{0, 0} }
+func (Status_Code) EnumDescriptor() ([]byte, []int) { return fileDescriptor6, []int{0, 0} }
 
 type Status struct {
 	Code        Status_Code `protobuf:"varint,1,opt,name=code,enum=zvelo.msg.Status_Code" json:"code,omitempty"`
@@ -184,7 +184,7 @@ type Status struct {
 func (m *Status) Reset()                    { *m = Status{} }
 func (m *Status) String() string            { return proto.CompactTextString(m) }
 func (*Status) ProtoMessage()               {}
-func (*Status) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
+func (*Status) Descriptor() ([]byte, []int) { return fileDescriptor6, []int{0} }
 
 func (m *Status) GetFetchStatus() *Status {
 	if m != nil {
@@ -198,9 +198,9 @@ func init() {
 	proto.RegisterEnum("zvelo.msg.Status_Code", Status_Code_name, Status_Code_value)
 }
 
-func init() { proto.RegisterFile("zvelo/msg/status.proto", fileDescriptor4) }
+func init() { proto.RegisterFile("zvelo/msg/status.proto", fileDescriptor6) }
 
-var fileDescriptor4 = []byte{
+var fileDescriptor6 = []byte{
 	// 840 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0x64, 0x54, 0x4b, 0x73, 0x5b, 0x35,
 	0x14, 0xe6, 0x5a, 0x21, 0x89, 0x65, 0x37, 0x3d, 0x51, 0xda, 0xd4, 0x84, 0xe9, 0x34, 0x93, 0x61,
