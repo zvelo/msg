@@ -1,7 +1,6 @@
 PROTO_FILES  := $(wildcard *.proto)
 GO_PB_FILES  := $(patsubst %.proto,%.pb.go,$(PROTO_FILES))
 PY_PB_FILES  := $(patsubst %.proto,%_pb2.py,$(PROTO_FILES))
-FIRST_GOPATH := $(firstword $(subst :, ,$(GOPATH)))
 
 default: go
 go: $(GO_PB_FILES)
@@ -17,12 +16,11 @@ endef
 define wrap-protoc
 protoc \
 	-I. \
-	-I$(FIRST_GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 	$(1)
 endef
 
 define protoc-go
---go_out=Mgoogle/api/annotations.proto=github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/api,plugins=grpc:. \
+--go_out=. \
 $(patsubst %,zvelo/msg/%,$(PROTO_FILES))
 endef
 
@@ -32,7 +30,6 @@ python \
 	--python_out=. \
 	--grpc_python_out=. \
 	-I. \
-	-I$(FIRST_GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 	$(patsubst %,zvelo/msg/%,$(PROTO_FILES))
 endef
 
