@@ -8,6 +8,11 @@ import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 
+import (
+	context "golang.org/x/net/context"
+	grpc "google.golang.org/grpc"
+)
+
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
@@ -21,7 +26,7 @@ type StreamResult struct {
 func (m *StreamResult) Reset()                    { *m = StreamResult{} }
 func (m *StreamResult) String() string            { return proto.CompactTextString(m) }
 func (*StreamResult) ProtoMessage()               {}
-func (*StreamResult) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
+func (*StreamResult) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
 
 func (m *StreamResult) GetDataset() *DataSet {
 	if m != nil {
@@ -36,16 +41,115 @@ type StreamParams struct {
 func (m *StreamParams) Reset()                    { *m = StreamParams{} }
 func (m *StreamParams) String() string            { return proto.CompactTextString(m) }
 func (*StreamParams) ProtoMessage()               {}
-func (*StreamParams) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{1} }
+func (*StreamParams) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1} }
 
 func init() {
 	proto.RegisterType((*StreamResult)(nil), "zvelo.msg.StreamResult")
 	proto.RegisterType((*StreamParams)(nil), "zvelo.msg.StreamParams")
 }
 
-func init() { proto.RegisterFile("zvelo/msg/stream.proto", fileDescriptor5) }
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
 
-var fileDescriptor5 = []byte{
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// Client API for Stream service
+
+type StreamClient interface {
+	Events(ctx context.Context, in *StreamParams, opts ...grpc.CallOption) (Stream_EventsClient, error)
+}
+
+type streamClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewStreamClient(cc *grpc.ClientConn) StreamClient {
+	return &streamClient{cc}
+}
+
+func (c *streamClient) Events(ctx context.Context, in *StreamParams, opts ...grpc.CallOption) (Stream_EventsClient, error) {
+	stream, err := grpc.NewClientStream(ctx, &_Stream_serviceDesc.Streams[0], c.cc, "/zvelo.msg.Stream/Events", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &streamEventsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Stream_EventsClient interface {
+	Recv() (*StreamResult, error)
+	grpc.ClientStream
+}
+
+type streamEventsClient struct {
+	grpc.ClientStream
+}
+
+func (x *streamEventsClient) Recv() (*StreamResult, error) {
+	m := new(StreamResult)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+// Server API for Stream service
+
+type StreamServer interface {
+	Events(*StreamParams, Stream_EventsServer) error
+}
+
+func RegisterStreamServer(s *grpc.Server, srv StreamServer) {
+	s.RegisterService(&_Stream_serviceDesc, srv)
+}
+
+func _Stream_Events_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(StreamParams)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(StreamServer).Events(m, &streamEventsServer{stream})
+}
+
+type Stream_EventsServer interface {
+	Send(*StreamResult) error
+	grpc.ServerStream
+}
+
+type streamEventsServer struct {
+	grpc.ServerStream
+}
+
+func (x *streamEventsServer) Send(m *StreamResult) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+var _Stream_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "zvelo.msg.Stream",
+	HandlerType: (*StreamServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Events",
+			Handler:       _Stream_Events_Handler,
+			ServerStreams: true,
+		},
+	},
+	Metadata: "zvelo/msg/stream.proto",
+}
+
+func init() { proto.RegisterFile("zvelo/msg/stream.proto", fileDescriptor1) }
+
+var fileDescriptor1 = []byte{
 	// 182 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0x12, 0xab, 0x2a, 0x4b, 0xcd,
 	0xc9, 0xd7, 0xcf, 0x2d, 0x4e, 0xd7, 0x2f, 0x2e, 0x29, 0x4a, 0x4d, 0xcc, 0xd5, 0x2b, 0x28, 0xca,
