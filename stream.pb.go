@@ -26,7 +26,7 @@ type StreamResult struct {
 func (m *StreamResult) Reset()                    { *m = StreamResult{} }
 func (m *StreamResult) String() string            { return proto.CompactTextString(m) }
 func (*StreamResult) ProtoMessage()               {}
-func (*StreamResult) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0} }
+func (*StreamResult) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
 
 func (m *StreamResult) GetDataset() *DataSet {
 	if m != nil {
@@ -41,7 +41,7 @@ type StreamParams struct {
 func (m *StreamParams) Reset()                    { *m = StreamParams{} }
 func (m *StreamParams) String() string            { return proto.CompactTextString(m) }
 func (*StreamParams) ProtoMessage()               {}
-func (*StreamParams) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{1} }
+func (*StreamParams) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{1} }
 
 func init() {
 	proto.RegisterType((*StreamResult)(nil), "zvelo.msg.StreamResult")
@@ -147,9 +147,9 @@ var _Stream_serviceDesc = grpc.ServiceDesc{
 	Metadata: "zvelo/msg/stream.proto",
 }
 
-func init() { proto.RegisterFile("zvelo/msg/stream.proto", fileDescriptor1) }
+func init() { proto.RegisterFile("zvelo/msg/stream.proto", fileDescriptor5) }
 
-var fileDescriptor1 = []byte{
+var fileDescriptor5 = []byte{
 	// 182 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0x12, 0xab, 0x2a, 0x4b, 0xcd,
 	0xc9, 0xd7, 0xcf, 0x2d, 0x4e, 0xd7, 0x2f, 0x2e, 0x29, 0x4a, 0x4d, 0xcc, 0xd5, 0x2b, 0x28, 0xca,
