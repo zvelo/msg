@@ -37,16 +37,19 @@ message QueryReply {
   Status status              = 1; // The zvelo internal status.
   string request_id          = 2; // The request_ids will identify the request after submission
   string url                 = 3; // If the original request was a URL request, this will be populated
-  string tracking_id         = 4; // If the original request was a URL request, this will be populated
+  string tracking_id         = 4; // If the original request was a Content request, this will be populated
   // the target of QueryStatus, to ensure that the QueryStatus call
   // goes to the same cluster as the original call.
   // Will only be set if user set p=true in request.
   string status_url          = 5;
 }
 
+// If a request contained more then one URL, or piece of content, we will reply
+// with this reply. Each sub-query should be reflected in the replies field,
+// and with their own status.
 message QueryReplies {
-    repeated QueryReply replies = 1;
-    Status status = 2;
+    repeated QueryReply replies = 1;  // this contains a reply for each sub query
+    Status status = 2; // this reflects the overall status of the sub-queries
 }
 
 // Callback Rules:

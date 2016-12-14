@@ -219,6 +219,9 @@ func (m *QueryReply) GetStatusUrl() string {
 	return ""
 }
 
+// If a request contained more then one URL, or piece of content, we will reply
+// with this reply. Each sub-query should be reflected in the replies field,
+// and with their own status.
 type QueryReplies struct {
 	Replies []*QueryReply `protobuf:"bytes,1,rep,name=replies" json:"replies,omitempty"`
 	Status  *Status       `protobuf:"bytes,2,opt,name=status" json:"status,omitempty"`
