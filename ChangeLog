@@ -1,3 +1,9 @@
+2016-12-14  Steven Bogacz <sbogacz@zvelo.com>
+
+  * Start feature "Update external messaging to allow fine grained multi query responses"
+  https://www.pivotaltracker.com/story/show/136153393
+  https://github.com/zvelo/msg/pull/19
+
 2016-10-26  Bob Uhl <buhl@zvelo.com>
 
   * Start feature "Add stream service &amp; calls to msg"

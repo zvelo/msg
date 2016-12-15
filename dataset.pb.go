@@ -118,6 +118,13 @@ func (m *DataSet_Categorization) String() string            { return proto.Compa
 func (*DataSet_Categorization) ProtoMessage()               {}
 func (*DataSet_Categorization) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 0} }
 
+func (m *DataSet_Categorization) GetValues() []Category {
+	if m != nil {
+		return m.Values
+	}
+	return nil
+}
+
 type DataSet_AdFraud struct {
 	Verdict   bool   `protobuf:"varint,1,opt,name=verdict" json:"verdict,omitempty"`
 	Signature string `protobuf:"bytes,2,opt,name=signature" json:"signature,omitempty"`
@@ -127,6 +134,20 @@ func (m *DataSet_AdFraud) Reset()                    { *m = DataSet_AdFraud{} }
 func (m *DataSet_AdFraud) String() string            { return proto.CompactTextString(m) }
 func (*DataSet_AdFraud) ProtoMessage()               {}
 func (*DataSet_AdFraud) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 1} }
+
+func (m *DataSet_AdFraud) GetVerdict() bool {
+	if m != nil {
+		return m.Verdict
+	}
+	return false
+}
+
+func (m *DataSet_AdFraud) GetSignature() string {
+	if m != nil {
+		return m.Signature
+	}
+	return ""
+}
 
 type DataSet_Sentiment struct {
 	Values map[string]float32 `protobuf:"bytes,1,rep,name=values" json:"values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"fixed32,2,opt,name=value"`
@@ -153,6 +174,13 @@ func (m *DataSet_Keyword) String() string            { return proto.CompactTextS
 func (*DataSet_Keyword) ProtoMessage()               {}
 func (*DataSet_Keyword) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 3} }
 
+func (m *DataSet_Keyword) GetValues() []string {
+	if m != nil {
+		return m.Values
+	}
+	return nil
+}
+
 type DataSet_Malicious struct {
 	Category Category `protobuf:"varint,1,opt,name=category,enum=zvelo.msg.Category" json:"category,omitempty"`
 	// 2 reserved for signature
@@ -164,6 +192,20 @@ func (m *DataSet_Malicious) String() string            { return proto.CompactTex
 func (*DataSet_Malicious) ProtoMessage()               {}
 func (*DataSet_Malicious) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 4} }
 
+func (m *DataSet_Malicious) GetCategory() Category {
+	if m != nil {
+		return m.Category
+	}
+	return Category_UNKNOWN
+}
+
+func (m *DataSet_Malicious) GetVerdict() bool {
+	if m != nil {
+		return m.Verdict
+	}
+	return false
+}
+
 type DataSet_Echo struct {
 	Url string `protobuf:"bytes,1,opt,name=url" json:"url,omitempty"`
 }
@@ -172,6 +214,13 @@ func (m *DataSet_Echo) Reset()                    { *m = DataSet_Echo{} }
 func (m *DataSet_Echo) String() string            { return proto.CompactTextString(m) }
 func (*DataSet_Echo) ProtoMessage()               {}
 func (*DataSet_Echo) Descriptor() ([]byte, []int) { return fileDescriptor1, []int{0, 5} }
+
+func (m *DataSet_Echo) GetUrl() string {
+	if m != nil {
+		return m.Url
+	}
+	return ""
+}
 
 func init() {
 	proto.RegisterType((*DataSet)(nil), "zvelo.msg.DataSet")

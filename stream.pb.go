@@ -28,6 +28,13 @@ func (m *StreamResult) String() string            { return proto.CompactTextStri
 func (*StreamResult) ProtoMessage()               {}
 func (*StreamResult) Descriptor() ([]byte, []int) { return fileDescriptor5, []int{0} }
 
+func (m *StreamResult) GetUrl() string {
+	if m != nil {
+		return m.Url
+	}
+	return ""
+}
+
 func (m *StreamResult) GetDataset() *DataSet {
 	if m != nil {
 		return m.Dataset

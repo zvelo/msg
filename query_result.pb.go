@@ -27,9 +27,30 @@ func (m *QueryResult) String() string            { return proto.CompactTextStrin
 func (*QueryResult) ProtoMessage()               {}
 func (*QueryResult) Descriptor() ([]byte, []int) { return fileDescriptor2, []int{0} }
 
+func (m *QueryResult) GetRequestId() string {
+	if m != nil {
+		return m.RequestId
+	}
+	return ""
+}
+
+func (m *QueryResult) GetTrackingId() string {
+	if m != nil {
+		return m.TrackingId
+	}
+	return ""
+}
+
 func (m *QueryResult) GetStatus() *Status {
 	if m != nil {
 		return m.Status
+	}
+	return nil
+}
+
+func (m *QueryResult) GetRequestDataset() []DataSetType {
+	if m != nil {
+		return m.RequestDataset
 	}
 	return nil
 }
@@ -39,6 +60,13 @@ func (m *QueryResult) GetResponseDataset() *DataSet {
 		return m.ResponseDataset
 	}
 	return nil
+}
+
+func (m *QueryResult) GetUrl() string {
+	if m != nil {
+		return m.Url
+	}
+	return ""
 }
 
 func init() {

@@ -186,11 +186,32 @@ func (m *Status) String() string            { return proto.CompactTextString(m) 
 func (*Status) ProtoMessage()               {}
 func (*Status) Descriptor() ([]byte, []int) { return fileDescriptor4, []int{0} }
 
+func (m *Status) GetCode() Status_Code {
+	if m != nil {
+		return m.Code
+	}
+	return Status_UNKNOWN
+}
+
+func (m *Status) GetMessage() string {
+	if m != nil {
+		return m.Message
+	}
+	return ""
+}
+
 func (m *Status) GetFetchStatus() *Status {
 	if m != nil {
 		return m.FetchStatus
 	}
 	return nil
+}
+
+func (m *Status) GetLocation() string {
+	if m != nil {
+		return m.Location
+	}
+	return ""
 }
 
 func init() {
