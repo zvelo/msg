@@ -23,6 +23,13 @@ func (m *SeedResult) String() string            { return proto.CompactTextString
 func (*SeedResult) ProtoMessage()               {}
 func (*SeedResult) Descriptor() ([]byte, []int) { return fileDescriptor3, []int{0} }
 
+func (m *SeedResult) GetUrl() string {
+	if m != nil {
+		return m.Url
+	}
+	return ""
+}
+
 func (m *SeedResult) GetDataset() *DataSet {
 	if m != nil {
 		return m.Dataset

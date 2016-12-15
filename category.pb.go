@@ -25,6 +25,7 @@ It has these top-level messages:
 	QueryURLRequests
 	QueryContentRequests
 	QueryReply
+	QueryReplies
 */
 package msg
 
