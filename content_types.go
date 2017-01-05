@@ -2,6 +2,8 @@ package msg
 
 /* Constants indicating the HTTP Content-type for each proto/json type in this package */
 const (
+	StatusContentType           string = "application/vnd.zvelo.status"
+	StatusContentTypeJSON       string = "application/vnd.zvelo.status+json"
 	QueryContentType            string = "application/vnd.zvelo.query"
 	QueryContentTypeJSON        string = "application/vnd.zvelo.query+json"
 	ContentQueryContentType     string = "application/vnd.zvelo.content-query"
