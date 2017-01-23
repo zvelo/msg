@@ -5,7 +5,7 @@ package zvelo.msg;
 option go_package = "zvelo.io/msg";
 
 enum Category {
-  UNKNOWN      = 0;
+  UNKNOWN_CATEGORY = 0;
   ABORTION_4   = 10001;
   PROCHOICE_4  = 10002;
   PROLIFE_4    = 10003;
