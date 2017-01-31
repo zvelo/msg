@@ -27,7 +27,6 @@ func main() {
 	vanity.ForEachFile(files, vanity.TurnOnStringerAll)    // gogoslick
 
 	vanity.ForEachFile(files, vanity.TurnOnVerboseEqualAll) // zvelo
-	vanity.ForEachFile(files, vanity.TurnOnCompareAll)      // zvelo
 
 	resp := command.Generate(req)
 	command.Write(resp)
