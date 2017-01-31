@@ -60,6 +60,113 @@ func init() {
 	proto.RegisterType((*SeedResult)(nil), "zvelo.msg.SeedResult")
 	proto.RegisterType((*SeedResults)(nil), "zvelo.msg.SeedResults")
 }
+func (this *SeedResult) Compare(that interface{}) int {
+	if that == nil {
+		if this == nil {
+			return 0
+		}
+		return 1
+	}
+
+	that1, ok := that.(*SeedResult)
+	if !ok {
+		that2, ok := that.(SeedResult)
+		if ok {
+			that1 = &that2
+		} else {
+			return 1
+		}
+	}
+	if that1 == nil {
+		if this == nil {
+			return 0
+		}
+		return 1
+	} else if this == nil {
+		return -1
+	}
+	if this.Url != that1.Url {
+		if this.Url < that1.Url {
+			return -1
+		}
+		return 1
+	}
+	if c := this.Dataset.Compare(that1.Dataset); c != 0 {
+		return c
+	}
+	return 0
+}
+func (this *SeedResults) Compare(that interface{}) int {
+	if that == nil {
+		if this == nil {
+			return 0
+		}
+		return 1
+	}
+
+	that1, ok := that.(*SeedResults)
+	if !ok {
+		that2, ok := that.(SeedResults)
+		if ok {
+			that1 = &that2
+		} else {
+			return 1
+		}
+	}
+	if that1 == nil {
+		if this == nil {
+			return 0
+		}
+		return 1
+	} else if this == nil {
+		return -1
+	}
+	if len(this.Values) != len(that1.Values) {
+		if len(this.Values) < len(that1.Values) {
+			return -1
+		}
+		return 1
+	}
+	for i := range this.Values {
+		if c := this.Values[i].Compare(that1.Values[i]); c != 0 {
+			return c
+		}
+	}
+	return 0
+}
+func (this *SeedResult) VerboseEqual(that interface{}) error {
+	if that == nil {
+		if this == nil {
+			return nil
+		}
+		return fmt.Errorf("that == nil && this != nil")
+	}
+
+	that1, ok := that.(*SeedResult)
+	if !ok {
+		that2, ok := that.(SeedResult)
+		if ok {
+			that1 = &that2
+		} else {
+			return fmt.Errorf("that is not of type *SeedResult")
+		}
+	}
+	if that1 == nil {
+		if this == nil {
+			return nil
+		}
+		return fmt.Errorf("that is type *SeedResult but is nil && this != nil")
+	} else if this == nil {
+		return fmt.Errorf("that is type *SeedResult but is not nil && this == nil")
+	}
+	if this.Url != that1.Url {
+		return fmt.Errorf("Url this(%v) Not Equal that(%v)", this.Url, that1.Url)
+	}
+	if !this.Dataset.Equal(that1.Dataset) {
+		return fmt.Errorf("Dataset this(%v) Not Equal that(%v)", this.Dataset, that1.Dataset)
+	}
+	return nil
+}
 func (this *SeedResult) Equal(that interface{}) bool {
 	if that == nil {
 		if this == nil {
@@ -92,6 +199,41 @@ func (this *SeedResult) Equal(that interface{}) bool {
 		return false
 	}
 	return true
+}
+func (this *SeedResults) VerboseEqual(that interface{}) error {
+	if that == nil {
+		if this == nil {
+			return nil
+		}
+		return fmt.Errorf("that == nil && this != nil")
+	}
+
+	that1, ok := that.(*SeedResults)
+	if !ok {
+		that2, ok := that.(SeedResults)
+		if ok {
+			that1 = &that2
+		} else {
+			return fmt.Errorf("that is not of type *SeedResults")
+		}
+	}
+	if that1 == nil {
+		if this == nil {
+			return nil
+		}
+		return fmt.Errorf("that is type *SeedResults but is nil && this != nil")
+	} else if this == nil {
+		return fmt.Errorf("that is type *SeedResults but is not nil && this == nil")
+	}
+	if len(this.Values) != len(that1.Values) {
+		return fmt.Errorf("Values this(%v) Not Equal that(%v)", len(this.Values), len(that1.Values))
+	}
+	for i := range this.Values {
+		if !this.Values[i].Equal(that1.Values[i]) {
+			return fmt.Errorf("Values this[%v](%v) Not Equal that[%v](%v)", i, this.Values[i], i, that1.Values[i])
+		}
+	}
+	return nil
 }
 func (this *SeedResults) Equal(that interface{}) bool {
 	if that == nil {
@@ -621,7 +763,7 @@ var (
 func init() { proto.RegisterFile("zvelo/msg/seed_result.proto", fileDescriptorSeedResult) }
 
 var fileDescriptorSeedResult = []byte{
-	// 221 bytes of a gzipped FileDescriptorProto
+	// 230 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0x92, 0xae, 0x2a, 0x4b, 0xcd,
 	0xc9, 0xd7, 0xcf, 0x2d, 0x4e, 0xd7, 0x2f, 0x4e, 0x4d, 0x4d, 0x89, 0x2f, 0x4a, 0x2d, 0x2e, 0xcd,
 	0x29, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x04, 0x4b, 0xea, 0xe5, 0x16, 0xa7, 0x4b,
@@ -631,9 +773,10 @@ var fileDescriptorSeedResult = []byte{
 	0x1a, 0xdc, 0x46, 0x42, 0x7a, 0x70, 0x53, 0xf5, 0x5c, 0x12, 0x4b, 0x12, 0x83, 0x53, 0x4b, 0x82,
 	0x60, 0x4a, 0x94, 0x6c, 0xb8, 0xb8, 0x11, 0xa6, 0x15, 0x0b, 0xe9, 0x72, 0xb1, 0x95, 0x25, 0xe6,
 	0x94, 0xa6, 0x16, 0x4b, 0x30, 0x2a, 0x30, 0x6b, 0x70, 0x1b, 0x89, 0x22, 0xe9, 0x45, 0xa8, 0x0b,
-	0x82, 0x2a, 0x72, 0xb2, 0xba, 0xf0, 0x50, 0x8e, 0xe1, 0xc6, 0x43, 0x39, 0x86, 0x0f, 0x0f, 0xe5,
-	0x18, 0x1b, 0x1e, 0xc9, 0x31, 0xae, 0x78, 0x24, 0xc7, 0x78, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47,
-	0x72, 0x8c, 0x0f, 0x1e, 0xc9, 0x31, 0xbe, 0x78, 0x24, 0xc7, 0xf0, 0xe1, 0x91, 0x1c, 0xe3, 0x84,
-	0xc7, 0x72, 0x0c, 0x51, 0x3c, 0x10, 0xb3, 0x32, 0xc1, 0xbe, 0x4a, 0x62, 0x03, 0x7b, 0xc7, 0x18,
-	0x10, 0x00, 0x00, 0xff, 0xff, 0x53, 0x65, 0x06, 0x25, 0x11, 0x01, 0x00, 0x00,
+	0x82, 0x2a, 0x72, 0x72, 0xba, 0xf0, 0x50, 0x8e, 0xe1, 0xc6, 0x43, 0x39, 0x86, 0x07, 0x0f, 0xe5,
+	0x18, 0x3f, 0x3c, 0x94, 0x63, 0x6c, 0x78, 0x24, 0xc7, 0xb8, 0xe2, 0x91, 0x1c, 0xe3, 0x89, 0x47,
+	0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0xf8, 0xe2, 0x91, 0x1c, 0xc3, 0x87,
+	0x47, 0x72, 0x8c, 0x13, 0x1e, 0xcb, 0x31, 0xac, 0x78, 0x2c, 0xc7, 0x18, 0xc5, 0x03, 0x31, 0x33,
+	0x13, 0xec, 0xbb, 0x24, 0x36, 0xb0, 0xb7, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0x9f, 0xb6,
+	0xa1, 0x86, 0x19, 0x01, 0x00, 0x00,
 }

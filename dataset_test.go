@@ -209,7 +209,10 @@ func TestMergeDatasets(t *testing.T) {
 		t.Error("d1.Adfraud should be nil")
 	}
 
-	d3 := MergeDatasets(d1, d2)
+	d3, err := MergeDatasets(d1, d2)
+	if err != nil {
+		t.Errorf("MergeDatasets returned an error: %s", err)
+	}
 
 	if d3.Categorization == nil {
 		t.Error("d3.Categorization should not be nil")
@@ -252,7 +255,10 @@ func TestMergeDatasetsOneEmpty(t *testing.T) {
 		t.Error("d1.Adfraud should be nil")
 	}
 
-	d3 := MergeDatasets(d1, d2)
+	d3, err := MergeDatasets(d1, d2)
+	if err != nil {
+		t.Errorf("MergeDatasets returned an error: %s", err)
+	}
 
 	if d3.Categorization != nil {
 		t.Error("d3.Categorization should be nil")
@@ -287,7 +293,10 @@ func TestMergeDatasetsBothEmpty(t *testing.T) {
 		t.Error("d2.Adfraud should be nil")
 	}
 
-	d3 := MergeDatasets(d1, d2)
+	d3, err := MergeDatasets(d1, d2)
+	if err != nil {
+		t.Errorf("MergeDatasets returned an error: %s", err)
+	}
 
 	if d3.Categorization != nil {
 		t.Error("d3.Categorization should be nil")
@@ -314,7 +323,10 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 		t.Error("d2.Categorization should be nil")
 	}
 
-	d3 := MergeDatasets(d1, d2)
+	d3, err := MergeDatasets(d1, d2)
+	if err != nil {
+		t.Errorf("MergeDatasets returned an error: %s", err)
+	}
 
 	if d3.Categorization != nil {
 		t.Error("d3.Categorization should be nil")
@@ -332,7 +344,10 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 func TestMergeDatasetsBothNil(t *testing.T) {
 	var d1 *DataSet
 	var d2 *DataSet
-	d3 := MergeDatasets(d1, d2)
+	d3, err := MergeDatasets(d1, d2)
+	if err != nil {
+		t.Errorf("MergeDatasets returned an error: %s", err)
+	}
 
 	if d3.Categorization != nil {
 		t.Error("d3.Categorization should be nil")

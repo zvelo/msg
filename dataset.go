@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-
-	"github.com/golang/protobuf/proto"
 )
 
 // errInvalidDataSetType indicates an invalid int was used as a DataSetType enum
@@ -71,8 +69,22 @@ func NewDataSetType(name string) (DataSetType, error) {
 	return DataSetType(-1), ErrInvalidDataSetType
 }
 
+func (m *DataSet) Clone() (*DataSet, error) {
+	data, err := m.Marshal()
+	if err != nil {
+		return nil, err
+	}
+
+	var ret DataSet
+	if err = ret.Unmarshal(data); err != nil {
+		return nil, err
+	}
+
+	return &ret, nil
+}
+
 // MergeDatasets returns the DataSet resulting from merging `ds1` and `ds2`
-func MergeDatasets(d1, d2 *DataSet) *DataSet {
+func MergeDatasets(d1, d2 *DataSet) (*DataSet, error) {
 	if d1 == nil {
 		d1 = &DataSet{}
 	}
@@ -82,7 +94,10 @@ func MergeDatasets(d1, d2 *DataSet) *DataSet {
 	}
 
 	// Start with a clone
-	ret := proto.Clone(d1).(*DataSet)
+	ret, err := d1.Clone()
+	if err != nil {
+		return nil, err
+	}
 
 	// overwrite old values with non-nil new values
 	val1 := reflect.ValueOf(ret)
@@ -95,5 +110,5 @@ func MergeDatasets(d1, d2 *DataSet) *DataSet {
 		}
 	}
 
-	return ret
+	return ret, nil
 }
