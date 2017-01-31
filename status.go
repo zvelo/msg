@@ -76,7 +76,7 @@ func ErrorDesc(in error) string {
 // NewStatus creates a new Status object
 func NewStatus(err error) *Status {
 	if err == nil {
-		return &Status{Code: Status_OK}
+		return &Status{Code: STATUS_OK}
 	}
 
 	rpcCode := grpc.Code(err)

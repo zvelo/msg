@@ -20,7 +20,7 @@ protoc \
 endef
 
 define protoc-go
---go_out=plugins=grpc:. \
+--gozvelo_out=plugins=grpc:. \
 $(patsubst %,zvelo/msg/%,$(PROTO_FILES))
 endef
 

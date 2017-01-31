@@ -29,7 +29,7 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 		}
 
 		switch dst {
-		case DataSetType_CATEGORIZATION:
+		case CATEGORIZATION:
 			r, ok := i.(*DataSet_Categorization)
 			if !ok {
 				t.Error("type of i not *DataSet_Categorization")
@@ -38,7 +38,7 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 			if r != ds.Categorization {
 				t.Error("t != ds.Categorization")
 			}
-		case DataSetType_ADFRAUD:
+		case ADFRAUD:
 			r, ok := i.(*DataSet_AdFraud)
 			if !ok {
 				t.Error("type of i not *DataSet_AdFraud")
@@ -47,7 +47,7 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 			if r != ds.Adfraud {
 				t.Error("t != ds.Adfraud")
 			}
-		case DataSetType_MALICIOUS:
+		case MALICIOUS:
 			r, ok := i.(*DataSet_Malicious)
 			if !ok {
 				t.Error("type of i not *DataSet_Malicious")
@@ -56,7 +56,7 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 			if r != ds.Malicious {
 				t.Error("t != ds.Malicious")
 			}
-		case DataSetType_ECHO:
+		case ECHO:
 			r, ok := i.(*DataSet_Echo)
 			if !ok {
 				t.Error("type of i not *DataSet_Echo")
@@ -66,13 +66,13 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 				t.Error("t != ds.Echo")
 
 			}
-		case DataSetType_KEYWORD:
+		case KEYWORD:
 			_, ok := i.(*DataSet_Keyword)
 			if !ok {
 				t.Errorf("type of i not *DataSet_Keyword")
 			}
 
-		case DataSetType_SENTIMENT:
+		case SENTIMENT:
 			_, ok := i.(*DataSet_Sentiment)
 			if !ok {
 				t.Errorf("type of i not *DataSet_Sentiment")
@@ -121,7 +121,7 @@ func TestDataSetByTypeErr(t *testing.T) {
 	}
 
 	ds = nil
-	i, err = ds.FieldByType(DataSetType_CATEGORIZATION)
+	i, err = ds.FieldByType(CATEGORIZATION)
 
 	if err == nil {
 		t.Error("DataSetByType didn't return error for nil dataset")
@@ -141,7 +141,7 @@ func ExampleDataSet_FieldByType() {
 		Categorization: &DataSet_Categorization{},
 	}
 
-	i, _ := ds.FieldByType(DataSetType_CATEGORIZATION)
+	i, _ := ds.FieldByType(CATEGORIZATION)
 
 	c := i.(*DataSet_Categorization)
 
@@ -209,7 +209,10 @@ func TestMergeDatasets(t *testing.T) {
 		t.Error("d1.Adfraud should be nil")
 	}
 
-	d3 := MergeDatasets(d1, d2)
+	d3, err := MergeDatasets(d1, d2)
+	if err != nil {
+		t.Errorf("MergeDatasets returned an error: %s", err)
+	}
 
 	if d3.Categorization == nil {
 		t.Error("d3.Categorization should not be nil")
@@ -252,7 +255,10 @@ func TestMergeDatasetsOneEmpty(t *testing.T) {
 		t.Error("d1.Adfraud should be nil")
 	}
 
-	d3 := MergeDatasets(d1, d2)
+	d3, err := MergeDatasets(d1, d2)
+	if err != nil {
+		t.Errorf("MergeDatasets returned an error: %s", err)
+	}
 
 	if d3.Categorization != nil {
 		t.Error("d3.Categorization should be nil")
@@ -287,7 +293,10 @@ func TestMergeDatasetsBothEmpty(t *testing.T) {
 		t.Error("d2.Adfraud should be nil")
 	}
 
-	d3 := MergeDatasets(d1, d2)
+	d3, err := MergeDatasets(d1, d2)
+	if err != nil {
+		t.Errorf("MergeDatasets returned an error: %s", err)
+	}
 
 	if d3.Categorization != nil {
 		t.Error("d3.Categorization should be nil")
@@ -314,7 +323,10 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 		t.Error("d2.Categorization should be nil")
 	}
 
-	d3 := MergeDatasets(d1, d2)
+	d3, err := MergeDatasets(d1, d2)
+	if err != nil {
+		t.Errorf("MergeDatasets returned an error: %s", err)
+	}
 
 	if d3.Categorization != nil {
 		t.Error("d3.Categorization should be nil")
@@ -332,7 +344,10 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 func TestMergeDatasetsBothNil(t *testing.T) {
 	var d1 *DataSet
 	var d2 *DataSet
-	d3 := MergeDatasets(d1, d2)
+	d3, err := MergeDatasets(d1, d2)
+	if err != nil {
+		t.Errorf("MergeDatasets returned an error: %s", err)
+	}
 
 	if d3.Categorization != nil {
 		t.Error("d3.Categorization should be nil")
