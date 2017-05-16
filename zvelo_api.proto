@@ -45,7 +45,6 @@ message QueryReply {
 // or QueryContentRequests message
 message QueryReplies {
     repeated QueryReply replies = 1;  // this contains a reply for each sub query
-    Status status = 2; // this reflects the overall status of the sub-queries
 }
 
 // Callback Rules:
