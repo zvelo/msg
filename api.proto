@@ -4,15 +4,10 @@ package zvelo.msg;
 
 option go_package = "zvelo.io/msg";
 
-import "zvelo/msg/query_result.proto";
-import "zvelo/msg/zvelo_api.proto";
+import "zvelo/msg/query.proto";
 import "google/api/annotations.proto";
 
-message ResultRequest {
-  string request_id = 1;
-};
-
-service Query {
+service API {
   rpc QueryURLV1(QueryURLRequests) returns (QueryReplies) {
     option (google.api.http) = {
       post: "/v1/queries/url"
@@ -20,7 +15,7 @@ service Query {
     };
   }
 
-  rpc QueryURLResultV1(ResultRequest) returns (QueryResult) {
+  rpc QueryURLResultV1(QueryResultRequest) returns (QueryResult) {
     option (google.api.http) = {
       get: "/v1/queries/url/{request_id}"
     };
@@ -33,7 +28,7 @@ service Query {
     };
   }
 
-  rpc QueryContentResultV1(ResultRequest) returns (QueryResult) {
+  rpc QueryContentResultV1(QueryResultRequest) returns (QueryResult) {
     option (google.api.http) = {
       get: "/v1/queries/content/{request_id}"
     };

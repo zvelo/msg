@@ -2,33 +2,6 @@
 // source: zvelo/msg/category.proto
 // DO NOT EDIT!
 
-/*
-Package msg is a generated protocol buffer package.
-
-It is generated from these files:
-	zvelo/msg/category.proto
-	zvelo/msg/dataset.proto
-	zvelo/msg/query_api.proto
-	zvelo/msg/query_result.proto
-	zvelo/msg/seed_result.proto
-	zvelo/msg/status.proto
-	zvelo/msg/stream.proto
-	zvelo/msg/zvelo_api.proto
-
-It has these top-level messages:
-	DataSet
-	ResultRequest
-	QueryResult
-	SeedResult
-	SeedResults
-	Status
-	StreamResult
-	StreamParams
-	QueryURLRequests
-	QueryContentRequests
-	QueryReply
-	QueryReplies
-*/
 package msg
 
 import proto "github.com/gogo/protobuf/proto"
@@ -41,12 +14,6 @@ import strconv "strconv"
 var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the proto package it is being compiled against.
-// A compilation error at this line likely means your copy of the
-// proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 
 type Category int32
 

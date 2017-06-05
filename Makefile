@@ -1,12 +1,11 @@
-SWAGGER_UI_VERSION := 3.0.9
-FIRST_GOPATH       := $(firstword $(subst :, ,$(GOPATH)))
-PROTO_FILES        := $(wildcard *.proto)
-GO_PB_FILES        := $(patsubst %.proto,%.pb.go,$(PROTO_FILES))
-PY_PB_FILES        := $(patsubst %.proto,%_pb2.py,$(PROTO_FILES))
-GRPC_GATEWAY_PROTO_FILES := query_api.proto
-GRPC_GATEWAY_FILES := $(patsubst %.proto,%.pb.gw.go,$(GRPC_GATEWAY_PROTO_FILES))
+FIRST_GOPATH             := $(firstword $(subst :, ,$(GOPATH)))
+PROTO_FILES              := $(wildcard *.proto)
+GO_PB_FILES              := $(patsubst %.proto,%.pb.go,$(PROTO_FILES))
+PY_PB_FILES              := $(patsubst %.proto,%_pb2.py,$(PROTO_FILES))
+GRPC_GATEWAY_PROTO_FILES := api.proto
+GRPC_GATEWAY_FILES       := $(patsubst %.proto,%.pb.gw.go,$(GRPC_GATEWAY_PROTO_FILES))
 
-default: go grpc-gateway swagger.json static.go
+default: go grpc-gateway swagger.json
 go: $(GO_PB_FILES)
 python: $(PY_PB_FILES)
 grpc-gateway: $(GRPC_GATEWAY_FILES)
@@ -21,6 +20,7 @@ endef
 define wrap-protoc
 protoc \
 -I. \
+-Izvelo/msg/include \
 -I$(FIRST_GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 $(1)
 endef
@@ -59,28 +59,10 @@ swagger.json: $(GRPC_GATEWAY_PROTO_FILES)
 	$(call wrap-cmd,$(call wrap-protoc,$(protoc-swagger)))
 	@mv $(patsubst %.proto,%.swagger.json,$<) swagger.json
 
-.swagger-ui.tar.gz:
-	curl -sLo $@ https://github.com/swagger-api/swagger-ui/archive/v$(SWAGGER_UI_VERSION).tar.gz
-
-.swagger-ui: .swagger-ui.tar.gz
-	@rm -rf $@
-	tar -zxf $<
-	mv swagger-ui-$(SWAGGER_UI_VERSION) $@
-	sed -i 's|^url: ".*"$$|url: "/v1/swagger.json"|' $@/swagger-config.yaml
-	cd $@ && npm install && npm run build
-	@touch $@
-
-static.go: swagger.json .swagger-ui
-	mkdir -p static/v1
-	cp -a swagger.json static/v1
-	cp -a .swagger-ui/dist static/swagger-ui
-	esc -o static.go -pkg msg -prefix static static
-	rm -rf static
-
 $(PY_PB_FILES): %_pb2.py: %.proto
 	$(call wrap-cmd,$(protoc-python))
 
 clean:
-	rm -rf $(GO_PB_FILES) $(PY_PB_FILES) $(GRPC_GATEWAY_FILES) swagger.json .swagger-ui.tar.gz .swagger-ui static.go
+	rm -rf $(GO_PB_FILES) $(PY_PB_FILES) $(GRPC_GATEWAY_FILES) swagger.json
 
 .PHONY: default clean go python grpc-gateway

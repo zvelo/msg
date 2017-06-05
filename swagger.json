@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "zvelo/msg/query_api.proto",
+    "title": "zvelo/msg/api.proto",
     "version": "version not set"
   },
   "schemes": [
@@ -37,7 +37,7 @@
           }
         ],
         "tags": [
-          "Query"
+          "API"
         ]
       }
     },
@@ -61,7 +61,7 @@
           }
         ],
         "tags": [
-          "Query"
+          "API"
         ]
       }
     },
@@ -87,7 +87,7 @@
           }
         ],
         "tags": [
-          "Query"
+          "API"
         ]
       }
     },
@@ -111,7 +111,7 @@
           }
         ],
         "tags": [
-          "Query"
+          "API"
         ]
       }
     }
@@ -831,9 +831,6 @@
           "items": {
             "$ref": "#/definitions/msgQueryReply"
           }
-        },
-        "status": {
-          "$ref": "#/definitions/msgStatus"
         }
       },
       "title": "If a request contained more then one URL, or piece of content, we will reply\nwith this reply. Each sub-query should be reflected in the replies field,\nand with their own status. The position in the array will correspond to the\nindex in the original array of URL or Content provided in the QueryURLRequests\nor QueryContentRequests message"
@@ -875,6 +872,14 @@
         }
       }
     },
+    "msgQueryResultRequest": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string"
+        }
+      }
+    },
     "msgQueryURLRequests": {
       "type": "object",
       "properties": {
@@ -902,14 +907,6 @@
           "format": "boolean"
         },
         "accept": {
-          "type": "string"
-        }
-      }
-    },
-    "msgResultRequest": {
-      "type": "object",
-      "properties": {
-        "request_id": {
           "type": "string"
         }
       }

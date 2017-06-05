@@ -7,6 +7,21 @@ option go_package = "zvelo.io/msg";
 import "zvelo/msg/dataset.proto";
 import "zvelo/msg/status.proto";
 
+message QueryResultRequest {
+  string request_id = 1;
+};
+
+message QueryResult {
+  string request_id                    = 1; // Request ID for tracking requests
+  string tracking_id                   = 2; // Provided by user to link to responses
+  reserved 3;
+  Status status                        = 4; // This is the zvelo internal status
+  reserved 5;
+  repeated DataSetType request_dataset = 6;
+  DataSet response_dataset             = 7;
+  string url                           = 8;
+};
+
 message QueryURLRequests {
   repeated string url          = 1; // urls
   repeated DataSetType dataset = 2; // list of datasets to get for each URL
