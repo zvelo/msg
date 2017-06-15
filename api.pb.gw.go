@@ -20,10 +20,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
+	"google.golang.org/grpc/status"
 )
 
 var _ codes.Code
 var _ io.Reader
+var _ status.Status
 var _ = runtime.String
 var _ = utilities.NewDoubleArray
 
@@ -32,7 +34,7 @@ func request_API_QueryURLV1_0(ctx context.Context, marshaler runtime.Marshaler, 
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
-		return nil, metadata, grpc.Errorf(codes.InvalidArgument, "%v", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.QueryURLV1(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -53,13 +55,13 @@ func request_API_QueryURLResultV1_0(ctx context.Context, marshaler runtime.Marsh
 
 	val, ok = pathParams["request_id"]
 	if !ok {
-		return nil, metadata, grpc.Errorf(codes.InvalidArgument, "missing parameter %s", "request_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "request_id")
 	}
 
 	protoReq.RequestId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, err
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "request_id", err)
 	}
 
 	msg, err := client.QueryURLResultV1(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -72,7 +74,7 @@ func request_API_QueryContentV1_0(ctx context.Context, marshaler runtime.Marshal
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
-		return nil, metadata, grpc.Errorf(codes.InvalidArgument, "%v", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.QueryContentV1(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -93,13 +95,13 @@ func request_API_QueryContentResultV1_0(ctx context.Context, marshaler runtime.M
 
 	val, ok = pathParams["request_id"]
 	if !ok {
-		return nil, metadata, grpc.Errorf(codes.InvalidArgument, "missing parameter %s", "request_id")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "request_id")
 	}
 
 	protoReq.RequestId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, err
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "request_id", err)
 	}
 
 	msg, err := client.QueryContentResultV1(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -153,6 +155,7 @@ func RegisterAPIHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.C
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
 		}
 		resp, md, err := request_API_QueryURLV1_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
@@ -181,6 +184,7 @@ func RegisterAPIHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.C
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
 		}
 		resp, md, err := request_API_QueryURLResultV1_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
@@ -209,6 +213,7 @@ func RegisterAPIHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.C
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
 		}
 		resp, md, err := request_API_QueryContentV1_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
@@ -237,6 +242,7 @@ func RegisterAPIHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.C
 		rctx, err := runtime.AnnotateContext(ctx, mux, req)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
 		}
 		resp, md, err := request_API_QueryContentResultV1_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)

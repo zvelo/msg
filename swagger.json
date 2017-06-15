@@ -872,14 +872,6 @@
         }
       }
     },
-    "msgQueryResultRequest": {
-      "type": "object",
-      "properties": {
-        "request_id": {
-          "type": "string"
-        }
-      }
-    },
     "msgQueryURLRequests": {
       "type": "object",
       "properties": {
