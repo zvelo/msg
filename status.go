@@ -40,19 +40,40 @@ var gRPCtoHTTPmap = map[codes.Code]int{
 	codes.AlreadyExists:      http.StatusConflict,
 	codes.PermissionDenied:   http.StatusForbidden,
 	codes.Unauthenticated:    http.StatusUnauthorized,
+	codes.ResourceExhausted:  http.StatusForbidden,
 	codes.FailedPrecondition: http.StatusPreconditionFailed,
-	codes.OutOfRange:         http.StatusRequestedRangeNotSatisfiable,
+	codes.Aborted:            http.StatusConflict,
+	codes.OutOfRange:         http.StatusBadRequest,
 	codes.Unimplemented:      http.StatusNotImplemented,
 	codes.Unavailable:        http.StatusServiceUnavailable,
 }
 
+var httpToGRPCmap = map[int]codes.Code{
+	http.StatusOK:                 codes.OK,
+	http.StatusBadRequest:         codes.InvalidArgument,
+	http.StatusRequestTimeout:     codes.DeadlineExceeded,
+	http.StatusNotFound:           codes.NotFound,
+	http.StatusConflict:           codes.AlreadyExists,
+	http.StatusForbidden:          codes.PermissionDenied,
+	http.StatusUnauthorized:       codes.Unauthenticated,
+	http.StatusPreconditionFailed: codes.FailedPrecondition,
+	http.StatusNotImplemented:     codes.Unimplemented,
+	http.StatusServiceUnavailable: codes.Unavailable,
+}
+
 // MapGRPCToHTTPCode returns the best HTTP code for a given GRPC code.
 func MapGRPCToHTTPCode(c codes.Code) int {
-	result, ok := gRPCtoHTTPmap[c]
-	if ok {
+	if result, ok := gRPCtoHTTPmap[c]; ok {
 		return result
 	}
 	return http.StatusInternalServerError
+}
+
+func MapHTTPCodeToGRPC(code int) codes.Code {
+	if result, ok := httpToGRPCmap[code]; ok {
+		return result
+	}
+	return codes.Unknown
 }
 
 // ErrorDesc returns the simple error message of a gRPC error
