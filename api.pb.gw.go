@@ -43,7 +43,7 @@ func request_API_QueryURLV1_0(ctx context.Context, marshaler runtime.Marshaler, 
 }
 
 func request_API_QueryURLResultV1_0(ctx context.Context, marshaler runtime.Marshaler, client APIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryResultRequest
+	var protoReq QueryPollRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -83,7 +83,7 @@ func request_API_QueryContentV1_0(ctx context.Context, marshaler runtime.Marshal
 }
 
 func request_API_QueryContentResultV1_0(ctx context.Context, marshaler runtime.Marshaler, client APIClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq QueryResultRequest
+	var protoReq QueryPollRequest
 	var metadata runtime.ServerMetadata
 
 	var (

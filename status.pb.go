@@ -18,7 +18,7 @@
 		StreamResult
 		StreamParams
 		DataSet
-		QueryResultRequest
+		QueryPollRequest
 		QueryResult
 		QueryURLRequests
 		QueryContentRequests

@@ -15,7 +15,7 @@ service API {
     };
   }
 
-  rpc QueryURLResultV1(QueryResultRequest) returns (QueryResult) {
+  rpc QueryURLResultV1(QueryPollRequest) returns (QueryResult) {
     option (google.api.http) = {
       get: "/v1/queries/url/{request_id}"
     };
@@ -28,7 +28,7 @@ service API {
     };
   }
 
-  rpc QueryContentResultV1(QueryResultRequest) returns (QueryResult) {
+  rpc QueryContentResultV1(QueryPollRequest) returns (QueryResult) {
     option (google.api.http) = {
       get: "/v1/queries/content/{request_id}"
     };
