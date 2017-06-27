@@ -26,7 +26,6 @@ It has these top-level messages:
 	SeedResult
 	SeedResults
 	Override
-	OverrideChange
 	Overrides
 	OverrideRequest
 	OverrideListRequest

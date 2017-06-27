@@ -6,6 +6,7 @@ package zvelo.msg;
 option go_package = "zvelo.io/msg";
 
 import "zvelo/msg/query.proto";
+import "zvelo/msg/url_override.proto";
 import "google/api/annotations.proto";
 
 service API {
@@ -36,6 +37,49 @@ service API {
   rpc QueryContentResultV1(QueryPollRequest) returns (QueryResult) {
     option (google.api.http) = {
       get: "/v1/queries/content/{request_id}"
+    };
+  }
+
+  // Get an override by its base URL
+  rpc OverrideGetV1(OverrideRequest) returns (Override) {
+    option (google.api.http) = {
+      get: "/v1/overrides/{url}"
+    };
+  }
+
+  // Add or update an override
+  rpc OverrideAddV1(Override) returns (Override) {
+    option (google.api.http) = {
+      post: "/v1/overrides"
+      body: "*"
+    };
+  }
+
+  // Delete an existing override
+  rpc OverrideDeleteV1(OverrideRequest) returns (Override) {
+    option (google.api.http) = {
+      delete: "/v1/overrides/{url}"
+    };
+  }
+
+  // Find the override that would match a given URL
+  rpc OverrideMatchingV1(Override) returns (Override) {
+    option (google.api.http) = {
+      get: "/v1/overrides/matching/{url}"
+    };
+  }
+  
+  // List overrides
+  rpc OverrideListV1(OverrideListRequest) returns (Overrides) {
+    option (google.api.http) = {
+      get: "/v1/overrides"
+    };
+  }
+
+  // List expired overrides of the given type
+  rpc OverrideListExpiredV1(OverrideListExpiredRequest) returns (Overrides) {
+    option (google.api.http) = {
+      get: "/v1/overrides/expired"
     };
   }
 }

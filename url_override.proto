@@ -7,16 +7,23 @@ import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
+// OverrideType
 enum OverrideType {
   UNKNOWN_OVERRIDE = 0;
+  // Created by a human
   HUMAN_OVERRIDE   = 1;
   // FEED_OVERRIDE = 2;
 }
 
+// Override
 message Override {
+  // Base URL this override applies to
   string                    url        = 1;
+  // Determines if this override applies to all subdomains and paths
   bool                      wildcard   = 2;
+  // URL that this override will point to
   string                    target_url = 3;
+  // User or service that created this override
   string                    user_id    = 4;
   google.protobuf.Timestamp created_at = 5 [(gogoproto.stdtime) = true];
   google.protobuf.Timestamp expires_at = 6 [(gogoproto.stdtime) = true];
@@ -24,40 +31,27 @@ message Override {
   OverrideType              type       = 8; 
 }
 
-enum OverrideChangeType {
-  ADD_OVERRIDE = 0;
-  DEL_OVERRIDE = 1;
-}
-
-message OverrideChange {
-  Override           override = 1;
-  OverrideChangeType type     = 2;
-}
-
-
+// Overrides
 message Overrides {
   repeated Override items = 1;
 }
 
+// OverrideRequest
 message OverrideRequest {
   string url = 1;
 }
 
+// OverrideListRequest
+//
+// You can specify both search strings to get an implicit 'OR'.
 message OverrideListRequest {
+  // List overrides that contain this string in the TargetURL field.
   string target_search = 2;
+  // List overrides that contain this string in the base URL field.
   string base_search   = 3;
 }
 
+// OverrideListExpiredRequest
 message OverrideListExpiredRequest {
   OverrideType type = 1;
-}
-
-service OverrideV1 {
-  rpc Get(OverrideRequest)                            returns (Override)  {}
-  rpc Add(Override)                                   returns (Override)  {}
-  rpc Delete(Override)                                returns (Override)  {}
-  rpc Matching(OverrideRequest)                       returns (Override)  {}
-  rpc ListAll(google.protobuf.Empty)                  returns (Overrides) {}
-  rpc List(OverrideListRequest)                       returns (Overrides) {}
-  rpc ListExpired(OverrideListExpiredRequest)         returns (Overrides) {}
 }

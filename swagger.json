@@ -24,6 +24,212 @@
   "host": "api.zvelo.com",
   "basePath": "/",
   "paths": {
+    "/v1/overrides": {
+      "get": {
+        "tags": [
+          "API"
+        ],
+        "summary": "List overrides",
+        "operationId": "OverrideListV1",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "List overrides that contain this string in the TargetURL field.",
+            "name": "target_search",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "List overrides that contain this string in the base URL field.",
+            "name": "base_search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/msgOverrides"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "API"
+        ],
+        "summary": "Add or update an override",
+        "operationId": "OverrideAddV1",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/msgOverride"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/msgOverride"
+            }
+          }
+        }
+      }
+    },
+    "/v1/overrides/expired": {
+      "get": {
+        "tags": [
+          "API"
+        ],
+        "summary": "List expired overrides of the given type",
+        "operationId": "OverrideListExpiredV1",
+        "parameters": [
+          {
+            "enum": [
+              "UNKNOWN_OVERRIDE",
+              "HUMAN_OVERRIDE"
+            ],
+            "type": "string",
+            "default": "UNKNOWN_OVERRIDE",
+            "description": " - HUMAN_OVERRIDE: Created by a human",
+            "name": "type",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/msgOverrides"
+            }
+          }
+        }
+      }
+    },
+    "/v1/overrides/matching/{url}": {
+      "get": {
+        "tags": [
+          "API"
+        ],
+        "summary": "Find the override that would match a given URL",
+        "operationId": "OverrideMatchingV1",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "url",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "boolean",
+            "format": "boolean",
+            "description": "Determines if this override applies to all subdomains and paths.",
+            "name": "wildcard",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "URL that this override will point to.",
+            "name": "target_url",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "User or service that created this override.",
+            "name": "user_id",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "name": "created_at",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "format": "date-time",
+            "name": "expires_at",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "name": "comment",
+            "in": "query"
+          },
+          {
+            "enum": [
+              "UNKNOWN_OVERRIDE",
+              "HUMAN_OVERRIDE"
+            ],
+            "type": "string",
+            "default": "UNKNOWN_OVERRIDE",
+            "description": " - HUMAN_OVERRIDE: Created by a human",
+            "name": "type",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/msgOverride"
+            }
+          }
+        }
+      }
+    },
+    "/v1/overrides/{url}": {
+      "get": {
+        "tags": [
+          "API"
+        ],
+        "summary": "Get an override by its base URL",
+        "operationId": "OverrideGetV1",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "url",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/msgOverride"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "API"
+        ],
+        "summary": "Delete an existing override",
+        "operationId": "OverrideDeleteV1",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "url",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/msgOverride"
+            }
+          }
+        }
+      }
+    },
     "/v1/queries/content": {
       "post": {
         "tags": [
@@ -280,6 +486,65 @@
         },
         "sentiment": {
           "$ref": "#/definitions/DataSetSentiment"
+        }
+      }
+    },
+    "msgOverride": {
+      "type": "object",
+      "title": "Override",
+      "properties": {
+        "comment": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "target_url": {
+          "type": "string",
+          "title": "URL that this override will point to"
+        },
+        "type": {
+          "$ref": "#/definitions/msgOverrideType"
+        },
+        "url": {
+          "type": "string",
+          "title": "Base URL this override applies to"
+        },
+        "user_id": {
+          "type": "string",
+          "title": "User or service that created this override"
+        },
+        "wildcard": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Determines if this override applies to all subdomains and paths"
+        }
+      }
+    },
+    "msgOverrideType": {
+      "description": "- HUMAN_OVERRIDE: Created by a human",
+      "type": "string",
+      "title": "OverrideType",
+      "default": "UNKNOWN_OVERRIDE",
+      "enum": [
+        "UNKNOWN_OVERRIDE",
+        "HUMAN_OVERRIDE"
+      ]
+    },
+    "msgOverrides": {
+      "type": "object",
+      "title": "Overrides",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/msgOverride"
+          }
         }
       }
     },

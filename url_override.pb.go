@@ -8,7 +8,7 @@ import fmt "fmt"
 import math "math"
 import _ "github.com/gogo/protobuf/gogoproto"
 import _ "github.com/golang/protobuf/ptypes/timestamp"
-import google_protobuf3 "github.com/golang/protobuf/ptypes/empty"
+import _ "github.com/golang/protobuf/ptypes/empty"
 
 import time "time"
 
@@ -16,11 +16,6 @@ import strconv "strconv"
 
 import strings "strings"
 import reflect "reflect"
-
-import (
-	context "golang.org/x/net/context"
-	grpc "google.golang.org/grpc"
-)
 
 import github_com_gogo_protobuf_types "github.com/gogo/protobuf/types"
 
@@ -32,11 +27,13 @@ var _ = fmt.Errorf
 var _ = math.Inf
 var _ = time.Kitchen
 
+// OverrideType
 type OverrideType int32
 
 const (
 	UNKNOWN_OVERRIDE OverrideType = 0
-	HUMAN_OVERRIDE   OverrideType = 1
+	// Created by a human
+	HUMAN_OVERRIDE OverrideType = 1
 )
 
 var OverrideType_name = map[int32]string{
@@ -50,28 +47,15 @@ var OverrideType_value = map[string]int32{
 
 func (OverrideType) EnumDescriptor() ([]byte, []int) { return fileDescriptorUrlOverride, []int{0} }
 
-type OverrideChangeType int32
-
-const (
-	ADD_OVERRIDE OverrideChangeType = 0
-	DEL_OVERRIDE OverrideChangeType = 1
-)
-
-var OverrideChangeType_name = map[int32]string{
-	0: "ADD_OVERRIDE",
-	1: "DEL_OVERRIDE",
-}
-var OverrideChangeType_value = map[string]int32{
-	"ADD_OVERRIDE": 0,
-	"DEL_OVERRIDE": 1,
-}
-
-func (OverrideChangeType) EnumDescriptor() ([]byte, []int) { return fileDescriptorUrlOverride, []int{1} }
-
+// Override
 type Override struct {
-	Url       string       `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
-	Wildcard  bool         `protobuf:"varint,2,opt,name=wildcard,proto3" json:"wildcard,omitempty"`
-	TargetUrl string       `protobuf:"bytes,3,opt,name=target_url,json=targetUrl,proto3" json:"target_url,omitempty"`
+	// Base URL this override applies to
+	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	// Determines if this override applies to all subdomains and paths
+	Wildcard bool `protobuf:"varint,2,opt,name=wildcard,proto3" json:"wildcard,omitempty"`
+	// URL that this override will point to
+	TargetUrl string `protobuf:"bytes,3,opt,name=target_url,json=targetUrl,proto3" json:"target_url,omitempty"`
+	// User or service that created this override
 	UserId    string       `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	CreatedAt *time.Time   `protobuf:"bytes,5,opt,name=created_at,json=createdAt,stdtime" json:"created_at,omitempty"`
 	ExpiresAt *time.Time   `protobuf:"bytes,6,opt,name=expires_at,json=expiresAt,stdtime" json:"expires_at,omitempty"`
@@ -139,36 +123,14 @@ func (m *Override) GetType() OverrideType {
 	return UNKNOWN_OVERRIDE
 }
 
-type OverrideChange struct {
-	Override *Override          `protobuf:"bytes,1,opt,name=override" json:"override,omitempty"`
-	Type     OverrideChangeType `protobuf:"varint,2,opt,name=type,proto3,enum=zvelo.msg.OverrideChangeType" json:"type,omitempty"`
-}
-
-func (m *OverrideChange) Reset()                    { *m = OverrideChange{} }
-func (*OverrideChange) ProtoMessage()               {}
-func (*OverrideChange) Descriptor() ([]byte, []int) { return fileDescriptorUrlOverride, []int{1} }
-
-func (m *OverrideChange) GetOverride() *Override {
-	if m != nil {
-		return m.Override
-	}
-	return nil
-}
-
-func (m *OverrideChange) GetType() OverrideChangeType {
-	if m != nil {
-		return m.Type
-	}
-	return ADD_OVERRIDE
-}
-
+// Overrides
 type Overrides struct {
 	Items []*Override `protobuf:"bytes,1,rep,name=items" json:"items,omitempty"`
 }
 
 func (m *Overrides) Reset()                    { *m = Overrides{} }
 func (*Overrides) ProtoMessage()               {}
-func (*Overrides) Descriptor() ([]byte, []int) { return fileDescriptorUrlOverride, []int{2} }
+func (*Overrides) Descriptor() ([]byte, []int) { return fileDescriptorUrlOverride, []int{1} }
 
 func (m *Overrides) GetItems() []*Override {
 	if m != nil {
@@ -177,13 +139,14 @@ func (m *Overrides) GetItems() []*Override {
 	return nil
 }
 
+// OverrideRequest
 type OverrideRequest struct {
 	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 }
 
 func (m *OverrideRequest) Reset()                    { *m = OverrideRequest{} }
 func (*OverrideRequest) ProtoMessage()               {}
-func (*OverrideRequest) Descriptor() ([]byte, []int) { return fileDescriptorUrlOverride, []int{3} }
+func (*OverrideRequest) Descriptor() ([]byte, []int) { return fileDescriptorUrlOverride, []int{2} }
 
 func (m *OverrideRequest) GetUrl() string {
 	if m != nil {
@@ -192,14 +155,19 @@ func (m *OverrideRequest) GetUrl() string {
 	return ""
 }
 
+// OverrideListRequest
+//
+// You can specify both search strings to get an implicit 'OR'.
 type OverrideListRequest struct {
+	// List overrides that contain this string in the TargetURL field.
 	TargetSearch string `protobuf:"bytes,2,opt,name=target_search,json=targetSearch,proto3" json:"target_search,omitempty"`
-	BaseSearch   string `protobuf:"bytes,3,opt,name=base_search,json=baseSearch,proto3" json:"base_search,omitempty"`
+	// List overrides that contain this string in the base URL field.
+	BaseSearch string `protobuf:"bytes,3,opt,name=base_search,json=baseSearch,proto3" json:"base_search,omitempty"`
 }
 
 func (m *OverrideListRequest) Reset()                    { *m = OverrideListRequest{} }
 func (*OverrideListRequest) ProtoMessage()               {}
-func (*OverrideListRequest) Descriptor() ([]byte, []int) { return fileDescriptorUrlOverride, []int{4} }
+func (*OverrideListRequest) Descriptor() ([]byte, []int) { return fileDescriptorUrlOverride, []int{3} }
 
 func (m *OverrideListRequest) GetTargetSearch() string {
 	if m != nil {
@@ -215,6 +183,7 @@ func (m *OverrideListRequest) GetBaseSearch() string {
 	return ""
 }
 
+// OverrideListExpiredRequest
 type OverrideListExpiredRequest struct {
 	Type OverrideType `protobuf:"varint,1,opt,name=type,proto3,enum=zvelo.msg.OverrideType" json:"type,omitempty"`
 }
@@ -222,7 +191,7 @@ type OverrideListExpiredRequest struct {
 func (m *OverrideListExpiredRequest) Reset()      { *m = OverrideListExpiredRequest{} }
 func (*OverrideListExpiredRequest) ProtoMessage() {}
 func (*OverrideListExpiredRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptorUrlOverride, []int{5}
+	return fileDescriptorUrlOverride, []int{4}
 }
 
 func (m *OverrideListExpiredRequest) GetType() OverrideType {
@@ -234,23 +203,14 @@ func (m *OverrideListExpiredRequest) GetType() OverrideType {
 
 func init() {
 	proto.RegisterType((*Override)(nil), "zvelo.msg.Override")
-	proto.RegisterType((*OverrideChange)(nil), "zvelo.msg.OverrideChange")
 	proto.RegisterType((*Overrides)(nil), "zvelo.msg.Overrides")
 	proto.RegisterType((*OverrideRequest)(nil), "zvelo.msg.OverrideRequest")
 	proto.RegisterType((*OverrideListRequest)(nil), "zvelo.msg.OverrideListRequest")
 	proto.RegisterType((*OverrideListExpiredRequest)(nil), "zvelo.msg.OverrideListExpiredRequest")
 	proto.RegisterEnum("zvelo.msg.OverrideType", OverrideType_name, OverrideType_value)
-	proto.RegisterEnum("zvelo.msg.OverrideChangeType", OverrideChangeType_name, OverrideChangeType_value)
 }
 func (x OverrideType) String() string {
 	s, ok := OverrideType_name[int32(x)]
-	if ok {
-		return s
-	}
-	return strconv.Itoa(int(x))
-}
-func (x OverrideChangeType) String() string {
-	s, ok := OverrideChangeType_name[int32(x)]
 	if ok {
 		return s
 	}
@@ -367,72 +327,6 @@ func (this *Override) Equal(that interface{}) bool {
 		return false
 	}
 	if this.Comment != that1.Comment {
-		return false
-	}
-	if this.Type != that1.Type {
-		return false
-	}
-	return true
-}
-func (this *OverrideChange) VerboseEqual(that interface{}) error {
-	if that == nil {
-		if this == nil {
-			return nil
-		}
-		return fmt.Errorf("that == nil && this != nil")
-	}
-
-	that1, ok := that.(*OverrideChange)
-	if !ok {
-		that2, ok := that.(OverrideChange)
-		if ok {
-			that1 = &that2
-		} else {
-			return fmt.Errorf("that is not of type *OverrideChange")
-		}
-	}
-	if that1 == nil {
-		if this == nil {
-			return nil
-		}
-		return fmt.Errorf("that is type *OverrideChange but is nil && this != nil")
-	} else if this == nil {
-		return fmt.Errorf("that is type *OverrideChange but is not nil && this == nil")
-	}
-	if !this.Override.Equal(that1.Override) {
-		return fmt.Errorf("Override this(%v) Not Equal that(%v)", this.Override, that1.Override)
-	}
-	if this.Type != that1.Type {
-		return fmt.Errorf("Type this(%v) Not Equal that(%v)", this.Type, that1.Type)
-	}
-	return nil
-}
-func (this *OverrideChange) Equal(that interface{}) bool {
-	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
-	}
-
-	that1, ok := that.(*OverrideChange)
-	if !ok {
-		that2, ok := that.(OverrideChange)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
-	} else if this == nil {
-		return false
-	}
-	if !this.Override.Equal(that1.Override) {
 		return false
 	}
 	if this.Type != that1.Type {
@@ -713,19 +607,6 @@ func (this *Override) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *OverrideChange) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 6)
-	s = append(s, "&msg.OverrideChange{")
-	if this.Override != nil {
-		s = append(s, "Override: "+fmt.Sprintf("%#v", this.Override)+",\n")
-	}
-	s = append(s, "Type: "+fmt.Sprintf("%#v", this.Type)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
 func (this *Overrides) GoString() string {
 	if this == nil {
 		return "nil"
@@ -777,277 +658,6 @@ func valueToGoStringUrlOverride(v interface{}, typ string) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("func(v %v) *%v { return &v } ( %#v )", typ, typ, pv)
 }
-
-// Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConn
-
-// This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion4
-
-// Client API for OverrideV1 service
-
-type OverrideV1Client interface {
-	Get(ctx context.Context, in *OverrideRequest, opts ...grpc.CallOption) (*Override, error)
-	Add(ctx context.Context, in *Override, opts ...grpc.CallOption) (*Override, error)
-	Delete(ctx context.Context, in *Override, opts ...grpc.CallOption) (*Override, error)
-	Matching(ctx context.Context, in *OverrideRequest, opts ...grpc.CallOption) (*Override, error)
-	ListAll(ctx context.Context, in *google_protobuf3.Empty, opts ...grpc.CallOption) (*Overrides, error)
-	List(ctx context.Context, in *OverrideListRequest, opts ...grpc.CallOption) (*Overrides, error)
-	ListExpired(ctx context.Context, in *OverrideListExpiredRequest, opts ...grpc.CallOption) (*Overrides, error)
-}
-
-type overrideV1Client struct {
-	cc *grpc.ClientConn
-}
-
-func NewOverrideV1Client(cc *grpc.ClientConn) OverrideV1Client {
-	return &overrideV1Client{cc}
-}
-
-func (c *overrideV1Client) Get(ctx context.Context, in *OverrideRequest, opts ...grpc.CallOption) (*Override, error) {
-	out := new(Override)
-	err := grpc.Invoke(ctx, "/zvelo.msg.OverrideV1/Get", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *overrideV1Client) Add(ctx context.Context, in *Override, opts ...grpc.CallOption) (*Override, error) {
-	out := new(Override)
-	err := grpc.Invoke(ctx, "/zvelo.msg.OverrideV1/Add", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *overrideV1Client) Delete(ctx context.Context, in *Override, opts ...grpc.CallOption) (*Override, error) {
-	out := new(Override)
-	err := grpc.Invoke(ctx, "/zvelo.msg.OverrideV1/Delete", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *overrideV1Client) Matching(ctx context.Context, in *OverrideRequest, opts ...grpc.CallOption) (*Override, error) {
-	out := new(Override)
-	err := grpc.Invoke(ctx, "/zvelo.msg.OverrideV1/Matching", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *overrideV1Client) ListAll(ctx context.Context, in *google_protobuf3.Empty, opts ...grpc.CallOption) (*Overrides, error) {
-	out := new(Overrides)
-	err := grpc.Invoke(ctx, "/zvelo.msg.OverrideV1/ListAll", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *overrideV1Client) List(ctx context.Context, in *OverrideListRequest, opts ...grpc.CallOption) (*Overrides, error) {
-	out := new(Overrides)
-	err := grpc.Invoke(ctx, "/zvelo.msg.OverrideV1/List", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *overrideV1Client) ListExpired(ctx context.Context, in *OverrideListExpiredRequest, opts ...grpc.CallOption) (*Overrides, error) {
-	out := new(Overrides)
-	err := grpc.Invoke(ctx, "/zvelo.msg.OverrideV1/ListExpired", in, out, c.cc, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// Server API for OverrideV1 service
-
-type OverrideV1Server interface {
-	Get(context.Context, *OverrideRequest) (*Override, error)
-	Add(context.Context, *Override) (*Override, error)
-	Delete(context.Context, *Override) (*Override, error)
-	Matching(context.Context, *OverrideRequest) (*Override, error)
-	ListAll(context.Context, *google_protobuf3.Empty) (*Overrides, error)
-	List(context.Context, *OverrideListRequest) (*Overrides, error)
-	ListExpired(context.Context, *OverrideListExpiredRequest) (*Overrides, error)
-}
-
-func RegisterOverrideV1Server(s *grpc.Server, srv OverrideV1Server) {
-	s.RegisterService(&_OverrideV1_serviceDesc, srv)
-}
-
-func _OverrideV1_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OverrideRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OverrideV1Server).Get(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/zvelo.msg.OverrideV1/Get",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OverrideV1Server).Get(ctx, req.(*OverrideRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OverrideV1_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Override)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OverrideV1Server).Add(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/zvelo.msg.OverrideV1/Add",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OverrideV1Server).Add(ctx, req.(*Override))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OverrideV1_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Override)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OverrideV1Server).Delete(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/zvelo.msg.OverrideV1/Delete",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OverrideV1Server).Delete(ctx, req.(*Override))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OverrideV1_Matching_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OverrideRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OverrideV1Server).Matching(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/zvelo.msg.OverrideV1/Matching",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OverrideV1Server).Matching(ctx, req.(*OverrideRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OverrideV1_ListAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(google_protobuf3.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OverrideV1Server).ListAll(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/zvelo.msg.OverrideV1/ListAll",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OverrideV1Server).ListAll(ctx, req.(*google_protobuf3.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OverrideV1_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OverrideListRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OverrideV1Server).List(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/zvelo.msg.OverrideV1/List",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OverrideV1Server).List(ctx, req.(*OverrideListRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OverrideV1_ListExpired_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OverrideListExpiredRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OverrideV1Server).ListExpired(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/zvelo.msg.OverrideV1/ListExpired",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OverrideV1Server).ListExpired(ctx, req.(*OverrideListExpiredRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _OverrideV1_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "zvelo.msg.OverrideV1",
-	HandlerType: (*OverrideV1Server)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Get",
-			Handler:    _OverrideV1_Get_Handler,
-		},
-		{
-			MethodName: "Add",
-			Handler:    _OverrideV1_Add_Handler,
-		},
-		{
-			MethodName: "Delete",
-			Handler:    _OverrideV1_Delete_Handler,
-		},
-		{
-			MethodName: "Matching",
-			Handler:    _OverrideV1_Matching_Handler,
-		},
-		{
-			MethodName: "ListAll",
-			Handler:    _OverrideV1_ListAll_Handler,
-		},
-		{
-			MethodName: "List",
-			Handler:    _OverrideV1_List_Handler,
-		},
-		{
-			MethodName: "ListExpired",
-			Handler:    _OverrideV1_ListExpired_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "zvelo/msg/url_override.proto",
-}
-
 func (m *Override) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -1119,39 +729,6 @@ func (m *Override) MarshalTo(dAtA []byte) (int, error) {
 	}
 	if m.Type != 0 {
 		dAtA[i] = 0x40
-		i++
-		i = encodeVarintUrlOverride(dAtA, i, uint64(m.Type))
-	}
-	return i, nil
-}
-
-func (m *OverrideChange) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *OverrideChange) MarshalTo(dAtA []byte) (int, error) {
-	var i int
-	_ = i
-	var l int
-	_ = l
-	if m.Override != nil {
-		dAtA[i] = 0xa
-		i++
-		i = encodeVarintUrlOverride(dAtA, i, uint64(m.Override.Size()))
-		n3, err := m.Override.MarshalTo(dAtA[i:])
-		if err != nil {
-			return 0, err
-		}
-		i += n3
-	}
-	if m.Type != 0 {
-		dAtA[i] = 0x10
 		i++
 		i = encodeVarintUrlOverride(dAtA, i, uint64(m.Type))
 	}
@@ -1328,19 +905,6 @@ func (m *Override) Size() (n int) {
 	return n
 }
 
-func (m *OverrideChange) Size() (n int) {
-	var l int
-	_ = l
-	if m.Override != nil {
-		l = m.Override.Size()
-		n += 1 + l + sovUrlOverride(uint64(l))
-	}
-	if m.Type != 0 {
-		n += 1 + sovUrlOverride(uint64(m.Type))
-	}
-	return n
-}
-
 func (m *Overrides) Size() (n int) {
 	var l int
 	_ = l
@@ -1411,17 +975,6 @@ func (this *Override) String() string {
 		`CreatedAt:` + strings.Replace(fmt.Sprintf("%v", this.CreatedAt), "Timestamp", "google_protobuf2.Timestamp", 1) + `,`,
 		`ExpiresAt:` + strings.Replace(fmt.Sprintf("%v", this.ExpiresAt), "Timestamp", "google_protobuf2.Timestamp", 1) + `,`,
 		`Comment:` + fmt.Sprintf("%v", this.Comment) + `,`,
-		`Type:` + fmt.Sprintf("%v", this.Type) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *OverrideChange) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&OverrideChange{`,
-		`Override:` + strings.Replace(fmt.Sprintf("%v", this.Override), "Override", "Override", 1) + `,`,
 		`Type:` + fmt.Sprintf("%v", this.Type) + `,`,
 		`}`,
 	}, "")
@@ -1722,108 +1275,6 @@ func (m *Override) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.Type |= (OverrideType(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipUrlOverride(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthUrlOverride
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *OverrideChange) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowUrlOverride
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: OverrideChange: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: OverrideChange: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Override", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowUrlOverride
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= (int(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthUrlOverride
-			}
-			postIndex := iNdEx + msglen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			if m.Override == nil {
-				m.Override = &Override{}
-			}
-			if err := m.Override.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		case 2:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Type", wireType)
-			}
-			m.Type = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowUrlOverride
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Type |= (OverrideChangeType(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -2294,48 +1745,38 @@ var (
 func init() { proto.RegisterFile("zvelo/msg/url_override.proto", fileDescriptorUrlOverride) }
 
 var fileDescriptorUrlOverride = []byte{
-	// 677 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0xcd, 0x6e, 0xd3, 0x4c,
-	0x14, 0xf5, 0x34, 0x69, 0x7e, 0x6e, 0xf2, 0xf5, 0x8b, 0xa6, 0x15, 0xb5, 0x0c, 0x9d, 0x46, 0xae,
-	0x90, 0x42, 0x11, 0x8e, 0x1a, 0x10, 0x2a, 0x0b, 0x8a, 0x52, 0x12, 0x41, 0x45, 0x7f, 0x24, 0xd3,
-	0x16, 0x09, 0x16, 0x91, 0x13, 0x0f, 0x8e, 0x25, 0xbb, 0x0e, 0xf6, 0xa4, 0x50, 0x56, 0x3c, 0x42,
-	0x1f, 0x83, 0x37, 0x40, 0xbc, 0x01, 0xcb, 0x2e, 0xd9, 0xd1, 0x98, 0x0d, 0xcb, 0x3e, 0x02, 0xf2,
-	0x38, 0x13, 0x0c, 0x75, 0xa4, 0xc2, 0xce, 0xf7, 0xdc, 0x73, 0xce, 0xbd, 0x73, 0xef, 0x78, 0xe0,
-	0xc6, 0xfb, 0x63, 0xea, 0x78, 0x75, 0x37, 0xb0, 0xea, 0x43, 0xdf, 0xe9, 0x78, 0xc7, 0xd4, 0xf7,
-	0x6d, 0x93, 0x6a, 0x03, 0xdf, 0x63, 0x1e, 0x2e, 0xf2, 0xac, 0xe6, 0x06, 0x96, 0x72, 0xc7, 0xb2,
-	0x59, 0x7f, 0xd8, 0xd5, 0x7a, 0x9e, 0x5b, 0xb7, 0x3c, 0xcb, 0xab, 0x73, 0x46, 0x77, 0xf8, 0x9a,
-	0x47, 0x3c, 0xe0, 0x5f, 0xb1, 0x52, 0x59, 0xb6, 0x3c, 0xcf, 0x72, 0xe8, 0x2f, 0x16, 0xb3, 0x5d,
-	0x1a, 0x30, 0xc3, 0x1d, 0x8c, 0x09, 0xd7, 0xff, 0x24, 0x50, 0x77, 0xc0, 0x4e, 0xe2, 0xa4, 0xfa,
-	0x79, 0x06, 0x0a, 0x7b, 0xe3, 0x56, 0x70, 0x05, 0x32, 0x43, 0xdf, 0x91, 0x51, 0x15, 0xd5, 0x8a,
-	0x7a, 0xf4, 0x89, 0x15, 0x28, 0xbc, 0xb5, 0x1d, 0xb3, 0x67, 0xf8, 0xa6, 0x3c, 0x53, 0x45, 0xb5,
-	0x82, 0x3e, 0x89, 0xf1, 0x12, 0x00, 0x33, 0x7c, 0x8b, 0xb2, 0x4e, 0x24, 0xca, 0x70, 0x51, 0x31,
-	0x46, 0x0e, 0x7c, 0x07, 0x2f, 0x42, 0x7e, 0x18, 0x50, 0xbf, 0x63, 0x9b, 0x72, 0x96, 0xe7, 0x72,
-	0x51, 0xb8, 0x65, 0xe2, 0x47, 0x00, 0x3d, 0x9f, 0x1a, 0x8c, 0x9a, 0x1d, 0x83, 0xc9, 0xb3, 0x55,
-	0x54, 0x2b, 0x35, 0x14, 0x2d, 0x6e, 0x52, 0x13, 0x4d, 0x6a, 0xfb, 0xe2, 0x14, 0x9b, 0xd9, 0xd3,
-	0x6f, 0xcb, 0x48, 0x2f, 0x8e, 0x35, 0x4d, 0x16, 0x19, 0xd0, 0x77, 0x03, 0xdb, 0xa7, 0x41, 0x64,
-	0x90, 0xbb, 0xaa, 0xc1, 0x58, 0xd3, 0x64, 0x58, 0x86, 0x7c, 0xcf, 0x73, 0x5d, 0x7a, 0xc4, 0xe4,
-	0x3c, 0x6f, 0x4d, 0x84, 0xf8, 0x36, 0x64, 0xd9, 0xc9, 0x80, 0xca, 0x85, 0x2a, 0xaa, 0xcd, 0x35,
-	0x16, 0xb5, 0xc9, 0x56, 0x34, 0x31, 0xa4, 0xfd, 0x93, 0x01, 0xd5, 0x39, 0x49, 0x65, 0x30, 0x27,
-	0xd0, 0xc7, 0x7d, 0xe3, 0xc8, 0xa2, 0xb8, 0x0e, 0x05, 0xb1, 0x57, 0x3e, 0xc5, 0x52, 0x63, 0x3e,
-	0xc5, 0x42, 0x9f, 0x90, 0xf0, 0xda, 0xb8, 0xde, 0x0c, 0xaf, 0xb7, 0x94, 0x42, 0x8e, 0x9d, 0x13,
-	0x55, 0xef, 0x43, 0x51, 0xe4, 0x02, 0x7c, 0x0b, 0x66, 0x6d, 0x46, 0xdd, 0x40, 0x46, 0xd5, 0xcc,
-	0xb4, 0x6a, 0x31, 0x43, 0x5d, 0x81, 0xff, 0x27, 0x10, 0x7d, 0x33, 0xa4, 0x01, 0xbb, 0xbc, 0x6f,
-	0xf5, 0x15, 0xcc, 0x0b, 0xd2, 0xb6, 0x1d, 0x30, 0x41, 0x5c, 0x81, 0xff, 0xc6, 0xab, 0x0e, 0xa8,
-	0xe1, 0xf7, 0xfa, 0xbc, 0xdf, 0xa2, 0x5e, 0x8e, 0xc1, 0xe7, 0x1c, 0xc3, 0xcb, 0x50, 0xea, 0x1a,
-	0x01, 0x15, 0x94, 0xf8, 0x42, 0x40, 0x04, 0xc5, 0x04, 0x75, 0x0b, 0x94, 0xa4, 0x79, 0x9b, 0xef,
-	0xc3, 0x14, 0x35, 0xc4, 0xe8, 0xd1, 0x15, 0x46, 0xbf, 0xba, 0x0e, 0xe5, 0x24, 0x8a, 0x17, 0xa0,
-	0x72, 0xb0, 0xfb, 0x6c, 0x77, 0xef, 0xc5, 0x6e, 0x67, 0xef, 0xb0, 0xad, 0xeb, 0x5b, 0xad, 0x76,
-	0x45, 0xc2, 0x18, 0xe6, 0x9e, 0x1e, 0xec, 0x34, 0x13, 0x18, 0x5a, 0x5d, 0x07, 0x7c, 0x79, 0xb4,
-	0xb8, 0x02, 0xe5, 0x66, 0xab, 0x95, 0xd4, 0x56, 0xa0, 0xdc, 0x6a, 0x6f, 0x27, 0x94, 0x8d, 0x4f,
-	0x19, 0x00, 0x21, 0x3d, 0x5c, 0xc3, 0xeb, 0x90, 0x79, 0x42, 0x19, 0x56, 0xd2, 0x46, 0x1e, 0x1f,
-	0x49, 0x49, 0x5b, 0x87, 0x2a, 0xe1, 0x35, 0xc8, 0x34, 0x4d, 0x13, 0xa7, 0x65, 0xa7, 0x49, 0xee,
-	0x41, 0xae, 0x45, 0x1d, 0xca, 0xe8, 0x5f, 0xa9, 0x1e, 0x42, 0x61, 0xc7, 0x60, 0xbd, 0xbe, 0x7d,
-	0x64, 0xfd, 0x4b, 0x9f, 0x0f, 0x20, 0x1f, 0xed, 0xa9, 0xe9, 0x38, 0xf8, 0xda, 0xa5, 0xdf, 0xab,
-	0x1d, 0x3d, 0x22, 0xca, 0x42, 0x8a, 0x32, 0x50, 0x25, 0xbc, 0x01, 0xd9, 0x48, 0x8a, 0x49, 0x4a,
-	0x3e, 0x71, 0xb1, 0xa6, 0xea, 0xb7, 0xa1, 0x94, 0xb8, 0x22, 0xf8, 0xe6, 0x14, 0x9b, 0xdf, 0xaf,
-	0xd0, 0x34, 0xb7, 0xcd, 0x8d, 0xb3, 0x11, 0x91, 0xbe, 0x8e, 0x88, 0x74, 0x3e, 0x22, 0xe8, 0x62,
-	0x44, 0xd0, 0x87, 0x90, 0xa0, 0x8f, 0x21, 0x41, 0x5f, 0x42, 0x82, 0xce, 0x42, 0x82, 0xce, 0x43,
-	0x82, 0x7e, 0x84, 0x44, 0xba, 0x08, 0x09, 0x3a, 0xfd, 0x4e, 0xa4, 0x97, 0xe5, 0xd8, 0xc8, 0xe6,
-	0xef, 0x75, 0x37, 0xc7, 0x4f, 0x7d, 0xf7, 0x67, 0x00, 0x00, 0x00, 0xff, 0xff, 0xf1, 0xb5, 0x94,
-	0xa7, 0xc3, 0x05, 0x00, 0x00,
+	// 514 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x93, 0xc1, 0x6e, 0xd3, 0x40,
+	0x10, 0x86, 0xb3, 0x6d, 0x9a, 0xc4, 0x93, 0x50, 0xa2, 0x2d, 0x52, 0xad, 0x00, 0x9b, 0x28, 0xbd,
+	0x04, 0x10, 0x8e, 0x14, 0x24, 0xc4, 0x09, 0x94, 0x8a, 0x48, 0x44, 0x40, 0x22, 0x99, 0x06, 0x24,
+	0x38, 0x44, 0x4e, 0x3c, 0xb8, 0x96, 0x6c, 0x6c, 0x76, 0xd7, 0x85, 0x70, 0xe2, 0x11, 0xfa, 0x18,
+	0xbc, 0x02, 0x6f, 0xc0, 0xb1, 0x47, 0x6e, 0x34, 0xe6, 0xc2, 0xb1, 0x8f, 0x80, 0xbc, 0xce, 0x86,
+	0x08, 0x38, 0xf4, 0xb6, 0xf3, 0xcf, 0xf7, 0x4f, 0x26, 0xff, 0xc8, 0x70, 0xe3, 0xd3, 0x09, 0x06,
+	0x51, 0x37, 0x14, 0x5e, 0x37, 0xe1, 0xc1, 0x34, 0x3a, 0x41, 0xce, 0x7d, 0x17, 0xad, 0x98, 0x47,
+	0x32, 0xa2, 0x86, 0xea, 0x5a, 0xa1, 0xf0, 0x1a, 0x77, 0x3d, 0x5f, 0x1e, 0x27, 0x33, 0x6b, 0x1e,
+	0x85, 0x5d, 0x2f, 0xf2, 0xa2, 0xae, 0x22, 0x66, 0xc9, 0x5b, 0x55, 0xa9, 0x42, 0xbd, 0x72, 0x67,
+	0xa3, 0xe9, 0x45, 0x91, 0x17, 0xe0, 0x1f, 0x4a, 0xfa, 0x21, 0x0a, 0xe9, 0x84, 0xf1, 0x0a, 0xb8,
+	0xfe, 0x37, 0x80, 0x61, 0x2c, 0x17, 0x79, 0xb3, 0xfd, 0x75, 0x0b, 0x2a, 0xe3, 0xd5, 0x2a, 0xb4,
+	0x0e, 0xdb, 0x09, 0x0f, 0x4c, 0xd2, 0x22, 0x1d, 0xc3, 0xce, 0x9e, 0xb4, 0x01, 0x95, 0x0f, 0x7e,
+	0xe0, 0xce, 0x1d, 0xee, 0x9a, 0x5b, 0x2d, 0xd2, 0xa9, 0xd8, 0xeb, 0x9a, 0xde, 0x04, 0x90, 0x0e,
+	0xf7, 0x50, 0x4e, 0x33, 0xd3, 0xb6, 0x32, 0x19, 0xb9, 0x32, 0xe1, 0x01, 0xdd, 0x87, 0x72, 0x22,
+	0x90, 0x4f, 0x7d, 0xd7, 0x2c, 0xaa, 0x5e, 0x29, 0x2b, 0x87, 0x2e, 0x7d, 0x04, 0x30, 0xe7, 0xe8,
+	0x48, 0x74, 0xa7, 0x8e, 0x34, 0x77, 0x5a, 0xa4, 0x53, 0xed, 0x35, 0xac, 0x7c, 0x49, 0x4b, 0x2f,
+	0x69, 0x1d, 0xe9, 0x7f, 0x71, 0x58, 0x3c, 0xfd, 0xd1, 0x24, 0xb6, 0xb1, 0xf2, 0xf4, 0x65, 0x36,
+	0x00, 0x3f, 0xc6, 0x3e, 0x47, 0x91, 0x0d, 0x28, 0x5d, 0x76, 0xc0, 0xca, 0xd3, 0x97, 0xd4, 0x84,
+	0xf2, 0x3c, 0x0a, 0x43, 0x7c, 0x27, 0xcd, 0xb2, 0x5a, 0x4d, 0x97, 0xf4, 0x0e, 0x14, 0xe5, 0x22,
+	0x46, 0xb3, 0xd2, 0x22, 0x9d, 0xdd, 0xde, 0xbe, 0xb5, 0xbe, 0x8a, 0xa5, 0x43, 0x3a, 0x5a, 0xc4,
+	0x68, 0x2b, 0xa8, 0x7d, 0x1f, 0x0c, 0xad, 0x0a, 0x7a, 0x0b, 0x76, 0x7c, 0x89, 0xa1, 0x30, 0x49,
+	0x6b, 0xbb, 0x53, 0xed, 0xed, 0xfd, 0xc7, 0x6a, 0xe7, 0x44, 0xfb, 0x00, 0xae, 0xae, 0x25, 0x7c,
+	0x9f, 0xa0, 0x90, 0xff, 0x26, 0xdf, 0x7e, 0x03, 0x7b, 0x1a, 0x7a, 0xe6, 0x0b, 0xa9, 0xc1, 0x03,
+	0xb8, 0xb2, 0x0a, 0x5d, 0xa0, 0xc3, 0xe7, 0xc7, 0xea, 0x2a, 0x86, 0x5d, 0xcb, 0xc5, 0x17, 0x4a,
+	0xa3, 0x4d, 0xa8, 0xce, 0x1c, 0x81, 0x1a, 0xc9, 0x4f, 0x03, 0x99, 0x94, 0x03, 0xed, 0x21, 0x34,
+	0x36, 0x87, 0x0f, 0x54, 0x32, 0xae, 0xfe, 0x0d, 0x1d, 0x02, 0xb9, 0x44, 0x08, 0xb7, 0x1f, 0x40,
+	0x6d, 0x53, 0xa5, 0xd7, 0xa0, 0x3e, 0x19, 0x3d, 0x1d, 0x8d, 0x5f, 0x8d, 0xa6, 0xe3, 0x97, 0x03,
+	0xdb, 0x1e, 0x3e, 0x1e, 0xd4, 0x0b, 0x94, 0xc2, 0xee, 0x93, 0xc9, 0xf3, 0xfe, 0x86, 0x46, 0x0e,
+	0x1f, 0x9e, 0x2d, 0x59, 0xe1, 0xfb, 0x92, 0x15, 0xce, 0x97, 0x8c, 0x5c, 0x2c, 0x19, 0xf9, 0x9c,
+	0x32, 0xf2, 0x25, 0x65, 0xe4, 0x5b, 0xca, 0xc8, 0x59, 0xca, 0xc8, 0x79, 0xca, 0xc8, 0xaf, 0x94,
+	0x15, 0x2e, 0x52, 0x46, 0x4e, 0x7f, 0xb2, 0xc2, 0xeb, 0x5a, 0xbe, 0x89, 0xaf, 0xbe, 0xa2, 0x59,
+	0x49, 0x9d, 0xfa, 0xde, 0xef, 0x00, 0x00, 0x00, 0xff, 0xff, 0x75, 0x4b, 0xc8, 0x30, 0x59, 0x03,
+	0x00, 0x00,
 }
