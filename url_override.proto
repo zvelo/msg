@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package zvelo.msg;
+option go_package = "zvelo.io/msg";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+enum OverrideType {
+  UNKNOWN_OVERRIDE = 0;
+  HUMAN_OVERRIDE   = 1;
+  // FEED_OVERRIDE = 2;
+}
+
+message Override {
+  string                    url        = 1;
+  bool                      wildcard   = 2;
+  string                    target_url = 3;
+  string                    user_id    = 4;
+  google.protobuf.Timestamp created_at = 5 [(gogoproto.stdtime) = true];
+  google.protobuf.Timestamp expires_at = 6 [(gogoproto.stdtime) = true];
+  string                    comment    = 7;
+  OverrideType              type       = 8; 
+}
+
+enum OverrideChangeType {
+  ADD_OVERRIDE = 0;
+  DEL_OVERRIDE = 1;
+}
+
+message OverrideChange {
+  Override           override = 1;
+  OverrideChangeType type     = 2;
+}
+
+
+message Overrides {
+  repeated Override items = 1;
+}
+
+message OverrideRequest {
+  string url = 1;
+}
+
+message OverrideListRequest {
+  string target_search = 2;
+  string base_search   = 3;
+}
+
+message OverrideListExpiredRequest {
+  OverrideType type = 1;
+}
+
+service OverrideV1 {
+  rpc Get(OverrideRequest)                            returns (Override)  {}
+  rpc Add(Override)                                   returns (Override)  {}
+  rpc Delete(Override)                                returns (Override)  {}
+  rpc Matching(OverrideRequest)                       returns (Override)  {}
+  rpc ListAll(google.protobuf.Empty)                  returns (Overrides) {}
+  rpc List(OverrideListRequest)                       returns (Overrides) {}
+  rpc ListExpired(OverrideListExpiredRequest)         returns (Overrides) {}
+}
