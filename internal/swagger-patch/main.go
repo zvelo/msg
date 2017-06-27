@@ -54,8 +54,7 @@ func main() {
 				AuthorizationURL: "https://auth.zvelo.com/oauth2/auth",
 				TokenURL:         "https://auth.zvelo.com/oauth2/token",
 				Scopes: map[string]string{
-					"zvelo.dataset":  "Access zvelo Datasets",
-					"zvelo.override": "Manage zvelo Overrides",
+					"zvelo.dataset": "Access zvelo Datasets",
 				},
 			},
 		},
