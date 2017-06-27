@@ -241,8 +241,9 @@
           "title": "the actual content to process. required"
         },
         "header": {
+          "description": "header key/value pairs",
           "type": "object",
-          "title": "header key/value pairs",
+          "title": "headers",
           "additionalProperties": {
             "type": "string"
           }

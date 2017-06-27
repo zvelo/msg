@@ -81,6 +81,8 @@ message QueryContentRequests {
     // url the content came from, not required
     string url= 2;
 
+    // headers
+    //
     // header key/value pairs
     map<string, string> header = 3;
 

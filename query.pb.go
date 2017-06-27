@@ -226,6 +226,8 @@ type QueryContentRequests_URLContent struct {
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// url the content came from, not required
 	Url string `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
+	// headers
+	//
 	// header key/value pairs
 	Header map[string]string `protobuf:"bytes,3,rep,name=header" json:"header,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// the actual content to process. required
