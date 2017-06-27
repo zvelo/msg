@@ -464,8 +464,7 @@
       "authorizationUrl": "https://auth.zvelo.com/oauth2/auth",
       "tokenUrl": "https://auth.zvelo.com/oauth2/token",
       "scopes": {
-        "zvelo.dataset": "Access zvelo Datasets",
-        "zvelo.override": "Manage zvelo Overrides"
+        "zvelo.dataset": "Access zvelo Datasets"
       }
     }
   }
