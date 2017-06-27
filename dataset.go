@@ -36,9 +36,8 @@ func (m *DataSet) FieldByType(dsType DataSetType) (interface{}, error) {
 		return nil, ErrNilDataSet
 	}
 
-	name = strings.ToLower(name)
 	v := reflect.ValueOf(*m).FieldByNameFunc(func(val string) bool {
-		return strings.ToLower(val) == name
+		return strings.EqualFold(name, val)
 	})
 
 	if v.IsValid() {
@@ -50,18 +49,16 @@ func (m *DataSet) FieldByType(dsType DataSetType) (interface{}, error) {
 	}
 
 	// NOTE: if this is reached, it indicates a problem where a valid
-	// DataSetType was provided, but DataSet has no cooresponding
+	// DataSetType was provided, but DataSet has no corresponding
 	// (case-insensitive) field name
 	return nil, ErrInvalidField
 }
 
-// NewDataSetType returns the cooresponding DataSetType given a string. It is
+// NewDataSetType returns the corresponding DataSetType given a string. It is
 // case insensitive.
 func NewDataSetType(name string) (DataSetType, error) {
-	name = strings.ToLower(name)
-
 	for dst, dstName := range DataSetType_name {
-		if name == strings.ToLower(dstName) {
+		if strings.EqualFold(name, dstName) {
 			return DataSetType(dst), nil
 		}
 	}

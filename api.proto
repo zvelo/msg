@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+// zveloAPI
 package zvelo.msg;
 
 option go_package = "zvelo.io/msg";
@@ -8,6 +9,7 @@ import "zvelo/msg/query.proto";
 import "google/api/annotations.proto";
 
 service API {
+  // Create new URL query
   rpc QueryURLV1(QueryURLRequests) returns (QueryReplies) {
     option (google.api.http) = {
       post: "/v1/queries/url"
@@ -15,12 +17,14 @@ service API {
     };
   }
 
+  // Results of active or unexpired query
   rpc QueryURLResultV1(QueryPollRequest) returns (QueryResult) {
     option (google.api.http) = {
       get: "/v1/queries/url/{request_id}"
     };
   }
 
+  // Create new content query
   rpc QueryContentV1(QueryContentRequests) returns (QueryReplies) {
     option (google.api.http) = {
       post: "/v1/queries/content"
@@ -28,6 +32,7 @@ service API {
     };
   }
 
+  // Results of active or unexpired query
   rpc QueryContentResultV1(QueryPollRequest) returns (QueryResult) {
     option (google.api.http) = {
       get: "/v1/queries/content/{request_id}"

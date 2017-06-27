@@ -5,52 +5,134 @@ package zvelo.msg;
 option go_package = "zvelo.io/msg";
 
 import "zvelo/msg/dataset.proto";
-import "zvelo/msg/status.proto";
+import "google/rpc/status.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 
 message QueryPollRequest {
   string request_id = 1;
 };
 
+// QueryResult
 message QueryResult {
-  string request_id                    = 1; // Request ID for tracking requests
-  string tracking_id                   = 2; // Provided by user to link to responses
+  option (gogoproto.equal) = false;
+  option (gogoproto.verbose_equal) = false;
+  option (gogoproto.marshaler) = false;
+  option (gogoproto.unmarshaler) = false;
+  option (gogoproto.sizer) = false;
+
+  // Request ID for tracking requests
+  string request_id = 1;
+
+  // Provided by user to link to responses
+  string tracking_id = 2;
+
   reserved 3;
-  Status status                        = 4; // This is the zvelo internal status
+  reserved 4;
   reserved 5;
-  repeated DataSetType request_dataset = 6;
-  DataSet response_dataset             = 7;
-  string url                           = 8;
+  reserved 6;
+
+  DataSet response_dataset        = 7;
+  string url                      = 8;
+  repeated uint32 request_dataset = 9;
+
+  // This is the zvelo internal status
+  google.rpc.Status status = 10;
+
+  // fetching the url resulted in a redirect to this location
+  string location = 11;
 };
 
+// QueryURLRequests
 message QueryURLRequests {
-  repeated string url          = 1; // urls
-  repeated DataSetType dataset = 2; // list of datasets to get for each URL
-  string callback              = 3; // callback_url
-  bool poll                    = 4; // user will poll for results
-  bool partial_results         = 5; // user wants partial results trickled in.
-  string accept                = 6; // "accept header": indicates acceptable formats for results in callback
+  option (gogoproto.verbose_equal) = false;
+
+  // The URLs to categorize. Required.
+  repeated string url = 1;
+
+  reserved 2;
+
+  // The callback url will receive the final result and may receive partial
+  // results if partial_results is true. It is an error to specify
+  // callback when poll is true.
+  string callback = 3;
+
+  // The client will poll for a result. It is an error to specify poll as
+  // true when callback has a value.
+  bool poll = 4;
+
+  // True if partial results should be sent to the callback endpoint in
+  // addition to the final result. Only makes sense in the context of a
+  // callback query.
+  bool partial_results = 5;
+
+  reserved 6;
+
+  // The datasets to query for each URL
+  repeated uint32 dataset = 7;
 }
 
+// QueryContentRequests
 message QueryContentRequests {
+  // URLContent
   message URLContent {
-    // Use a unique id if content has no url, to link response to request.
-    string id                  = 1; // customer supplied identifier to link to response
-    string url                 = 2; // url
-    map<string, string> header = 3; // headers
-    string content             = 4; // content, this should be used for most requests
+    // customer supplied identifier to link to response
+    string id = 1;
+
+    // url the content came from, not required
+    string url= 2;
+
+    // headers
+    //
+    // header key/value pairs
+    map<string, string> header = 3;
+
+    // the actual content to process. required
+    string content = 4;
   }
 
-  repeated URLContent content  = 1; // content
-  repeated DataSetType dataset = 2; // DataSets
-  string callback              = 3; // callback_url
-  bool poll                    = 4; // user will poll for results
-  bool partial_results         = 5; // user wants partial results trickled in.
-  string accept                = 6; // "accept header": indicates acceptable formats for results in callback
+  // The content to categorize
+  repeated URLContent content = 1;
+
+  reserved 2;
+
+  // A callback URL. Will receive the final result and may receive partial
+  // results if `partial-results` is true. It is an error to specify
+  // callback when poll is true.
+  string callback = 3;
+
+  // Whether the client will poll for a result. It is an error to specify
+  // poll as true when callback has a value.
+  bool poll = 4;
+
+  // True if partial results should be sent to the callback endpoint in
+  // addition to the final result. Only makes sense in the context of a
+  // callback query.
+  bool partial_results = 5;
+
+  reserved 6;
+
+  // The datasets to query
+  repeated uint32 dataset = 7;
 }
 
+// QueryReply
 message QueryReply {
-  Status status              = 1; // The zvelo internal status.
-  string request_id          = 2; // The request_ids will identify the request after submission
+  option (gogoproto.equal) = false;
+  option (gogoproto.verbose_equal) = false;
+  option (gogoproto.marshaler) = false;
+  option (gogoproto.unmarshaler) = false;
+  option (gogoproto.sizer) = false;
+
+  reserved 1;
+
+  // will identify the request after submission
+  string request_id = 2;
+
+  // The zvelo internal status.
+  google.rpc.Status status = 3;
+
+  // fetching the url resulted in a redirect to this location
+  string location = 4;
 }
 
 // If a request contained more then one URL, or piece of content, we will reply
@@ -58,7 +140,15 @@ message QueryReply {
 // and with their own status. The position in the array will correspond to the
 // index in the original array of URL or Content provided in the QueryURLRequests
 // or QueryContentRequests message
+
+// QueryReplies
 message QueryReplies {
+  option (gogoproto.equal) = false;
+  option (gogoproto.verbose_equal) = false;
+  option (gogoproto.marshaler) = false;
+  option (gogoproto.unmarshaler) = false;
+  option (gogoproto.sizer) = false;
+
     repeated QueryReply replies = 1;  // this contains a reply for each sub query
 }
 
