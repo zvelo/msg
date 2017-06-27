@@ -184,7 +184,7 @@ func TestNewDataSetType(t *testing.T) {
 func TestMergeDatasets(t *testing.T) {
 	d1 := &DataSet{
 		Categorization: &DataSet_Categorization{
-			Values: []Category{1},
+			Values: []uint32{1},
 		},
 	}
 	d2 := &DataSet{

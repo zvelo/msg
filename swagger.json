@@ -1,31 +1,43 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "zvelo/msg/api.proto",
-    "version": "version not set"
-  },
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
   "produces": [
     "application/json"
   ],
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "zveloAPI",
+    "contact": {
+      "name": "zvelo",
+      "url": "https://zvelo.com",
+      "email": "support@zvelo.com"
+    },
+    "license": {
+      "name": "zvelo Proprietary"
+    },
+    "version": "1"
+  },
+  "host": "api.zvelo.com",
+  "basePath": "/",
   "paths": {
     "/v1/queries/content": {
       "post": {
+        "tags": [
+          "API"
+        ],
+        "summary": "Create new content query",
         "operationId": "QueryContentV1",
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/msgQueryReplies"
-            }
+        "security": [
+          {
+            "authorization": [
+              "zvelo.dataset"
+            ]
           }
-        },
+        ],
         "parameters": [
           {
             "name": "body",
@@ -36,38 +48,6 @@
             }
           }
         ],
-        "tags": [
-          "API"
-        ]
-      }
-    },
-    "/v1/queries/content/{request_id}": {
-      "get": {
-        "operationId": "QueryContentResultV1",
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/msgQueryResult"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "request_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "API"
-        ]
-      }
-    },
-    "/v1/queries/url": {
-      "post": {
-        "operationId": "QueryURLV1",
         "responses": {
           "200": {
             "description": "",
@@ -75,7 +55,55 @@
               "$ref": "#/definitions/msgQueryReplies"
             }
           }
-        },
+        }
+      }
+    },
+    "/v1/queries/content/{request_id}": {
+      "get": {
+        "tags": [
+          "API"
+        ],
+        "summary": "Results of active or unexpired query",
+        "operationId": "QueryContentResultV1",
+        "security": [
+          {
+            "authorization": [
+              "zvelo.dataset"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "request_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/msgQueryResult"
+            }
+          }
+        }
+      }
+    },
+    "/v1/queries/url": {
+      "post": {
+        "tags": [
+          "API"
+        ],
+        "summary": "Create new URL query",
+        "operationId": "QueryURLV1",
+        "security": [
+          {
+            "authorization": [
+              "zvelo.dataset"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "body",
@@ -86,14 +114,38 @@
             }
           }
         ],
-        "tags": [
-          "API"
-        ]
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/msgQueryReplies"
+            }
+          }
+        }
       }
     },
     "/v1/queries/url/{request_id}": {
       "get": {
+        "tags": [
+          "API"
+        ],
+        "summary": "Results of active or unexpired query",
         "operationId": "QueryURLResultV1",
+        "security": [
+          {
+            "authorization": [
+              "zvelo.dataset"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "request_id",
+            "in": "path",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -101,47 +153,40 @@
               "$ref": "#/definitions/msgQueryResult"
             }
           }
-        },
-        "parameters": [
-          {
-            "name": "request_id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "API"
-        ]
+        }
       }
     }
   },
   "definitions": {
     "DataSetAdFraud": {
       "type": "object",
+      "title": "AdFraud",
       "properties": {
+        "signature": {
+          "type": "string"
+        },
         "verdict": {
           "type": "boolean",
           "format": "boolean"
-        },
-        "signature": {
-          "type": "string"
         }
       }
     },
     "DataSetCategorization": {
       "type": "object",
+      "title": "Categorization",
       "properties": {
         "values": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/msgCategory"
+            "type": "integer",
+            "format": "int64"
           }
         }
       }
     },
     "DataSetEcho": {
       "type": "object",
+      "title": "Echo",
       "properties": {
         "url": {
           "type": "string"
@@ -150,6 +195,7 @@
     },
     "DataSetKeyword": {
       "type": "object",
+      "title": "Keyword",
       "properties": {
         "values": {
           "type": "array",
@@ -161,19 +207,21 @@
     },
     "DataSetMalicious": {
       "type": "object",
+      "title": "Malicious",
       "properties": {
         "category": {
-          "$ref": "#/definitions/msgCategory"
+          "type": "integer",
+          "format": "int64"
         },
         "verdict": {
           "type": "boolean",
-          "format": "boolean",
-          "title": "2 reserved for signature"
+          "format": "boolean"
         }
       }
     },
     "DataSetSentiment": {
       "type": "object",
+      "title": "Sentiment",
       "properties": {
         "values": {
           "type": "object",
@@ -186,645 +234,92 @@
     },
     "QueryContentRequestsURLContent": {
       "type": "object",
+      "title": "URLContent",
       "properties": {
-        "id": {
+        "content": {
           "type": "string",
-          "description": "Use a unique id if content has no url, to link response to request."
-        },
-        "url": {
-          "type": "string"
+          "title": "the actual content to process. required"
         },
         "header": {
           "type": "object",
+          "title": "header key/value pairs",
           "additionalProperties": {
             "type": "string"
           }
         },
-        "content": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "title": "customer supplied identifier to link to response"
+        },
+        "url": {
+          "type": "string",
+          "title": "url the content came from, not required"
         }
       }
     },
-    "StatusCode": {
-      "type": "string",
-      "enum": [
-        "UNKNOWN_STATUS_CODE",
-        "STATUS_CONTINUE",
-        "STATUS_SWITCHING_PROTOCOLS",
-        "STATUS_OK",
-        "STATUS_CREATED",
-        "STATUS_ACCEPTED",
-        "STATUS_NON_AUTHORITATIVE_INFO",
-        "STATUS_NO_CONTENT",
-        "STATUS_RESET_CONTENT",
-        "STATUS_PARTIAL_CONTENT",
-        "STATUS_MULTIPLE_CHOICES",
-        "STATUS_MOVED_PERMANENTLY",
-        "STATUS_FOUND",
-        "STATUS_SEE_OTHER",
-        "STATUS_NOT_MODIFIED",
-        "STATUS_USE_PROXY",
-        "STATUS_TEMPORARY_REDIRECT",
-        "STATUS_BAD_REQUEST",
-        "STATUS_UNAUTHORIZED",
-        "STATUS_PAYMENT_REQUIRED",
-        "STATUS_FORBIDDEN",
-        "STATUS_NOT_FOUND",
-        "STATUS_METHOD_NOT_ALLOWED",
-        "STATUS_NOT_ACCEPTABLE",
-        "STATUS_PROXY_AUTH_REQUIRED",
-        "STATUS_REQUEST_TIMEOUT",
-        "STATUS_CONFLICT",
-        "STATUS_GONE",
-        "STATUS_LENGTH_REQUIRED",
-        "STATUS_PRECONDITION_FAILED",
-        "STATUS_REQUEST_ENTITY_TOO_LARGE",
-        "STATUS_REQUEST_URI_TOO_LONG",
-        "STATUS_UNSUPPORTED_MEDIA_TYPE",
-        "STATUS_REQUESTED_RANGE_NOT_SATISFIABLE",
-        "STATUS_EXPECTATION_FAILED",
-        "STATUS_TEAPOT",
-        "STATUS_PRECONDITION_REQUIRED",
-        "STATUS_TOO_MANY_REQUESTS",
-        "STATUS_REQUEST_HEADER_FIELDS_TOO_LARGE",
-        "STATUS_UNAVAILABLE_FOR_LEGAL_REASONS",
-        "STATUS_INTERNAL_SERVER_ERROR",
-        "STATUS_NOT_IMPLEMENTED",
-        "STATUS_BAD_GATEWAY",
-        "STATUS_SERVICE_UNAVAILABLE",
-        "STATUS_GATEWAY_TIMEOUT",
-        "STATUS_HTTP_VERSION_NOT_SUPPORTED",
-        "STATUS_NETWORK_AUTHENTICATION_REQUIRED"
-      ],
-      "default": "UNKNOWN_STATUS_CODE",
-      "title": "- STATUS_CONTINUE: 100s\n - STATUS_OK: 200s\n - STATUS_MULTIPLE_CHOICES: 300s\n - STATUS_BAD_REQUEST: 400s\n - STATUS_INTERNAL_SERVER_ERROR: 500s"
-    },
-    "msgCategory": {
-      "type": "string",
-      "enum": [
-        "UNKNOWN_CATEGORY",
-        "ABORTION_4",
-        "PROCHOICE_4",
-        "PROLIFE_4",
-        "PG13_4",
-        "GAMBLING_4",
-        "GAY_4",
-        "LINGERIE_4",
-        "NUDITY_4",
-        "PORN_4",
-        "PROFANITY_4",
-        "RATEDR_4",
-        "SEX_4",
-        "EDSEX_4",
-        "TOBACCO_4",
-        "MIL_4",
-        "VIOLENCE_4",
-        "WEAPONS_4",
-        "AGGRESSIVE_4",
-        "FINEART_4",
-        "ART_4",
-        "AUTOPARTS_4",
-        "AUTOREPAIR_4",
-        "BUYSELLCAR_4",
-        "CARCULTURE_4",
-        "CPO_4",
-        "CARCONVERT_4",
-        "COUPE_4",
-        "CUV_4",
-        "DIESEL_4",
-        "EVEHICLE_4",
-        "HATCHBACK_4",
-        "HYBRIDCAR_4",
-        "LUXURYCAR_4",
-        "MINIVAN_4",
-        "MOTORCYCLE_4",
-        "OFFROAD_4",
-        "PERFCAR_4",
-        "PICKUP_4",
-        "ROADASSIST_4",
-        "SEDAN_4",
-        "TRUCK_4",
-        "VINTAGECAR_4",
-        "WAGON_4",
-        "AUTOMOTIVE_4",
-        "AG_4",
-        "BIOTECH_4",
-        "BIZSOFT_4",
-        "BUILD_4",
-        "FORESTRY_4",
-        "BIZGOV_4",
-        "NATURE_4",
-        "FURNITURE_4",
-        "HR_4",
-        "MFG_4",
-        "MKTG_4",
-        "METAL_4",
-        "PHYSEC_4",
-        "BIZPROD_4",
-        "RETIREHOME_4",
-        "SHIPPING_4",
-        "BUSINESS_4",
-        "JOBADVICE_4",
-        "CAREERPLAN_4",
-        "COLJOB_4",
-        "FINAID_4",
-        "JOBFAIR_4",
-        "JOBSEARCH_4",
-        "NURSING_4",
-        "RESUME_4",
-        "SCHOLAR_4",
-        "TELCOMMUTE_4",
-        "MILJOBS_4",
-        "CAREER_4",
-        "CHILDABUSE_4",
-        "CRIMSKILL_4",
-        "HACKING_4",
-        "HATE_4",
-        "DRUGS_4",
-        "POT_4",
-        "WAREZ_4",
-        "EDUCHEAT_4",
-        "SELFHARM_4",
-        "TORRENT_4",
-        "CRIM_4",
-        "ANON_4",
-        "CHAT_4",
-        "GROUPS_4",
-        "IM_4",
-        "LOGIN_4",
-        "BLOG_4",
-        "PHOTO_4",
-        "PROFNET_4",
-        "REDIR_4",
-        "SOCNET_4",
-        "SMS_4",
-        "TRANSLATOR_4",
-        "EMAIL_4",
-        "CARDS_4",
-        "EDU712_4",
-        "ADULTEDU_4",
-        "ARTHISTORY_4",
-        "COLADMIN_4",
-        "COLLIFE_4",
-        "DLEARNING_4",
-        "SCHOOL_4",
-        "EDSTUDIES_4",
-        "ENGLISH_4",
-        "GRADSCHOOL_4",
-        "HOMESCHOOL_4",
-        "HOMEWORK_4",
-        "K6EDU_4",
-        "LANGUAGE_4",
-        "BOOK_4",
-        "PRIVSCHOOL_4",
-        "REF_4",
-        "SPED_4",
-        "BIZEDU_4",
-        "TUTOR_4",
-        "WIKI_4",
-        "EDU_4",
-        "ENTNEWS_4",
-        "VENUE_4",
-        "HUMOR_4",
-        "MOVIE_4",
-        "MUSIC_4",
-        "AUDIO_4",
-        "VIDEO_4",
-        "TV_4",
-        "ENT_4",
-        "ADOPT_4",
-        "TODDLER_4",
-        "PRESCHOOL_4",
-        "ELDERCARE_4",
-        "FAMILYNET_4",
-        "K6PARENT_4",
-        "PARENTEEN_4",
-        "PREGNANCY_4",
-        "SNKPARENT_4",
-        "FAMILY_4",
-        "ACCESSORY_4",
-        "BEAUTY_4",
-        "BODYART_4",
-        "CLOTHING_4",
-        "FASHNMISC_4",
-        "JEWELRY_4",
-        "SWIMSUIT_4",
-        "FASHION_4",
-        "ACCTG_4",
-        "BANK_4",
-        "BGNINVEST_4",
-        "LOAN_4",
-        "FINNEWS_4",
-        "FINPLAN_4",
-        "HEDGEFUND_4",
-        "INSURANCE_4",
-        "INVEST_4",
-        "MUTUALFUND_4",
-        "QUOTES_4",
-        "FINANCEOPT_4",
-        "RETIREPLAN_4",
-        "STOCKS_4",
-        "TAX_4",
-        "FINANCE_4",
-        "USFOOD_4",
-        "BBQ_4",
-        "CAJUNFOOD_4",
-        "ZHFOOD_4",
-        "COCKTAIL_4",
-        "COFFEE_4",
-        "CUISINE_4",
-        "DESSERT_4",
-        "DININGOUT_4",
-        "FUDALLERGY_4",
-        "FRFOOD_4",
-        "LOWFAT_4",
-        "ITFOOD_4",
-        "JAFOOD_4",
-        "MXFOOD_4",
-        "VEGAN_4",
-        "VEGETARIAN_4",
-        "WINE_4",
-        "FOOD_4",
-        "ADHD_4",
-        "AIDS_4",
-        "ALLERGY_4",
-        "ALTMED_4",
-        "ARTHRITIS_4",
-        "ASTHMA_4",
-        "AUTISM_4",
-        "BIPOLAR_4",
-        "TUMOR_4",
-        "CANCER_4",
-        "KIDHEALTH_4",
-        "CHOLESTER_4",
-        "FATIGUE_4",
-        "PAIN_4",
-        "FLU_4",
-        "PSURGERY_4",
-        "DEAFNESS_4",
-        "DENTAL_4",
-        "DEPRESSION_4",
-        "DERMA_4",
-        "DIABETES_4",
-        "DISORDER_4",
-        "EPILEPSY_4",
-        "EXERCISE_4",
-        "GERD_4",
-        "MIGRAINE_4",
-        "CARDIO_4",
-        "HERB_4",
-        "HOLISTIC_4",
-        "IBS_4",
-        "ABUSE_4",
-        "INCNTNENCE_4",
-        "INFERTILE_4",
-        "MENHEALTH_4",
-        "DIET_4",
-        "ORTHO_4",
-        "ANXIETY_4",
-        "PEDIA_4",
-        "RX_4",
-        "PHYTHERAPY_4",
-        "PSYCH_4",
-        "ADDICTION_4",
-        "SRHEALTH_4",
-        "SEXUALITY_4",
-        "SLEEP_4",
-        "QUITSMOKE_4",
-        "VITAMINS_4",
-        "SYNDROME_4",
-        "THYROID_4",
-        "WEIGHTLOSS_4",
-        "FEMHEALTH_4",
-        "HEALTH_4",
-        "ARTTECH_4",
-        "ARTCRAFT_4",
-        "BEADWORK_4",
-        "BIRDWATCH_4",
-        "PUZZLE_4",
-        "CANDLE_4",
-        "CARDGAME_4",
-        "CARTOON_4",
-        "CHESS_4",
-        "CIGAR_4",
-        "COLLECT_4",
-        "COMIC_4",
-        "DRAW_4",
-        "WRITE_4",
-        "GENEALOGY_4",
-        "PUBLISH_4",
-        "GUITAR_4",
-        "HOMERECORD_4",
-        "PATENT_4",
-        "MAKEJEWEL_4",
-        "MAGIC_4",
-        "NEEDLEWORK_4",
-        "PAINT_4",
-        "PHOTOHOB_4",
-        "RADIO_4",
-        "RPG_4",
-        "SCIFI_4",
-        "SCRAPBOOK_4",
-        "SCREENWRT_4",
-        "STAMP_4",
-        "THEME_4",
-        "VIDEOGAME_4",
-        "WOODWORK_4",
-        "HOBBY_4",
-        "APPLIANCE_4",
-        "ENTHOME_4",
-        "ECOSAFETY_4",
-        "GARDEN_4",
-        "HOMEREPAIR_4",
-        "HOMECINEMA_4",
-        "INTERIOR_4",
-        "LANDSCAPE_4",
-        "REMODEL_4",
-        "HOME_4",
-        "GAMES_4",
-        "KIDSPAGE_4",
-        "TOYS_4",
-        "KIDS_4",
-        "DATING_4",
-        "DIVORCE_4",
-        "ETHNIC_4",
-        "MARRIAGE_4",
-        "PARKS_4",
-        "SENIOR_4",
-        "TEENS_4",
-        "WEDDING_4",
-        "LIFESTYLE_4",
-        "ADFRAUD_4",
-        "BOTS_4",
-        "CANDC_4",
-        "COMPR_4",
-        "MALHOME_4",
-        "MAL_4",
-        "FRAUD_4",
-        "SPAM_4",
-        "SPYWARE_4",
-        "CDN_4",
-        "BLANK_4",
-        "PARKED_4",
-        "PRIVIP_4",
-        "BROKEN_4",
-        "MISC_4",
-        "IMGSEARCH_4",
-        "INTLNEWS_4",
-        "LOCALNEWS_4",
-        "MAGAZINES_4",
-        "NATLNEWS_4",
-        "PORTAL_4",
-        "SEARCH_4",
-        "NEWS_4",
-        "PAYTOSURF_4",
-        "ADWARE_4",
-        "AQUARIUM_4",
-        "BIRD_4",
-        "CAT_4",
-        "DOG_4",
-        "BIGANIMALS_4",
-        "REPTILE_4",
-        "VETMED_4",
-        "PETS_4",
-        "ADVOCACY_4",
-        "COMMENTARY_4",
-        "GOVSPONSOR_4",
-        "IMMIGRANT_4",
-        "LEGAL_4",
-        "CHARITY_4",
-        "POLITICS_4",
-        "CLUBS_4",
-        "USRESOURCE_4",
-        "GOV_4",
-        "APARTMENT_4",
-        "ARCHI_4",
-        "BNSHOME_4",
-        "PROP_4",
-        "ALTRELGN_4",
-        "ATHEISM_4",
-        "BUDDHISM_4",
-        "CATHOLIC_4",
-        "CHRISTIAN_4",
-        "HINDU_4",
-        "ISLAM_4",
-        "JUDAISM_4",
-        "LDS_4",
-        "CULT_4",
-        "PAGAN_4",
-        "RELIGION_4",
-        "ANATOMY_4",
-        "ASTROLOGY_4",
-        "BIOLOGY_4",
-        "BOTANY_4",
-        "CHEMISTRY_4",
-        "GEOGRAPHY_4",
-        "GEOLOGY_4",
-        "PARANORMAL_4",
-        "PHYSICS_4",
-        "ASTRONOMY_4",
-        "WEATHER_4",
-        "SCIENCE_4",
-        "P2PSHOP_4",
-        "CATALOG_4",
-        "SURVEY_4",
-        "COUPON_4",
-        "SHOPENGINE_4",
-        "ONLINESHOP_4",
-        "SHOPSEARCH_4",
-        "SHOP_4",
-        "AUTORACE_4",
-        "BASEBALL_4",
-        "BICYCLING_4",
-        "BODYBUILD_4",
-        "BOXING_4",
-        "KAYAK_4",
-        "CHEERLEAD_4",
-        "CLIMB_4",
-        "CRICKET_4",
-        "FIGSKATE_4",
-        "FLYFISHING_4",
-        "FOOTBALL_4",
-        "FRESHFISH_4",
-        "GAMEFISH_4",
-        "GOLF_4",
-        "HORSERACE_4",
-        "HORSES_4",
-        "INSKATE_4",
-        "MARTIALART_4",
-        "BIKING_4",
-        "NASCAR_4",
-        "OLYMPICS_4",
-        "PAINTBALL_4",
-        "MOTORACE_4",
-        "PROBASKET_4",
-        "ICEHOCKEY_4",
-        "RODEO_4",
-        "RUGBY_4",
-        "RUN_4",
-        "SAIL_4",
-        "SALTFISH_4",
-        "SCUBA_4",
-        "SKATEBOARD_4",
-        "SKI_4",
-        "SNOWBOARD_4",
-        "HUNT_4",
-        "SURF_4",
-        "SWIM_4",
-        "PINGPONG_4",
-        "TENNIS_4",
-        "VOLLEYBALL_4",
-        "WALK_4",
-        "WATERSKI_4",
-        "SOCCER_4",
-        "SPORTS_4",
-        "GRAPHICS3D_4",
-        "ANIMATION_4",
-        "ANTIVIRUS_4",
-        "CLANG_4",
-        "CAMERA_4",
-        "COMPCERT_4",
-        "COMPNET_4",
-        "PERIPHERAL_4",
-        "COMPREVIEW_4",
-        "DATABASE_4",
-        "DESKPUB_4",
-        "DESKVID_4",
-        "TECHENT_4",
-        "REPOS_4",
-        "GRAPHICS_4",
-        "DVD_4",
-        "COMPSEC_4",
-        "VOIP_4",
-        "INTERNET_4",
-        "JAVA_4",
-        "JAVASCRIPT_4",
-        "LINUX_4",
-        "MAC_4",
-        "MACSUPPORT_4",
-        "MOBILE_4",
-        "MP3_4",
-        "NETCON_4",
-        "NETBEG_4",
-        "NETSEC_4",
-        "OFFICE_4",
-        "PDA_4",
-        "PCSUPPORT_4",
-        "P2P_4",
-        "STORAGE_4",
-        "PORTABLE_4",
-        "VPN_4",
-        "FREEWARE_4",
-        "UNIX_4",
-        "UTILITIES_4",
-        "VBASIC_4",
-        "CLIPART_4",
-        "WEBDESIGN_4",
-        "ISP_4",
-        "WINDOWS_4",
-        "TECH_4",
-        "ADVENTURE_4",
-        "AFRICA_4",
-        "AIRTRAVEL_4",
-        "AUSTRALIA_4",
-        "BNB_4",
-        "BDGTTRAVEL_4",
-        "BIZTRAVEL_4",
-        "USTRAVEL_4",
-        "CAMP_4",
-        "CANADA_4",
-        "CARIBBEAN_4",
-        "CRUISE_4",
-        "EASTEUROPE_4",
-        "EUROPE_4",
-        "FRANCE_4",
-        "GREECE_4",
-        "GETAWAY_4",
-        "HOTEL_4",
-        "ITALY_4",
-        "JAPAN_4",
-        "MEXICO_4",
-        "NATLPARKS_4",
-        "NAVIGATION_4",
-        "SAMERICA_4",
-        "SPA_4",
-        "THEMEPARK_4",
-        "KIDTRAVEL_4",
-        "UKTRAVEL_4",
-        "TRAVEL_4"
-      ],
-      "default": "UNKNOWN_CATEGORY"
-    },
     "msgDataSet": {
       "type": "object",
+      "title": "DataSet",
       "properties": {
-        "categorization": {
-          "$ref": "#/definitions/DataSetCategorization"
-        },
         "adfraud": {
           "$ref": "#/definitions/DataSetAdFraud"
         },
-        "keyword": {
-          "$ref": "#/definitions/DataSetKeyword",
-          "description": "3 is reserved\nWe expect that only keyword or sentiment will\nbe populated at a given point in time to not\nduplicate data. If sentiment is not nil, then\nit contains all of the keywords in its map,\nand as such we don't have to populate Keyword."
-        },
-        "malicious": {
-          "$ref": "#/definitions/DataSetMalicious"
+        "categorization": {
+          "$ref": "#/definitions/DataSetCategorization"
         },
         "echo": {
           "$ref": "#/definitions/DataSetEcho"
+        },
+        "keyword": {
+          "description": "We expect that only keyword or sentiment will\nbe populated at a given point in time to not\nduplicate data. If sentiment is not nil, then\nit contains all of the keywords in its map,\nand as such we don't have to populate Keyword.",
+          "$ref": "#/definitions/DataSetKeyword"
+        },
+        "malicious": {
+          "$ref": "#/definitions/DataSetMalicious"
         },
         "sentiment": {
           "$ref": "#/definitions/DataSetSentiment"
         }
       }
     },
-    "msgDataSetType": {
-      "type": "string",
-      "enum": [
-        "CATEGORIZATION",
-        "ADFRAUD",
-        "KEYWORD",
-        "MALICIOUS",
-        "ECHO",
-        "SENTIMENT"
-      ],
-      "default": "CATEGORIZATION",
-      "title": "- KEYWORD: 2 is reserved"
-    },
     "msgQueryContentRequests": {
       "type": "object",
+      "title": "QueryContentRequests",
       "properties": {
+        "callback": {
+          "description": "A callback URL. Will receive the final result and may receive partial\nresults if `partial-results` is true. It is an error to specify\ncallback when poll is true.",
+          "type": "string"
+        },
         "content": {
           "type": "array",
+          "title": "The content to categorize",
           "items": {
             "$ref": "#/definitions/QueryContentRequestsURLContent"
           }
         },
         "dataset": {
           "type": "array",
+          "title": "The datasets to query",
           "items": {
-            "$ref": "#/definitions/msgDataSetType"
+            "type": "integer",
+            "format": "int64"
           }
         },
-        "callback": {
-          "type": "string"
+        "partial_results": {
+          "description": "True if partial results should be sent to the callback endpoint in\naddition to the final result. Only makes sense in the context of a\ncallback query.",
+          "type": "boolean",
+          "format": "boolean"
         },
         "poll": {
+          "description": "Whether the client will poll for a result. It is an error to specify\npoll as true when callback has a value.",
           "type": "boolean",
           "format": "boolean"
-        },
-        "partial_results": {
-          "type": "boolean",
-          "format": "boolean"
-        },
-        "accept": {
-          "type": "string"
         }
       }
     },
     "msgQueryReplies": {
       "type": "object",
+      "title": "QueryReplies",
       "properties": {
         "replies": {
           "type": "array",
@@ -832,40 +327,55 @@
             "$ref": "#/definitions/msgQueryReply"
           }
         }
-      },
-      "title": "If a request contained more then one URL, or piece of content, we will reply\nwith this reply. Each sub-query should be reflected in the replies field,\nand with their own status. The position in the array will correspond to the\nindex in the original array of URL or Content provided in the QueryURLRequests\nor QueryContentRequests message"
+      }
     },
     "msgQueryReply": {
       "type": "object",
+      "title": "QueryReply",
       "properties": {
-        "status": {
-          "$ref": "#/definitions/msgStatus"
+        "location": {
+          "type": "string",
+          "title": "fetching the url resulted in a redirect to this location"
         },
         "request_id": {
-          "type": "string"
+          "type": "string",
+          "title": "will identify the request after submission"
+        },
+        "status": {
+          "description": "The zvelo internal status.",
+          "$ref": "#/definitions/rpcStatus"
         }
       }
     },
     "msgQueryResult": {
       "type": "object",
+      "title": "QueryResult",
       "properties": {
-        "request_id": {
-          "type": "string"
-        },
-        "tracking_id": {
-          "type": "string"
-        },
-        "status": {
-          "$ref": "#/definitions/msgStatus"
+        "location": {
+          "type": "string",
+          "title": "fetching the url resulted in a redirect to this location"
         },
         "request_dataset": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/msgDataSetType"
+            "type": "integer",
+            "format": "int64"
           }
+        },
+        "request_id": {
+          "type": "string",
+          "title": "Request ID for tracking requests"
         },
         "response_dataset": {
           "$ref": "#/definitions/msgDataSet"
+        },
+        "status": {
+          "title": "This is the zvelo internal status",
+          "$ref": "#/definitions/rpcStatus"
+        },
+        "tracking_id": {
+          "type": "string",
+          "title": "Provided by user to link to responses"
         },
         "url": {
           "type": "string"
@@ -874,50 +384,100 @@
     },
     "msgQueryURLRequests": {
       "type": "object",
+      "title": "QueryURLRequests",
       "properties": {
+        "callback": {
+          "description": "The callback url will receive the final result and may receive partial\nresults if partial_results is true. It is an error to specify\ncallback when poll is true.",
+          "type": "string"
+        },
+        "dataset": {
+          "type": "array",
+          "title": "The datasets to query for each URL",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "partial_results": {
+          "description": "True if partial results should be sent to the callback endpoint in\naddition to the final result. Only makes sense in the context of a\ncallback query.",
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "poll": {
+          "description": "The client will poll for a result. It is an error to specify poll as\ntrue when callback has a value.",
+          "type": "boolean",
+          "format": "boolean"
+        },
         "url": {
+          "description": "The URLs to categorize. Required.",
           "type": "array",
           "items": {
             "type": "string"
           }
-        },
-        "dataset": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/msgDataSetType"
-          }
-        },
-        "callback": {
-          "type": "string"
-        },
-        "poll": {
-          "type": "boolean",
-          "format": "boolean"
-        },
-        "partial_results": {
-          "type": "boolean",
-          "format": "boolean"
-        },
-        "accept": {
-          "type": "string"
         }
       }
     },
-    "msgStatus": {
+    "protobufAny": {
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }",
       "type": "object",
       "properties": {
+        "type_url": {
+          "description": "A URL/resource name whose content describes the type of the\nserialized protocol buffer message.\n\nFor URLs which use the scheme `http`, `https`, or no scheme, the\nfollowing restrictions and interpretations apply:\n\n* If no scheme is provided, `https` is assumed.\n* The last segment of the URL's path must represent the fully\n  qualified name of the type (as in `path/google.protobuf.Duration`).\n  The name should be in a canonical form (e.g., leading \".\" is\n  not accepted).\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics.",
+          "type": "string"
+        },
+        "value": {
+          "description": "Must be a valid serialized protocol buffer of the above specified type.",
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "description": "The `Status` type defines a logical error model that is suitable for different\nprogramming environments, including REST APIs and RPC APIs. It is used by\n[gRPC](https://github.com/grpc). The error model is designed to be:\n\n- Simple to use and understand for most users\n- Flexible enough to meet unexpected needs\n\n# Overview\n\nThe `Status` message contains three pieces of data: error code, error message,\nand error details. The error code should be an enum value of\n[google.rpc.Code][google.rpc.Code], but it may accept additional error codes if needed.  The\nerror message should be a developer-facing English message that helps\ndevelopers *understand* and *resolve* the error. If a localized user-facing\nerror message is needed, put the localized message in the error details or\nlocalize it in the client. The optional error details may contain arbitrary\ninformation about the error. There is a predefined set of error detail types\nin the package `google.rpc` which can be used for common error conditions.\n\n# Language mapping\n\nThe `Status` message is the logical representation of the error model, but it\nis not necessarily the actual wire format. When the `Status` message is\nexposed in different client libraries and different wire protocols, it can be\nmapped differently. For example, it will likely be mapped to some exceptions\nin Java, but more likely mapped to some error codes in C.\n\n# Other uses\n\nThe error model and the `Status` message can be used in a variety of\nenvironments, either with or without APIs, to provide a\nconsistent developer experience across different environments.\n\nExample uses of this error model include:\n\n- Partial errors. If a service needs to return partial errors to the client,\n    it may embed the `Status` in the normal response to indicate the partial\n    errors.\n\n- Workflow errors. A typical workflow has multiple steps. Each step may\n    have a `Status` message for error reporting purpose.\n\n- Batch operations. If a client uses batch request and batch response, the\n    `Status` message should be used directly inside batch response, one for\n    each error sub-response.\n\n- Asynchronous operations. If an API call embeds asynchronous operation\n    results in its response, the status of those operations should be\n    represented directly using the `Status` message.\n\n- Logging. If some API errors are stored in logs, the message `Status` could\n    be used directly after any stripping needed for security/privacy reasons.",
+      "type": "object",
+      "title": "Status",
+      "properties": {
         "code": {
-          "$ref": "#/definitions/StatusCode"
+          "description": "The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].",
+          "type": "integer",
+          "format": "int32"
+        },
+        "details": {
+          "description": "A list of messages that carry the error details.  There will be a\ncommon set of message types for APIs to use.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
         },
         "message": {
-          "type": "string"
-        },
-        "fetch_status": {
-          "$ref": "#/definitions/msgStatus"
-        },
-        "location": {
+          "description": "A developer-facing error message, which should be in English. Any\nuser-facing error message should be localized and sent in the\n[google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.",
           "type": "string"
         }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "authorization": {
+      "type": "oauth2",
+      "flow": "accessCode",
+      "authorizationUrl": "https://auth.zvelo.com/oauth2/auth",
+      "tokenUrl": "https://auth.zvelo.com/oauth2/token",
+      "scopes": {
+        "hydra": "Manage All of Hydra",
+        "hydra.clients": "Manage Hydra Clients",
+        "hydra.groups": "Manage Warden Groups",
+        "hydra.keys.create": "Create JSON Web Keys",
+        "hydra.keys.delete": "Delete JSON Web Keys",
+        "hydra.keys.get": "Fetch JSON Web Keys",
+        "hydra.keys.update": "Get JSON Web Keys",
+        "hydra.policies": "Manage Access Control Policies",
+        "hydra.warden": "Make Access Control Inquiries",
+        "offline": "Offline Access",
+        "openid": "Your Identity (including email)",
+        "zvelo": "Manage All of zvelo",
+        "zvelo.dataset": "Access zvelo Datasets",
+        "zvelo.override": "Manage zvelo Overrides",
+        "zvelo.websocket": "Request a zvelo WebSocket"
       }
     }
   }

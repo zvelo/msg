@@ -4,8 +4,6 @@ package zvelo.msg;
 
 option go_package = "zvelo.io/msg";
 
-import "zvelo/msg/category.proto";
-
 enum DataSetType {
   CATEGORIZATION = 0;
   ADFRAUD        = 1;
@@ -16,37 +14,46 @@ enum DataSetType {
   SENTIMENT      = 6; // returns keywords & sentiment
 }
 
+// DataSet
 message DataSet {
+  // Categorization
   message Categorization {
-    repeated Category values = 1;
+    reserved 1;
+    repeated uint32 values = 2;
   }
 
+  // AdFraud
   message AdFraud {
     bool   verdict     = 1;
     string signature = 2;
   }
 
+  // Sentiment
   message Sentiment {
     map<string, float> values = 1;
   }
 
+  // Keyword
   message Keyword {
       repeated string values = 1;
   }
 
+  // Malicious
   message Malicious {
-    Category category  = 1;
-    // 2 reserved for signature
-    bool     verdict   = 3;
+    reserved 1;
+    reserved 2; // signature
+    bool   verdict  = 3;
+    uint32 category = 4;
   }
 
+  // Echo
   message Echo {
     string url = 1;
   }
 
   Categorization         categorization = 1;
   AdFraud                adfraud        = 2;
-  // 3 is reserved
+  reserved 3;
   // We expect that only keyword or sentiment will
   // be populated at a given point in time to not
   // duplicate data. If sentiment is not nil, then
