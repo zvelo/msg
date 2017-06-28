@@ -3,6 +3,7 @@
   * Start feature "Update external messaging to allow fine grained multi query responses"
   https://www.pivotaltracker.com/story/show/136153393
   https://github.com/zvelo/msg/pull/19
+  https://github.com/zvelo/msg/pull/23
 
 2016-10-26  Bob Uhl <buhl@zvelo.com>
 
