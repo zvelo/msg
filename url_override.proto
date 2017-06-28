@@ -1,11 +1,12 @@
 syntax = "proto3";
 
 package zvelo.msg;
+
 option go_package = "zvelo.io/msg";
 
-import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 
 // OverrideType
 enum OverrideType {

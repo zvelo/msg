@@ -63,7 +63,7 @@ service API {
   }
 
   // Find the override that would match a given URL
-  rpc OverrideMatchingV1(Override) returns (Override) {
+  rpc OverrideMatchingV1(OverrideRequest) returns (Override) {
     option (google.api.http) = {
       get: "/v1/overrides/matching/{url}"
     };
