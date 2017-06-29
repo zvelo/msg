@@ -334,17 +334,12 @@
       "type": "object",
       "title": "QueryReply",
       "properties": {
-        "location": {
-          "type": "string",
-          "title": "fetching the url resulted in a redirect to this location"
+        "query_status": {
+          "$ref": "#/definitions/msgQueryStatus"
         },
         "request_id": {
           "type": "string",
           "title": "will identify the request after submission"
-        },
-        "status": {
-          "description": "The zvelo internal status.",
-          "$ref": "#/definitions/rpcStatus"
         }
       }
     },
@@ -352,9 +347,8 @@
       "type": "object",
       "title": "QueryResult",
       "properties": {
-        "location": {
-          "type": "string",
-          "title": "fetching the url resulted in a redirect to this location"
+        "query_status": {
+          "$ref": "#/definitions/msgQueryStatus"
         },
         "request_dataset": {
           "type": "array",
@@ -370,16 +364,34 @@
         "response_dataset": {
           "$ref": "#/definitions/msgDataSet"
         },
-        "status": {
-          "title": "This is the zvelo internal status",
-          "$ref": "#/definitions/rpcStatus"
-        },
         "tracking_id": {
           "type": "string",
           "title": "Provided by user to link to responses"
         },
         "url": {
           "type": "string"
+        }
+      }
+    },
+    "msgQueryStatus": {
+      "type": "object",
+      "title": "QueryStatus",
+      "properties": {
+        "complete": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "error": {
+          "$ref": "#/definitions/rpcStatus"
+        },
+        "fetch_code": {
+          "type": "integer",
+          "format": "int64",
+          "title": "the http status code received from the server when fetching a url"
+        },
+        "location": {
+          "type": "string",
+          "title": "fetching the url resulted in a redirect to this location"
         }
       }
     },

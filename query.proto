@@ -12,6 +12,24 @@ message QueryPollRequest {
   string request_id = 1;
 };
 
+// QueryStatus
+message QueryStatus {
+  option (gogoproto.equal) = false;
+  option (gogoproto.verbose_equal) = false;
+  option (gogoproto.marshaler) = false;
+  option (gogoproto.unmarshaler) = false;
+  option (gogoproto.sizer) = false;
+
+  bool complete = 1;
+  google.rpc.Status error = 2;
+
+  // the http status code received from the server when fetching a url
+  uint32 fetch_code = 3;
+
+  // fetching the url resulted in a redirect to this location
+  string location = 4;
+}
+
 // QueryResult
 message QueryResult {
   option (gogoproto.equal) = false;
@@ -35,17 +53,11 @@ message QueryResult {
   string url                      = 8;
   repeated uint32 request_dataset = 9;
 
-  // This is the zvelo internal status
-  google.rpc.Status status = 10;
-
-  // fetching the url resulted in a redirect to this location
-  string location = 11;
+  QueryStatus query_status = 10;
 };
 
 // QueryURLRequests
 message QueryURLRequests {
-  option (gogoproto.verbose_equal) = false;
-
   // The URLs to categorize. Required.
   repeated string url = 1;
 
@@ -128,11 +140,7 @@ message QueryReply {
   // will identify the request after submission
   string request_id = 2;
 
-  // The zvelo internal status.
-  google.rpc.Status status = 3;
-
-  // fetching the url resulted in a redirect to this location
-  string location = 4;
+  QueryStatus query_status = 3;
 }
 
 // If a request contained more then one URL, or piece of content, we will reply
@@ -149,7 +157,7 @@ message QueryReplies {
   option (gogoproto.unmarshaler) = false;
   option (gogoproto.sizer) = false;
 
-    repeated QueryReply replies = 1;  // this contains a reply for each sub query
+  repeated QueryReply replies = 1;  // this contains a reply for each sub query
 }
 
 // Callback Rules:

@@ -62,7 +62,7 @@ $(GO_PB_FILES): %.pb.go: %.proto
 $(GRPC_GATEWAY_FILES): %.pb.gw.go: $(GRPC_GATEWAY_PROTO_FILES)
 	$(call wrap-cmd,$(call wrap-protoc,$(protoc-grpc-gateway)))
 
-swagger.json: $(PROTO_FILES) internal/swagger-patch/main.go
+swagger.json: $(GRPC_GATEWAY_PROTO_FILES) $(PROTO_FILES) internal/swagger-patch/main.go
 	$(call wrap-cmd,$(call wrap-protoc,$(protoc-swagger)))
 	@mv $(patsubst %.proto,%.swagger.json,$<) swagger.json
 	go run ./internal/swagger-patch/main.go

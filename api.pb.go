@@ -18,6 +18,7 @@
 	It has these top-level messages:
 		DataSet
 		QueryPollRequest
+		QueryStatus
 		QueryResult
 		QueryURLRequests
 		QueryContentRequests
