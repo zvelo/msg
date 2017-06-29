@@ -65,6 +65,12 @@ func main() {
 		"Get:/v1/queries/content/{request_id}": {"zvelo.dataset"},
 		"Post:/v1/queries/url":                 {"zvelo.dataset"},
 		"Get:/v1/queries/url/{request_id}":     {"zvelo.dataset"},
+		"Get:/v1/overrides/{url}":              {"zvelo.override"},
+		"Post:/v1/overrides":                   {"zvelo.override"},
+		"Delete:/v1/overrides/{url}":           {"zvelo.override"},
+		"Get:/v1/overrides/matching/{url}":     {"zvelo.override"},
+		"Get:/v1/overrides":                    {"zvelo.override"},
+		"Get:/v1/overrides/expired":            {"zvelo.override"},
 	}
 
 	for p, v := range s.Paths.Paths {
