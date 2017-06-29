@@ -317,19 +317,6 @@
     }
   },
   "definitions": {
-    "DataSetAdFraud": {
-      "type": "object",
-      "title": "AdFraud",
-      "properties": {
-        "signature": {
-          "type": "string"
-        },
-        "verdict": {
-          "type": "boolean",
-          "format": "boolean"
-        }
-      }
-    },
     "DataSetCategorization": {
       "type": "object",
       "title": "Categorization",
@@ -352,18 +339,6 @@
         }
       }
     },
-    "DataSetKeyword": {
-      "type": "object",
-      "title": "Keyword",
-      "properties": {
-        "values": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
     "DataSetMalicious": {
       "type": "object",
       "title": "Malicious",
@@ -375,19 +350,6 @@
         "verdict": {
           "type": "boolean",
           "format": "boolean"
-        }
-      }
-    },
-    "DataSetSentiment": {
-      "type": "object",
-      "title": "Sentiment",
-      "properties": {
-        "values": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "number",
-            "format": "float"
-          }
         }
       }
     },
@@ -421,24 +383,14 @@
       "type": "object",
       "title": "DataSet",
       "properties": {
-        "adfraud": {
-          "$ref": "#/definitions/DataSetAdFraud"
-        },
         "categorization": {
           "$ref": "#/definitions/DataSetCategorization"
         },
         "echo": {
           "$ref": "#/definitions/DataSetEcho"
         },
-        "keyword": {
-          "description": "We expect that only keyword or sentiment will\nbe populated at a given point in time to not\nduplicate data. If sentiment is not nil, then\nit contains all of the keywords in its map,\nand as such we don't have to populate Keyword.",
-          "$ref": "#/definitions/DataSetKeyword"
-        },
         "malicious": {
           "$ref": "#/definitions/DataSetMalicious"
-        },
-        "sentiment": {
-          "$ref": "#/definitions/DataSetSentiment"
         }
       }
     },

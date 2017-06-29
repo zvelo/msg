@@ -6,12 +6,12 @@ option go_package = "zvelo.io/msg";
 
 enum DataSetType {
   CATEGORIZATION = 0;
-  ADFRAUD        = 1;
+  // 1 is reserved
   // 2 is reserved
-  KEYWORD        = 3;
+  // 3 is reserved
   MALICIOUS      = 4;
   ECHO           = 5; // for internal zvelo use only
-  SENTIMENT      = 6; // returns keywords & sentiment
+  // 6 is reserved
 }
 
 // DataSet
@@ -20,22 +20,6 @@ message DataSet {
   message Categorization {
     reserved 1;
     repeated uint32 values = 2;
-  }
-
-  // AdFraud
-  message AdFraud {
-    bool   verdict     = 1;
-    string signature = 2;
-  }
-
-  // Sentiment
-  message Sentiment {
-    map<string, float> values = 1;
-  }
-
-  // Keyword
-  message Keyword {
-      repeated string values = 1;
   }
 
   // Malicious
@@ -51,16 +35,11 @@ message DataSet {
     string url = 1;
   }
 
-  Categorization         categorization = 1;
-  AdFraud                adfraud        = 2;
+  Categorization categorization = 1;
+  reserved 2;
   reserved 3;
-  // We expect that only keyword or sentiment will
-  // be populated at a given point in time to not
-  // duplicate data. If sentiment is not nil, then
-  // it contains all of the keywords in its map,
-  // and as such we don't have to populate Keyword.
-  Keyword                keyword        = 4;
-  Malicious              malicious      = 5;
-  Echo                   echo           = 6;
-  Sentiment              sentiment      = 7;
+  reserved 4;
+  Malicious      malicious      = 5;
+  Echo           echo           = 6;
+  reserved 7;
 }
