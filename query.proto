@@ -24,7 +24,7 @@ message QueryStatus {
   google.rpc.Status error = 2;
 
   // the http status code received from the server when fetching a url
-  uint32 fetch_code = 3;
+  int32 fetch_code = 3;
 
   // fetching the url resulted in a redirect to this location
   string location = 4;

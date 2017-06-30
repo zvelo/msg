@@ -598,7 +598,7 @@
         },
         "fetch_code": {
           "type": "integer",
-          "format": "int64",
+          "format": "int32",
           "title": "the http status code received from the server when fetching a url"
         },
         "location": {
