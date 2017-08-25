@@ -1,3 +1,12 @@
 [[constraint]]
-  branch = "master"
+  name = "github.com/gogo/protobuf"
+  version = "^0.4.0"
+
+# the latest release, v1.2.2 is too old
+[[constraint]]
   name = "github.com/grpc-ecosystem/grpc-gateway"
+  branch = "master"
+
+[[constraint]]
+  name = "google.golang.org/grpc"
+  version = "^1.5.2"

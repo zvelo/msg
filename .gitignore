@@ -1,3 +1,5 @@
 *_pb2.py
 /protoc-gen-gozvelo
 /swagger-patch
+/Gopkg.lock
+/vendor/
