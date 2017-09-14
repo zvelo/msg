@@ -41,9 +41,7 @@ message QueryResult {
   // Request ID for tracking requests
   string request_id = 1;
 
-  // Provided by user to link to responses
-  string tracking_id = 2;
-
+  reserved 2;
   reserved 3;
   reserved 4;
   reserved 5;
