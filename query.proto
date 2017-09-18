@@ -62,13 +62,10 @@ message QueryURLRequests {
   reserved 2;
 
   // The callback url will receive the final result and may receive partial
-  // results if partial_results is true. It is an error to specify
-  // callback when poll is true.
+  // results if partial_results is true.
   string callback = 3;
 
-  // The client will poll for a result. It is an error to specify poll as
-  // true when callback has a value.
-  bool poll = 4;
+  reserved 4;
 
   // True if partial results should be sent to the callback endpoint in
   // addition to the final result. Only makes sense in the context of a
@@ -106,13 +103,10 @@ message QueryContentRequests {
   reserved 2;
 
   // A callback URL. Will receive the final result and may receive partial
-  // results if `partial-results` is true. It is an error to specify
-  // callback when poll is true.
+  // results if `partial-results` is true.
   string callback = 3;
 
-  // Whether the client will poll for a result. It is an error to specify
-  // poll as true when callback has a value.
-  bool poll = 4;
+  reserved 4;
 
   // True if partial results should be sent to the callback endpoint in
   // addition to the final result. Only makes sense in the context of a

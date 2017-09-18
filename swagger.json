@@ -240,7 +240,7 @@
       "title": "QueryContentRequests",
       "properties": {
         "callback": {
-          "description": "A callback URL. Will receive the final result and may receive partial\nresults if `partial-results` is true. It is an error to specify\ncallback when poll is true.",
+          "description": "A callback URL. Will receive the final result and may receive partial\nresults if `partial-results` is true.",
           "type": "string"
         },
         "content": {
@@ -260,11 +260,6 @@
         },
         "partial_results": {
           "description": "True if partial results should be sent to the callback endpoint in\naddition to the final result. Only makes sense in the context of a\ncallback query.",
-          "type": "boolean",
-          "format": "boolean"
-        },
-        "poll": {
-          "description": "Whether the client will poll for a result. It is an error to specify\npoll as true when callback has a value.",
           "type": "boolean",
           "format": "boolean"
         }
@@ -348,7 +343,7 @@
       "title": "QueryURLRequests",
       "properties": {
         "callback": {
-          "description": "The callback url will receive the final result and may receive partial\nresults if partial_results is true. It is an error to specify\ncallback when poll is true.",
+          "description": "The callback url will receive the final result and may receive partial\nresults if partial_results is true.",
           "type": "string"
         },
         "dataset": {
@@ -361,11 +356,6 @@
         },
         "partial_results": {
           "description": "True if partial results should be sent to the callback endpoint in\naddition to the final result. Only makes sense in the context of a\ncallback query.",
-          "type": "boolean",
-          "format": "boolean"
-        },
-        "poll": {
-          "description": "The client will poll for a result. It is an error to specify poll as\ntrue when callback has a value.",
           "type": "boolean",
           "format": "boolean"
         },
