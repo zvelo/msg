@@ -161,7 +161,7 @@ func TestNewDataSetType(t *testing.T) {
 func TestMergeDatasets(t *testing.T) {
 	d1 := &DataSet{
 		Categorization: &DataSet_Categorization{
-			Values: []uint32{1},
+			Value: []uint32{1},
 		},
 	}
 	d2 := &DataSet{
@@ -195,7 +195,7 @@ func TestMergeDatasets(t *testing.T) {
 		t.Error("d3.Categorization should not be nil")
 	}
 
-	if d3.Categorization.Values[0] != 1 {
+	if d3.Categorization.Value[0] != 1 {
 		t.Error("d3.Categorization.Values[0] should equal 1")
 	}
 
