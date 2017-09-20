@@ -58,20 +58,13 @@
         }
       }
     },
-    "/v1/queries/content/{request_id}": {
+    "/v1/queries/result/{request_id}": {
       "get": {
         "tags": [
           "API"
         ],
         "summary": "Results of active or unexpired query",
-        "operationId": "QueryContentResultV1",
-        "security": [
-          {
-            "authorization": [
-              "zvelo.dataset"
-            ]
-          }
-        ],
+        "operationId": "QueryResultV1",
         "parameters": [
           {
             "type": "string",
@@ -123,38 +116,6 @@
           }
         }
       }
-    },
-    "/v1/queries/url/{request_id}": {
-      "get": {
-        "tags": [
-          "API"
-        ],
-        "summary": "Results of active or unexpired query",
-        "operationId": "QueryURLResultV1",
-        "security": [
-          {
-            "authorization": [
-              "zvelo.dataset"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "type": "string",
-            "name": "request_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/msgQueryResult"
-            }
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -162,7 +123,7 @@
       "type": "object",
       "title": "Categorization",
       "properties": {
-        "values": {
+        "value": {
           "type": "array",
           "items": {
             "type": "integer",
@@ -209,10 +170,6 @@
           "additionalProperties": {
             "type": "string"
           }
-        },
-        "id": {
-          "type": "string",
-          "title": "customer supplied identifier to link to response"
         },
         "url": {
           "type": "string",
@@ -269,7 +226,7 @@
       "type": "object",
       "title": "QueryReplies",
       "properties": {
-        "replies": {
+        "reply": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/msgQueryReply"
@@ -281,8 +238,8 @@
       "type": "object",
       "title": "QueryReply",
       "properties": {
-        "query_status": {
-          "$ref": "#/definitions/msgQueryStatus"
+        "error": {
+          "$ref": "#/definitions/rpcStatus"
         },
         "request_id": {
           "type": "string",

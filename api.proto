@@ -17,13 +17,6 @@ service API {
     };
   }
 
-  // Results of active or unexpired query
-  rpc QueryURLResultV1(QueryPollRequest) returns (QueryResult) {
-    option (google.api.http) = {
-      get: "/v1/queries/url/{request_id}"
-    };
-  }
-
   // Create new content query
   rpc QueryContentV1(QueryContentRequests) returns (QueryReplies) {
     option (google.api.http) = {
@@ -33,9 +26,9 @@ service API {
   }
 
   // Results of active or unexpired query
-  rpc QueryContentResultV1(QueryPollRequest) returns (QueryResult) {
+  rpc QueryResultV1(QueryPollRequest) returns (QueryResult) {
     option (google.api.http) = {
-      get: "/v1/queries/content/{request_id}"
+      get: "/v1/queries/result/{request_id}"
     };
   }
 }

@@ -12,5 +12,5 @@ message SeedResult {
 }
 
 message SeedResults {
-  repeated SeedResult values = 1;
+  repeated SeedResult value = 1;
 }

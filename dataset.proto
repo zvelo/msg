@@ -19,7 +19,7 @@ message DataSet {
   // Categorization
   message Categorization {
     reserved 1;
-    repeated uint32 values = 2;
+    repeated uint32 value = 2;
   }
 
   // Malicious

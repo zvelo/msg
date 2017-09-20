@@ -5,17 +5,17 @@ PY_PB_FILES              := $(patsubst %.proto,%_pb2.py,$(PROTO_FILES))
 GRPC_GATEWAY_PROTO_FILES := api.proto
 GRPC_GATEWAY_FILES       := $(patsubst %.proto,%.pb.gw.go,$(GRPC_GATEWAY_PROTO_FILES))
 
-default: go grpc-gateway swagger.json
 .PHONY: default
+default: go grpc-gateway swagger.json
 
-go: $(GO_PB_FILES) $(GRPC_GATEWAY_FILES)
 .PHONY: go
+go: $(GO_PB_FILES) $(GRPC_GATEWAY_FILES)
 
-python: $(PY_PB_FILES)
 .PHONY: python
+python: $(PY_PB_FILES)
 
-grpc-gateway: $(GRPC_GATEWAY_FILES)
 .PHONY: grpc-gateway
+grpc-gateway: $(GRPC_GATEWAY_FILES)
 
 define wrap-cmd
 @rm -f ../../zvelo
@@ -70,6 +70,6 @@ swagger.json: $(GRPC_GATEWAY_PROTO_FILES) $(PROTO_FILES) internal/swagger-patch/
 $(PY_PB_FILES): %_pb2.py: %.proto
 	$(call wrap-cmd,$(protoc-python))
 
+.PHONY: clean
 clean:
 	rm -rf $(GO_PB_FILES) $(PY_PB_FILES) $(GRPC_GATEWAY_FILES) swagger.json
-.PHONY: clean

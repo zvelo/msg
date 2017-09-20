@@ -82,8 +82,7 @@ message QueryURLRequests {
 message QueryContentRequests {
   // URLContent
   message URLContent {
-    // customer supplied identifier to link to response
-    string id = 1;
+    reserved 1;
 
     // url the content came from, not required
     string url= 2;
@@ -132,7 +131,9 @@ message QueryReply {
   // will identify the request after submission
   string request_id = 2;
 
-  QueryStatus query_status = 3;
+  reserved 3;
+
+  google.rpc.Status error = 4;
 }
 
 // If a request contained more then one URL, or piece of content, we will reply
@@ -149,7 +150,7 @@ message QueryReplies {
   option (gogoproto.unmarshaler) = false;
   option (gogoproto.sizer) = false;
 
-  repeated QueryReply replies = 1;  // this contains a reply for each sub query
+  repeated QueryReply reply = 1;  // this contains a reply for each sub query
 }
 
 // Callback Rules:
