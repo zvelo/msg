@@ -9,18 +9,10 @@ import "zvelo/msg/query.proto";
 import "google/api/annotations.proto";
 
 service API {
-  // Create new URL query
-  rpc QueryURLV1(QueryURLRequests) returns (QueryReplies) {
+  // Create new query
+  rpc QueryV1(QueryRequests) returns (QueryReplies) {
     option (google.api.http) = {
-      post: "/v1/queries/url"
-      body: "*"
-    };
-  }
-
-  // Create new content query
-  rpc QueryContentV1(QueryContentRequests) returns (QueryReplies) {
-    option (google.api.http) = {
-      post: "/v1/queries/content"
+      post: "/v1/query"
       body: "*"
     };
   }
@@ -28,7 +20,7 @@ service API {
   // Results of active or unexpired query
   rpc QueryResultV1(QueryPollRequest) returns (QueryResult) {
     option (google.api.http) = {
-      get: "/v1/queries/result/{request_id}"
+      get: "/v1/query/{request_id}"
     };
   }
 }

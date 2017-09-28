@@ -24,27 +24,20 @@
   "host": "api.zvelo.com",
   "basePath": "/",
   "paths": {
-    "/v1/queries/content": {
+    "/v1/query": {
       "post": {
         "tags": [
           "API"
         ],
-        "summary": "Create new content query",
-        "operationId": "QueryContentV1",
-        "security": [
-          {
-            "authorization": [
-              "zvelo.dataset"
-            ]
-          }
-        ],
+        "summary": "Create new query",
+        "operationId": "QueryV1",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/msgQueryContentRequests"
+              "$ref": "#/definitions/msgQueryRequests"
             }
           }
         ],
@@ -58,7 +51,7 @@
         }
       }
     },
-    "/v1/queries/result/{request_id}": {
+    "/v1/query/{request_id}": {
       "get": {
         "tags": [
           "API"
@@ -78,40 +71,6 @@
             "description": "",
             "schema": {
               "$ref": "#/definitions/msgQueryResult"
-            }
-          }
-        }
-      }
-    },
-    "/v1/queries/url": {
-      "post": {
-        "tags": [
-          "API"
-        ],
-        "summary": "Create new URL query",
-        "operationId": "QueryURLV1",
-        "security": [
-          {
-            "authorization": [
-              "zvelo.dataset"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/msgQueryURLRequests"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/msgQueryReplies"
             }
           }
         }
@@ -150,14 +109,21 @@
           "format": "int64"
         },
         "verdict": {
-          "type": "boolean",
-          "format": "boolean"
+          "$ref": "#/definitions/MaliciousVerdict"
         }
       }
     },
-    "QueryContentRequestsURLContent": {
+    "MaliciousVerdict": {
+      "type": "string",
+      "default": "VERDICT_UNKNOWN",
+      "enum": [
+        "VERDICT_UNKNOWN",
+        "VERDICT_CLEAN",
+        "VERDICT_MALICIOUS"
+      ]
+    },
+    "QueryRequestsURLContent": {
       "type": "object",
-      "title": "URLContent",
       "properties": {
         "content": {
           "type": "string",
@@ -192,36 +158,6 @@
         }
       }
     },
-    "msgQueryContentRequests": {
-      "type": "object",
-      "title": "QueryContentRequests",
-      "properties": {
-        "callback": {
-          "description": "A callback URL. Will receive the final result and may receive partial\nresults if `partial-results` is true.",
-          "type": "string"
-        },
-        "content": {
-          "type": "array",
-          "title": "The content to categorize",
-          "items": {
-            "$ref": "#/definitions/QueryContentRequestsURLContent"
-          }
-        },
-        "dataset": {
-          "type": "array",
-          "title": "The datasets to query",
-          "items": {
-            "type": "integer",
-            "format": "int64"
-          }
-        },
-        "partial_results": {
-          "description": "True if partial results should be sent to the callback endpoint in\naddition to the final result. Only makes sense in the context of a\ncallback query.",
-          "type": "boolean",
-          "format": "boolean"
-        }
-      }
-    },
     "msgQueryReplies": {
       "type": "object",
       "title": "QueryReplies",
@@ -244,6 +180,38 @@
         "request_id": {
           "type": "string",
           "title": "will identify the request after submission"
+        }
+      }
+    },
+    "msgQueryRequests": {
+      "type": "object",
+      "title": "QueryRequests",
+      "properties": {
+        "callback": {
+          "type": "string",
+          "title": "The callback url will receive the final result"
+        },
+        "content": {
+          "type": "array",
+          "title": "The content to categorize",
+          "items": {
+            "$ref": "#/definitions/QueryRequestsURLContent"
+          }
+        },
+        "dataset": {
+          "type": "array",
+          "title": "The datasets to query for each URL",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "url": {
+          "type": "array",
+          "title": "The URLs to categorize",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -292,36 +260,6 @@
         "location": {
           "type": "string",
           "title": "fetching the url resulted in a redirect to this location"
-        }
-      }
-    },
-    "msgQueryURLRequests": {
-      "type": "object",
-      "title": "QueryURLRequests",
-      "properties": {
-        "callback": {
-          "description": "The callback url will receive the final result and may receive partial\nresults if partial_results is true.",
-          "type": "string"
-        },
-        "dataset": {
-          "type": "array",
-          "title": "The datasets to query for each URL",
-          "items": {
-            "type": "integer",
-            "format": "int64"
-          }
-        },
-        "partial_results": {
-          "description": "True if partial results should be sent to the callback endpoint in\naddition to the final result. Only makes sense in the context of a\ncallback query.",
-          "type": "boolean",
-          "format": "boolean"
-        },
-        "url": {
-          "description": "The URLs to categorize. Required.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
       }
     },

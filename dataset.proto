@@ -24,10 +24,17 @@ message DataSet {
 
   // Malicious
   message Malicious {
+    enum Verdict {
+      VERDICT_UNKNOWN   = 0;
+      VERDICT_CLEAN     = 1;
+      VERDICT_MALICIOUS = 2;
+    }
+
     reserved 1;
-    reserved 2; // signature
-    bool   verdict  = 3;
-    uint32 category = 4;
+    reserved 2;
+    reserved 3;
+    uint32  category = 4;
+    Verdict verdict  = 5;
   }
 
   // Echo

@@ -54,38 +54,13 @@ message QueryResult {
   QueryStatus query_status = 10;
 };
 
-// QueryURLRequests
-message QueryURLRequests {
-  // The URLs to categorize. Required.
-  repeated string url = 1;
-
-  reserved 2;
-
-  // The callback url will receive the final result and may receive partial
-  // results if partial_results is true.
-  string callback = 3;
-
-  reserved 4;
-
-  // True if partial results should be sent to the callback endpoint in
-  // addition to the final result. Only makes sense in the context of a
-  // callback query.
-  bool partial_results = 5;
-
-  reserved 6;
-
-  // The datasets to query for each URL
-  repeated uint32 dataset = 7;
-}
-
-// QueryContentRequests
-message QueryContentRequests {
-  // URLContent
+// QueryRequests
+message QueryRequests {
   message URLContent {
     reserved 1;
 
     // url the content came from, not required
-    string url= 2;
+    string url = 2;
 
     // headers
     //
@@ -96,26 +71,17 @@ message QueryContentRequests {
     string content = 4;
   }
 
+  // The URLs to categorize
+  repeated string url = 1;
+
   // The content to categorize
-  repeated URLContent content = 1;
+  repeated URLContent content = 2;
 
-  reserved 2;
-
-  // A callback URL. Will receive the final result and may receive partial
-  // results if `partial-results` is true.
+  // The callback url will receive the final result
   string callback = 3;
 
-  reserved 4;
-
-  // True if partial results should be sent to the callback endpoint in
-  // addition to the final result. Only makes sense in the context of a
-  // callback query.
-  bool partial_results = 5;
-
-  reserved 6;
-
-  // The datasets to query
-  repeated uint32 dataset = 7;
+  // The datasets to query for each URL
+  repeated uint32 dataset = 4;
 }
 
 // QueryReply
@@ -137,10 +103,9 @@ message QueryReply {
 }
 
 // If a request contained more then one URL, or piece of content, we will reply
-// with this reply. Each sub-query should be reflected in the replies field,
-// and with their own status. The position in the array will correspond to the
-// index in the original array of URL or Content provided in the QueryURLRequests
-// or QueryContentRequests message
+// with this reply. Each sub-query should be reflected in the replies field, and
+// with their own status. The position in the array will correspond to the index
+// in the original array of URL or Content provided in the QueryRequests message
 
 // QueryReplies
 message QueryReplies {
@@ -150,11 +115,11 @@ message QueryReplies {
   option (gogoproto.unmarshaler) = false;
   option (gogoproto.sizer) = false;
 
-  repeated QueryReply reply = 1;  // this contains a reply for each sub query
+  repeated QueryReply reply = 1; // this contains a reply for each sub query
 }
 
 // Callback Rules:
-// For each individual URL/RequestID we will POST at least one QueryResult message to
-// the callback URL.
+// For each individual URL/RequestID we will POST at least one QueryResult
+// message to the callback URL.
 // A RequestID callback may be sent one time if all DataSets are in cache, up to
 // one callback for each dataset as it becomes available.

@@ -127,102 +127,51 @@ func (m *QueryResult) GetQueryStatus() *QueryStatus {
 	return nil
 }
 
-// QueryURLRequests
-type QueryURLRequests struct {
-	// The URLs to categorize. Required.
+// QueryRequests
+type QueryRequests struct {
+	// The URLs to categorize
 	Url []string `protobuf:"bytes,1,rep,name=url" json:"url,omitempty"`
-	// The callback url will receive the final result and may receive partial
-	// results if partial_results is true.
+	// The content to categorize
+	Content []*QueryRequests_URLContent `protobuf:"bytes,2,rep,name=content" json:"content,omitempty"`
+	// The callback url will receive the final result
 	Callback string `protobuf:"bytes,3,opt,name=callback,proto3" json:"callback,omitempty"`
-	// True if partial results should be sent to the callback endpoint in
-	// addition to the final result. Only makes sense in the context of a
-	// callback query.
-	PartialResults bool `protobuf:"varint,5,opt,name=partial_results,json=partialResults,proto3" json:"partial_results,omitempty"`
 	// The datasets to query for each URL
-	Dataset []uint32 `protobuf:"varint,7,rep,packed,name=dataset" json:"dataset,omitempty"`
+	Dataset []uint32 `protobuf:"varint,4,rep,packed,name=dataset" json:"dataset,omitempty"`
 }
 
-func (m *QueryURLRequests) Reset()                    { *m = QueryURLRequests{} }
-func (*QueryURLRequests) ProtoMessage()               {}
-func (*QueryURLRequests) Descriptor() ([]byte, []int) { return fileDescriptorQuery, []int{3} }
+func (m *QueryRequests) Reset()                    { *m = QueryRequests{} }
+func (*QueryRequests) ProtoMessage()               {}
+func (*QueryRequests) Descriptor() ([]byte, []int) { return fileDescriptorQuery, []int{3} }
 
-func (m *QueryURLRequests) GetUrl() []string {
+func (m *QueryRequests) GetUrl() []string {
 	if m != nil {
 		return m.Url
 	}
 	return nil
 }
 
-func (m *QueryURLRequests) GetCallback() string {
-	if m != nil {
-		return m.Callback
-	}
-	return ""
-}
-
-func (m *QueryURLRequests) GetPartialResults() bool {
-	if m != nil {
-		return m.PartialResults
-	}
-	return false
-}
-
-func (m *QueryURLRequests) GetDataset() []uint32 {
-	if m != nil {
-		return m.Dataset
-	}
-	return nil
-}
-
-// QueryContentRequests
-type QueryContentRequests struct {
-	// The content to categorize
-	Content []*QueryContentRequests_URLContent `protobuf:"bytes,1,rep,name=content" json:"content,omitempty"`
-	// A callback URL. Will receive the final result and may receive partial
-	// results if `partial-results` is true.
-	Callback string `protobuf:"bytes,3,opt,name=callback,proto3" json:"callback,omitempty"`
-	// True if partial results should be sent to the callback endpoint in
-	// addition to the final result. Only makes sense in the context of a
-	// callback query.
-	PartialResults bool `protobuf:"varint,5,opt,name=partial_results,json=partialResults,proto3" json:"partial_results,omitempty"`
-	// The datasets to query
-	Dataset []uint32 `protobuf:"varint,7,rep,packed,name=dataset" json:"dataset,omitempty"`
-}
-
-func (m *QueryContentRequests) Reset()                    { *m = QueryContentRequests{} }
-func (*QueryContentRequests) ProtoMessage()               {}
-func (*QueryContentRequests) Descriptor() ([]byte, []int) { return fileDescriptorQuery, []int{4} }
-
-func (m *QueryContentRequests) GetContent() []*QueryContentRequests_URLContent {
+func (m *QueryRequests) GetContent() []*QueryRequests_URLContent {
 	if m != nil {
 		return m.Content
 	}
 	return nil
 }
 
-func (m *QueryContentRequests) GetCallback() string {
+func (m *QueryRequests) GetCallback() string {
 	if m != nil {
 		return m.Callback
 	}
 	return ""
 }
 
-func (m *QueryContentRequests) GetPartialResults() bool {
-	if m != nil {
-		return m.PartialResults
-	}
-	return false
-}
-
-func (m *QueryContentRequests) GetDataset() []uint32 {
+func (m *QueryRequests) GetDataset() []uint32 {
 	if m != nil {
 		return m.Dataset
 	}
 	return nil
 }
 
-// URLContent
-type QueryContentRequests_URLContent struct {
+type QueryRequests_URLContent struct {
 	// url the content came from, not required
 	Url string `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
 	// headers
@@ -233,27 +182,25 @@ type QueryContentRequests_URLContent struct {
 	Content string `protobuf:"bytes,4,opt,name=content,proto3" json:"content,omitempty"`
 }
 
-func (m *QueryContentRequests_URLContent) Reset()      { *m = QueryContentRequests_URLContent{} }
-func (*QueryContentRequests_URLContent) ProtoMessage() {}
-func (*QueryContentRequests_URLContent) Descriptor() ([]byte, []int) {
-	return fileDescriptorQuery, []int{4, 0}
-}
+func (m *QueryRequests_URLContent) Reset()                    { *m = QueryRequests_URLContent{} }
+func (*QueryRequests_URLContent) ProtoMessage()               {}
+func (*QueryRequests_URLContent) Descriptor() ([]byte, []int) { return fileDescriptorQuery, []int{3, 0} }
 
-func (m *QueryContentRequests_URLContent) GetUrl() string {
+func (m *QueryRequests_URLContent) GetUrl() string {
 	if m != nil {
 		return m.Url
 	}
 	return ""
 }
 
-func (m *QueryContentRequests_URLContent) GetHeader() map[string]string {
+func (m *QueryRequests_URLContent) GetHeader() map[string]string {
 	if m != nil {
 		return m.Header
 	}
 	return nil
 }
 
-func (m *QueryContentRequests_URLContent) GetContent() string {
+func (m *QueryRequests_URLContent) GetContent() string {
 	if m != nil {
 		return m.Content
 	}
@@ -269,7 +216,7 @@ type QueryReply struct {
 
 func (m *QueryReply) Reset()                    { *m = QueryReply{} }
 func (*QueryReply) ProtoMessage()               {}
-func (*QueryReply) Descriptor() ([]byte, []int) { return fileDescriptorQuery, []int{5} }
+func (*QueryReply) Descriptor() ([]byte, []int) { return fileDescriptorQuery, []int{4} }
 
 func (m *QueryReply) GetRequestId() string {
 	if m != nil {
@@ -292,7 +239,7 @@ type QueryReplies struct {
 
 func (m *QueryReplies) Reset()                    { *m = QueryReplies{} }
 func (*QueryReplies) ProtoMessage()               {}
-func (*QueryReplies) Descriptor() ([]byte, []int) { return fileDescriptorQuery, []int{6} }
+func (*QueryReplies) Descriptor() ([]byte, []int) { return fileDescriptorQuery, []int{5} }
 
 func (m *QueryReplies) GetReply() []*QueryReply {
 	if m != nil {
@@ -305,9 +252,8 @@ func init() {
 	proto.RegisterType((*QueryPollRequest)(nil), "zvelo.msg.QueryPollRequest")
 	proto.RegisterType((*QueryStatus)(nil), "zvelo.msg.QueryStatus")
 	proto.RegisterType((*QueryResult)(nil), "zvelo.msg.QueryResult")
-	proto.RegisterType((*QueryURLRequests)(nil), "zvelo.msg.QueryURLRequests")
-	proto.RegisterType((*QueryContentRequests)(nil), "zvelo.msg.QueryContentRequests")
-	proto.RegisterType((*QueryContentRequests_URLContent)(nil), "zvelo.msg.QueryContentRequests.URLContent")
+	proto.RegisterType((*QueryRequests)(nil), "zvelo.msg.QueryRequests")
+	proto.RegisterType((*QueryRequests_URLContent)(nil), "zvelo.msg.QueryRequests.URLContent")
 	proto.RegisterType((*QueryReply)(nil), "zvelo.msg.QueryReply")
 	proto.RegisterType((*QueryReplies)(nil), "zvelo.msg.QueryReplies")
 }
@@ -371,7 +317,7 @@ func (this *QueryPollRequest) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *QueryURLRequests) VerboseEqual(that interface{}) error {
+func (this *QueryRequests) VerboseEqual(that interface{}) error {
 	if that == nil {
 		if this == nil {
 			return nil
@@ -379,22 +325,22 @@ func (this *QueryURLRequests) VerboseEqual(that interface{}) error {
 		return fmt.Errorf("that == nil && this != nil")
 	}
 
-	that1, ok := that.(*QueryURLRequests)
+	that1, ok := that.(*QueryRequests)
 	if !ok {
-		that2, ok := that.(QueryURLRequests)
+		that2, ok := that.(QueryRequests)
 		if ok {
 			that1 = &that2
 		} else {
-			return fmt.Errorf("that is not of type *QueryURLRequests")
+			return fmt.Errorf("that is not of type *QueryRequests")
 		}
 	}
 	if that1 == nil {
 		if this == nil {
 			return nil
 		}
-		return fmt.Errorf("that is type *QueryURLRequests but is nil && this != nil")
+		return fmt.Errorf("that is type *QueryRequests but is nil && this != nil")
 	} else if this == nil {
-		return fmt.Errorf("that is type *QueryURLRequests but is not nil && this == nil")
+		return fmt.Errorf("that is type *QueryRequests but is not nil && this == nil")
 	}
 	if len(this.Url) != len(that1.Url) {
 		return fmt.Errorf("Url this(%v) Not Equal that(%v)", len(this.Url), len(that1.Url))
@@ -403,96 +349,6 @@ func (this *QueryURLRequests) VerboseEqual(that interface{}) error {
 		if this.Url[i] != that1.Url[i] {
 			return fmt.Errorf("Url this[%v](%v) Not Equal that[%v](%v)", i, this.Url[i], i, that1.Url[i])
 		}
-	}
-	if this.Callback != that1.Callback {
-		return fmt.Errorf("Callback this(%v) Not Equal that(%v)", this.Callback, that1.Callback)
-	}
-	if this.PartialResults != that1.PartialResults {
-		return fmt.Errorf("PartialResults this(%v) Not Equal that(%v)", this.PartialResults, that1.PartialResults)
-	}
-	if len(this.Dataset) != len(that1.Dataset) {
-		return fmt.Errorf("Dataset this(%v) Not Equal that(%v)", len(this.Dataset), len(that1.Dataset))
-	}
-	for i := range this.Dataset {
-		if this.Dataset[i] != that1.Dataset[i] {
-			return fmt.Errorf("Dataset this[%v](%v) Not Equal that[%v](%v)", i, this.Dataset[i], i, that1.Dataset[i])
-		}
-	}
-	return nil
-}
-func (this *QueryURLRequests) Equal(that interface{}) bool {
-	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
-	}
-
-	that1, ok := that.(*QueryURLRequests)
-	if !ok {
-		that2, ok := that.(QueryURLRequests)
-		if ok {
-			that1 = &that2
-		} else {
-			return false
-		}
-	}
-	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
-	} else if this == nil {
-		return false
-	}
-	if len(this.Url) != len(that1.Url) {
-		return false
-	}
-	for i := range this.Url {
-		if this.Url[i] != that1.Url[i] {
-			return false
-		}
-	}
-	if this.Callback != that1.Callback {
-		return false
-	}
-	if this.PartialResults != that1.PartialResults {
-		return false
-	}
-	if len(this.Dataset) != len(that1.Dataset) {
-		return false
-	}
-	for i := range this.Dataset {
-		if this.Dataset[i] != that1.Dataset[i] {
-			return false
-		}
-	}
-	return true
-}
-func (this *QueryContentRequests) VerboseEqual(that interface{}) error {
-	if that == nil {
-		if this == nil {
-			return nil
-		}
-		return fmt.Errorf("that == nil && this != nil")
-	}
-
-	that1, ok := that.(*QueryContentRequests)
-	if !ok {
-		that2, ok := that.(QueryContentRequests)
-		if ok {
-			that1 = &that2
-		} else {
-			return fmt.Errorf("that is not of type *QueryContentRequests")
-		}
-	}
-	if that1 == nil {
-		if this == nil {
-			return nil
-		}
-		return fmt.Errorf("that is type *QueryContentRequests but is nil && this != nil")
-	} else if this == nil {
-		return fmt.Errorf("that is type *QueryContentRequests but is not nil && this == nil")
 	}
 	if len(this.Content) != len(that1.Content) {
 		return fmt.Errorf("Content this(%v) Not Equal that(%v)", len(this.Content), len(that1.Content))
@@ -505,9 +361,6 @@ func (this *QueryContentRequests) VerboseEqual(that interface{}) error {
 	if this.Callback != that1.Callback {
 		return fmt.Errorf("Callback this(%v) Not Equal that(%v)", this.Callback, that1.Callback)
 	}
-	if this.PartialResults != that1.PartialResults {
-		return fmt.Errorf("PartialResults this(%v) Not Equal that(%v)", this.PartialResults, that1.PartialResults)
-	}
 	if len(this.Dataset) != len(that1.Dataset) {
 		return fmt.Errorf("Dataset this(%v) Not Equal that(%v)", len(this.Dataset), len(that1.Dataset))
 	}
@@ -518,7 +371,7 @@ func (this *QueryContentRequests) VerboseEqual(that interface{}) error {
 	}
 	return nil
 }
-func (this *QueryContentRequests) Equal(that interface{}) bool {
+func (this *QueryRequests) Equal(that interface{}) bool {
 	if that == nil {
 		if this == nil {
 			return true
@@ -526,9 +379,9 @@ func (this *QueryContentRequests) Equal(that interface{}) bool {
 		return false
 	}
 
-	that1, ok := that.(*QueryContentRequests)
+	that1, ok := that.(*QueryRequests)
 	if !ok {
-		that2, ok := that.(QueryContentRequests)
+		that2, ok := that.(QueryRequests)
 		if ok {
 			that1 = &that2
 		} else {
@@ -542,6 +395,14 @@ func (this *QueryContentRequests) Equal(that interface{}) bool {
 		return false
 	} else if this == nil {
 		return false
+	}
+	if len(this.Url) != len(that1.Url) {
+		return false
+	}
+	for i := range this.Url {
+		if this.Url[i] != that1.Url[i] {
+			return false
+		}
 	}
 	if len(this.Content) != len(that1.Content) {
 		return false
@@ -554,9 +415,6 @@ func (this *QueryContentRequests) Equal(that interface{}) bool {
 	if this.Callback != that1.Callback {
 		return false
 	}
-	if this.PartialResults != that1.PartialResults {
-		return false
-	}
 	if len(this.Dataset) != len(that1.Dataset) {
 		return false
 	}
@@ -567,7 +425,7 @@ func (this *QueryContentRequests) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *QueryContentRequests_URLContent) VerboseEqual(that interface{}) error {
+func (this *QueryRequests_URLContent) VerboseEqual(that interface{}) error {
 	if that == nil {
 		if this == nil {
 			return nil
@@ -575,22 +433,22 @@ func (this *QueryContentRequests_URLContent) VerboseEqual(that interface{}) erro
 		return fmt.Errorf("that == nil && this != nil")
 	}
 
-	that1, ok := that.(*QueryContentRequests_URLContent)
+	that1, ok := that.(*QueryRequests_URLContent)
 	if !ok {
-		that2, ok := that.(QueryContentRequests_URLContent)
+		that2, ok := that.(QueryRequests_URLContent)
 		if ok {
 			that1 = &that2
 		} else {
-			return fmt.Errorf("that is not of type *QueryContentRequests_URLContent")
+			return fmt.Errorf("that is not of type *QueryRequests_URLContent")
 		}
 	}
 	if that1 == nil {
 		if this == nil {
 			return nil
 		}
-		return fmt.Errorf("that is type *QueryContentRequests_URLContent but is nil && this != nil")
+		return fmt.Errorf("that is type *QueryRequests_URLContent but is nil && this != nil")
 	} else if this == nil {
-		return fmt.Errorf("that is type *QueryContentRequests_URLContent but is not nil && this == nil")
+		return fmt.Errorf("that is type *QueryRequests_URLContent but is not nil && this == nil")
 	}
 	if this.Url != that1.Url {
 		return fmt.Errorf("Url this(%v) Not Equal that(%v)", this.Url, that1.Url)
@@ -608,7 +466,7 @@ func (this *QueryContentRequests_URLContent) VerboseEqual(that interface{}) erro
 	}
 	return nil
 }
-func (this *QueryContentRequests_URLContent) Equal(that interface{}) bool {
+func (this *QueryRequests_URLContent) Equal(that interface{}) bool {
 	if that == nil {
 		if this == nil {
 			return true
@@ -616,9 +474,9 @@ func (this *QueryContentRequests_URLContent) Equal(that interface{}) bool {
 		return false
 	}
 
-	that1, ok := that.(*QueryContentRequests_URLContent)
+	that1, ok := that.(*QueryRequests_URLContent)
 	if !ok {
-		that2, ok := that.(QueryContentRequests_URLContent)
+		that2, ok := that.(QueryRequests_URLContent)
 		if ok {
 			that1 = &that2
 		} else {
@@ -692,40 +550,27 @@ func (this *QueryResult) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *QueryURLRequests) GoString() string {
+func (this *QueryRequests) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 8)
-	s = append(s, "&msg.QueryURLRequests{")
+	s = append(s, "&msg.QueryRequests{")
 	s = append(s, "Url: "+fmt.Sprintf("%#v", this.Url)+",\n")
-	s = append(s, "Callback: "+fmt.Sprintf("%#v", this.Callback)+",\n")
-	s = append(s, "PartialResults: "+fmt.Sprintf("%#v", this.PartialResults)+",\n")
-	s = append(s, "Dataset: "+fmt.Sprintf("%#v", this.Dataset)+",\n")
-	s = append(s, "}")
-	return strings.Join(s, "")
-}
-func (this *QueryContentRequests) GoString() string {
-	if this == nil {
-		return "nil"
-	}
-	s := make([]string, 0, 8)
-	s = append(s, "&msg.QueryContentRequests{")
 	if this.Content != nil {
 		s = append(s, "Content: "+fmt.Sprintf("%#v", this.Content)+",\n")
 	}
 	s = append(s, "Callback: "+fmt.Sprintf("%#v", this.Callback)+",\n")
-	s = append(s, "PartialResults: "+fmt.Sprintf("%#v", this.PartialResults)+",\n")
 	s = append(s, "Dataset: "+fmt.Sprintf("%#v", this.Dataset)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
-func (this *QueryContentRequests_URLContent) GoString() string {
+func (this *QueryRequests_URLContent) GoString() string {
 	if this == nil {
 		return "nil"
 	}
 	s := make([]string, 0, 7)
-	s = append(s, "&msg.QueryContentRequests_URLContent{")
+	s = append(s, "&msg.QueryRequests_URLContent{")
 	s = append(s, "Url: "+fmt.Sprintf("%#v", this.Url)+",\n")
 	keysForHeader := make([]string, 0, len(this.Header))
 	for k, _ := range this.Header {
@@ -801,7 +646,7 @@ func (m *QueryPollRequest) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
-func (m *QueryURLRequests) Marshal() (dAtA []byte, err error) {
+func (m *QueryRequests) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -811,7 +656,7 @@ func (m *QueryURLRequests) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryURLRequests) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryRequests) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -831,60 +676,9 @@ func (m *QueryURLRequests) MarshalTo(dAtA []byte) (int, error) {
 			i += copy(dAtA[i:], s)
 		}
 	}
-	if len(m.Callback) > 0 {
-		dAtA[i] = 0x1a
-		i++
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.Callback)))
-		i += copy(dAtA[i:], m.Callback)
-	}
-	if m.PartialResults {
-		dAtA[i] = 0x28
-		i++
-		if m.PartialResults {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i++
-	}
-	if len(m.Dataset) > 0 {
-		dAtA2 := make([]byte, len(m.Dataset)*10)
-		var j1 int
-		for _, num := range m.Dataset {
-			for num >= 1<<7 {
-				dAtA2[j1] = uint8(uint64(num)&0x7f | 0x80)
-				num >>= 7
-				j1++
-			}
-			dAtA2[j1] = uint8(num)
-			j1++
-		}
-		dAtA[i] = 0x3a
-		i++
-		i = encodeVarintQuery(dAtA, i, uint64(j1))
-		i += copy(dAtA[i:], dAtA2[:j1])
-	}
-	return i, nil
-}
-
-func (m *QueryContentRequests) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalTo(dAtA)
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *QueryContentRequests) MarshalTo(dAtA []byte) (int, error) {
-	var i int
-	_ = i
-	var l int
-	_ = l
 	if len(m.Content) > 0 {
 		for _, msg := range m.Content {
-			dAtA[i] = 0xa
+			dAtA[i] = 0x12
 			i++
 			i = encodeVarintQuery(dAtA, i, uint64(msg.Size()))
 			n, err := msg.MarshalTo(dAtA[i:])
@@ -900,37 +694,27 @@ func (m *QueryContentRequests) MarshalTo(dAtA []byte) (int, error) {
 		i = encodeVarintQuery(dAtA, i, uint64(len(m.Callback)))
 		i += copy(dAtA[i:], m.Callback)
 	}
-	if m.PartialResults {
-		dAtA[i] = 0x28
-		i++
-		if m.PartialResults {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
-		i++
-	}
 	if len(m.Dataset) > 0 {
-		dAtA4 := make([]byte, len(m.Dataset)*10)
-		var j3 int
+		dAtA2 := make([]byte, len(m.Dataset)*10)
+		var j1 int
 		for _, num := range m.Dataset {
 			for num >= 1<<7 {
-				dAtA4[j3] = uint8(uint64(num)&0x7f | 0x80)
+				dAtA2[j1] = uint8(uint64(num)&0x7f | 0x80)
 				num >>= 7
-				j3++
+				j1++
 			}
-			dAtA4[j3] = uint8(num)
-			j3++
+			dAtA2[j1] = uint8(num)
+			j1++
 		}
-		dAtA[i] = 0x3a
+		dAtA[i] = 0x22
 		i++
-		i = encodeVarintQuery(dAtA, i, uint64(j3))
-		i += copy(dAtA[i:], dAtA4[:j3])
+		i = encodeVarintQuery(dAtA, i, uint64(j1))
+		i += copy(dAtA[i:], dAtA2[:j1])
 	}
 	return i, nil
 }
 
-func (m *QueryContentRequests_URLContent) Marshal() (dAtA []byte, err error) {
+func (m *QueryRequests_URLContent) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalTo(dAtA)
@@ -940,7 +724,7 @@ func (m *QueryContentRequests_URLContent) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryContentRequests_URLContent) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryRequests_URLContent) MarshalTo(dAtA []byte) (int, error) {
 	var i int
 	_ = i
 	var l int
@@ -1014,7 +798,7 @@ func (m *QueryPollRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryURLRequests) Size() (n int) {
+func (m *QueryRequests) Size() (n int) {
 	var l int
 	_ = l
 	if len(m.Url) > 0 {
@@ -1023,26 +807,6 @@ func (m *QueryURLRequests) Size() (n int) {
 			n += 1 + l + sovQuery(uint64(l))
 		}
 	}
-	l = len(m.Callback)
-	if l > 0 {
-		n += 1 + l + sovQuery(uint64(l))
-	}
-	if m.PartialResults {
-		n += 2
-	}
-	if len(m.Dataset) > 0 {
-		l = 0
-		for _, e := range m.Dataset {
-			l += sovQuery(uint64(e))
-		}
-		n += 1 + sovQuery(uint64(l)) + l
-	}
-	return n
-}
-
-func (m *QueryContentRequests) Size() (n int) {
-	var l int
-	_ = l
 	if len(m.Content) > 0 {
 		for _, e := range m.Content {
 			l = e.Size()
@@ -1053,9 +817,6 @@ func (m *QueryContentRequests) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
-	if m.PartialResults {
-		n += 2
-	}
 	if len(m.Dataset) > 0 {
 		l = 0
 		for _, e := range m.Dataset {
@@ -1066,7 +827,7 @@ func (m *QueryContentRequests) Size() (n int) {
 	return n
 }
 
-func (m *QueryContentRequests_URLContent) Size() (n int) {
+func (m *QueryRequests_URLContent) Size() (n int) {
 	var l int
 	_ = l
 	l = len(m.Url)
@@ -1138,33 +899,20 @@ func (this *QueryResult) String() string {
 	}, "")
 	return s
 }
-func (this *QueryURLRequests) String() string {
+func (this *QueryRequests) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&QueryURLRequests{`,
+	s := strings.Join([]string{`&QueryRequests{`,
 		`Url:` + fmt.Sprintf("%v", this.Url) + `,`,
+		`Content:` + strings.Replace(fmt.Sprintf("%v", this.Content), "QueryRequests_URLContent", "QueryRequests_URLContent", 1) + `,`,
 		`Callback:` + fmt.Sprintf("%v", this.Callback) + `,`,
-		`PartialResults:` + fmt.Sprintf("%v", this.PartialResults) + `,`,
 		`Dataset:` + fmt.Sprintf("%v", this.Dataset) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *QueryContentRequests) String() string {
-	if this == nil {
-		return "nil"
-	}
-	s := strings.Join([]string{`&QueryContentRequests{`,
-		`Content:` + strings.Replace(fmt.Sprintf("%v", this.Content), "QueryContentRequests_URLContent", "QueryContentRequests_URLContent", 1) + `,`,
-		`Callback:` + fmt.Sprintf("%v", this.Callback) + `,`,
-		`PartialResults:` + fmt.Sprintf("%v", this.PartialResults) + `,`,
-		`Dataset:` + fmt.Sprintf("%v", this.Dataset) + `,`,
-		`}`,
-	}, "")
-	return s
-}
-func (this *QueryContentRequests_URLContent) String() string {
+func (this *QueryRequests_URLContent) String() string {
 	if this == nil {
 		return "nil"
 	}
@@ -1178,7 +926,7 @@ func (this *QueryContentRequests_URLContent) String() string {
 		mapStringForHeader += fmt.Sprintf("%v: %v,", k, this.Header[k])
 	}
 	mapStringForHeader += "}"
-	s := strings.Join([]string{`&QueryContentRequests_URLContent{`,
+	s := strings.Join([]string{`&QueryRequests_URLContent{`,
 		`Url:` + fmt.Sprintf("%v", this.Url) + `,`,
 		`Header:` + mapStringForHeader + `,`,
 		`Content:` + fmt.Sprintf("%v", this.Content) + `,`,
@@ -1294,7 +1042,7 @@ func (m *QueryPollRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryURLRequests) Unmarshal(dAtA []byte) error {
+func (m *QueryRequests) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1317,10 +1065,10 @@ func (m *QueryURLRequests) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryURLRequests: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryRequests: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryURLRequests: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryRequests: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1352,168 +1100,7 @@ func (m *QueryURLRequests) Unmarshal(dAtA []byte) error {
 			}
 			m.Url = append(m.Url, string(dAtA[iNdEx:postIndex]))
 			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Callback", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= (uint64(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthQuery
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Callback = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field PartialResults", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= (int(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.PartialResults = bool(v != 0)
-		case 7:
-			if wireType == 0 {
-				var v uint32
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowQuery
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					v |= (uint32(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				m.Dataset = append(m.Dataset, v)
-			} else if wireType == 2 {
-				var packedLen int
-				for shift := uint(0); ; shift += 7 {
-					if shift >= 64 {
-						return ErrIntOverflowQuery
-					}
-					if iNdEx >= l {
-						return io.ErrUnexpectedEOF
-					}
-					b := dAtA[iNdEx]
-					iNdEx++
-					packedLen |= (int(b) & 0x7F) << shift
-					if b < 0x80 {
-						break
-					}
-				}
-				if packedLen < 0 {
-					return ErrInvalidLengthQuery
-				}
-				postIndex := iNdEx + packedLen
-				if postIndex > l {
-					return io.ErrUnexpectedEOF
-				}
-				for iNdEx < postIndex {
-					var v uint32
-					for shift := uint(0); ; shift += 7 {
-						if shift >= 64 {
-							return ErrIntOverflowQuery
-						}
-						if iNdEx >= l {
-							return io.ErrUnexpectedEOF
-						}
-						b := dAtA[iNdEx]
-						iNdEx++
-						v |= (uint32(b) & 0x7F) << shift
-						if b < 0x80 {
-							break
-						}
-					}
-					m.Dataset = append(m.Dataset, v)
-				}
-			} else {
-				return fmt.Errorf("proto: wrong wireType = %d for field Dataset", wireType)
-			}
-		default:
-			iNdEx = preIndex
-			skippy, err := skipQuery(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if skippy < 0 {
-				return ErrInvalidLengthQuery
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *QueryContentRequests) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowQuery
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= (uint64(b) & 0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: QueryContentRequests: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryContentRequests: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Content", wireType)
 			}
@@ -1539,7 +1126,7 @@ func (m *QueryContentRequests) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Content = append(m.Content, &QueryContentRequests_URLContent{})
+			m.Content = append(m.Content, &QueryRequests_URLContent{})
 			if err := m.Content[len(m.Content)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
@@ -1573,27 +1160,7 @@ func (m *QueryContentRequests) Unmarshal(dAtA []byte) error {
 			}
 			m.Callback = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field PartialResults", wireType)
-			}
-			var v int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowQuery
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				v |= (int(b) & 0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			m.PartialResults = bool(v != 0)
-		case 7:
+		case 4:
 			if wireType == 0 {
 				var v uint32
 				for shift := uint(0); ; shift += 7 {
@@ -1676,7 +1243,7 @@ func (m *QueryContentRequests) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryContentRequests_URLContent) Unmarshal(dAtA []byte) error {
+func (m *QueryRequests_URLContent) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -2008,50 +1575,47 @@ var (
 func init() { proto.RegisterFile("zvelo/msg/query.proto", fileDescriptorQuery) }
 
 var fileDescriptorQuery = []byte{
-	// 709 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x94, 0x31, 0x6f, 0xdb, 0x3a,
-	0x10, 0xc7, 0x45, 0x4b, 0xb2, 0x65, 0x3a, 0x2f, 0x11, 0x84, 0xe4, 0x45, 0x30, 0xf0, 0x64, 0xc3,
-	0xcb, 0x33, 0xde, 0x43, 0x65, 0x34, 0x05, 0x8a, 0x26, 0x40, 0x3b, 0x34, 0x29, 0xd0, 0x1a, 0x41,
-	0xd1, 0x30, 0xc8, 0xd2, 0xc5, 0x90, 0x65, 0x46, 0x31, 0x22, 0x9b, 0x0a, 0x45, 0xa5, 0x70, 0xa7,
-	0x8e, 0x1d, 0xb3, 0x64, 0xe8, 0xe6, 0x00, 0x1d, 0xfa, 0x51, 0xda, 0x2d, 0x63, 0xc7, 0x58, 0x5d,
-	0x32, 0xe6, 0x23, 0x14, 0x22, 0x29, 0x39, 0x30, 0x52, 0xa4, 0x4b, 0x37, 0xde, 0xe9, 0x8e, 0xff,
-	0xdf, 0xdd, 0xf1, 0x04, 0xd7, 0xde, 0x9f, 0xe2, 0x90, 0x74, 0x46, 0x71, 0xd0, 0x39, 0x49, 0x30,
-	0x9d, 0xb8, 0x11, 0x25, 0x8c, 0x58, 0x55, 0xee, 0x76, 0x47, 0x71, 0x50, 0x5f, 0x9f, 0x47, 0x0c,
-	0x3c, 0xe6, 0xc5, 0x98, 0x89, 0x98, 0xfa, 0x7a, 0x40, 0x48, 0x10, 0xe2, 0x0e, 0x8d, 0xfc, 0x4e,
-	0xcc, 0x3c, 0x96, 0xc4, 0xf2, 0xc3, 0x83, 0x60, 0xc8, 0x8e, 0x92, 0xbe, 0xeb, 0x93, 0x51, 0x27,
-	0x20, 0x01, 0xe9, 0x70, 0x77, 0x3f, 0x39, 0xe4, 0x16, 0x37, 0xf8, 0x49, 0x84, 0xb7, 0x1e, 0x42,
-	0x73, 0x2f, 0x93, 0x7e, 0x43, 0xc2, 0x10, 0xe1, 0x93, 0x04, 0xc7, 0xcc, 0xfa, 0x07, 0x42, 0x2a,
-	0x8e, 0xbd, 0xe1, 0xc0, 0x06, 0x4d, 0xd0, 0xae, 0xa2, 0xaa, 0xf4, 0xbc, 0x1a, 0xb4, 0x3e, 0x03,
-	0x58, 0xe3, 0x39, 0xfb, 0x5c, 0xd7, 0xaa, 0x43, 0xc3, 0x27, 0xa3, 0x28, 0xc4, 0x0c, 0xf3, 0x60,
-	0x03, 0x15, 0xb6, 0xd5, 0x86, 0x3a, 0xa6, 0x94, 0x50, 0xbb, 0xd4, 0x04, 0xed, 0xda, 0x86, 0xe5,
-	0x0a, 0x6c, 0x97, 0x46, 0xbe, 0x2b, 0xd2, 0x91, 0x08, 0xc8, 0x44, 0x0f, 0x31, 0xf3, 0x8f, 0x7a,
-	0x3e, 0x19, 0x60, 0x5b, 0x6d, 0x82, 0xb6, 0x8e, 0xaa, 0xdc, 0xb3, 0x4d, 0x06, 0x38, 0x13, 0x09,
-	0x89, 0xef, 0xb1, 0x21, 0x19, 0xdb, 0x1a, 0x27, 0x2a, 0xec, 0xad, 0xd5, 0xe9, 0xb4, 0xa1, 0x5c,
-	0x4f, 0x1b, 0xca, 0xc7, 0x8b, 0x86, 0x72, 0x76, 0xd1, 0x50, 0xa6, 0x17, 0x0d, 0xa5, 0x75, 0x5e,
-	0x92, 0x98, 0x08, 0xc7, 0x49, 0x78, 0x5f, 0x55, 0xd6, 0x53, 0x68, 0x52, 0x1c, 0x47, 0x64, 0x1c,
-	0xe3, 0x9e, 0x6c, 0xb5, 0x5d, 0x91, 0xd0, 0xc5, 0x3c, 0xdc, 0x1d, 0x8f, 0x79, 0xfb, 0x98, 0xa1,
-	0x95, 0x3c, 0x76, 0x47, 0x84, 0x5a, 0x26, 0x54, 0x13, 0x1a, 0xda, 0x06, 0xbf, 0x36, 0x3b, 0x5a,
-	0xff, 0xc2, 0x95, 0x5c, 0x2f, 0xbf, 0xaf, 0xda, 0x54, 0xdb, 0x7f, 0xa1, 0x65, 0xe9, 0xce, 0x53,
-	0x37, 0xe1, 0x12, 0x9f, 0x7e, 0x4f, 0xcc, 0xd1, 0x86, 0x5c, 0xf5, 0xef, 0x5b, 0xaa, 0xb7, 0xba,
-	0x8d, 0x6a, 0x27, 0x73, 0xe3, 0xee, 0xca, 0xbb, 0x9a, 0x51, 0x32, 0xd5, 0xae, 0x66, 0xa8, 0xa6,
-	0xd6, 0xd5, 0x0c, 0xcd, 0xd4, 0xbb, 0x9a, 0xa1, 0x9b, 0xe5, 0xae, 0x66, 0x94, 0xcd, 0x4a, 0xeb,
-	0x1c, 0xc8, 0x91, 0x1f, 0xa0, 0x5d, 0x39, 0xf1, 0x38, 0xc7, 0x07, 0x4d, 0x35, 0xc7, 0xcf, 0xa6,
-	0xea, 0x85, 0x61, 0xdf, 0xf3, 0x8f, 0xf9, 0x34, 0xaa, 0xa8, 0xb0, 0xb3, 0xd2, 0x22, 0x8f, 0xb2,
-	0xa1, 0x17, 0xf6, 0x28, 0x6f, 0x6e, 0x6c, 0xeb, 0x7c, 0xf0, 0xcb, 0xd2, 0x2d, 0x5a, 0x1e, 0x5b,
-	0x36, 0xac, 0xcc, 0x7b, 0x99, 0xd5, 0x9e, 0x9b, 0x05, 0xa3, 0xa0, 0xcb, 0xb8, 0x3e, 0xa9, 0x70,
-	0x95, 0x73, 0x6d, 0x93, 0x31, 0xc3, 0x63, 0x56, 0xb0, 0xed, 0xc0, 0x8a, 0x2f, 0x5c, 0x9c, 0xaf,
-	0xb6, 0xf1, 0xdf, 0x62, 0x6b, 0x16, 0x32, 0xdc, 0x03, 0xb4, 0x9b, 0xbb, 0xf2, 0xd4, 0x3f, 0x5c,
-	0x4f, 0xfd, 0x1b, 0x80, 0x70, 0x2e, 0x9b, 0xf7, 0xb3, 0x34, 0x7f, 0x0e, 0xaf, 0x61, 0xf9, 0x08,
-	0x7b, 0x03, 0x4c, 0x6d, 0x95, 0x17, 0xf1, 0xf8, 0xf7, 0x8b, 0x70, 0x5f, 0xf2, 0xc4, 0x17, 0x63,
-	0x46, 0x27, 0x48, 0xde, 0x92, 0xa1, 0xe4, 0x5d, 0x11, 0xfb, 0x90, 0x9b, 0xf5, 0x4d, 0x58, 0xbb,
-	0x95, 0x90, 0xa1, 0x1c, 0xe3, 0x89, 0x7c, 0xf0, 0xd9, 0xd1, 0x5a, 0x85, 0xfa, 0xa9, 0x17, 0x26,
-	0x58, 0xe2, 0x09, 0x63, 0xab, 0xf4, 0x04, 0x74, 0x35, 0x03, 0x98, 0xa5, 0x3b, 0x66, 0xf3, 0x0e,
-	0x42, 0xb9, 0x4a, 0x51, 0x38, 0x59, 0xd8, 0xa4, 0xd2, 0xe2, 0x26, 0x15, 0x3b, 0xaf, 0xdd, 0xb3,
-	0xf3, 0xbf, 0x7c, 0xbe, 0x02, 0x42, 0x35, 0xb5, 0xd6, 0x1e, 0x5c, 0x2a, 0x84, 0x87, 0x38, 0xb6,
-	0xfe, 0x87, 0x3a, 0xcd, 0x18, 0xe4, 0x4b, 0x58, 0x5b, 0x6c, 0x22, 0x07, 0x44, 0x22, 0xe6, 0xee,
-	0xeb, 0x9f, 0x3f, 0xbb, 0x9c, 0x39, 0xca, 0xf7, 0x99, 0xa3, 0x5c, 0xcd, 0x1c, 0x70, 0x33, 0x73,
-	0xc0, 0x87, 0xd4, 0x01, 0x5f, 0x52, 0x07, 0x7c, 0x4d, 0x1d, 0x70, 0x99, 0x3a, 0xe0, 0x2a, 0x75,
-	0xc0, 0x75, 0xea, 0x28, 0x37, 0xa9, 0x03, 0xce, 0x7e, 0x38, 0xca, 0xdb, 0x25, 0x21, 0x32, 0xe4,
-	0xff, 0xe1, 0x7e, 0x99, 0xff, 0x38, 0x1f, 0xfd, 0x0c, 0x00, 0x00, 0xff, 0xff, 0x56, 0x42, 0x4c,
-	0xef, 0xbd, 0x05, 0x00, 0x00,
+	// 667 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0x31, 0x6f, 0xd3, 0x40,
+	0x14, 0xf6, 0xd9, 0x4e, 0xe2, 0x5c, 0x5a, 0x6a, 0x59, 0x2d, 0xb5, 0x22, 0xe1, 0x44, 0x61, 0x20,
+	0x12, 0xc2, 0x16, 0x65, 0xa1, 0x95, 0xca, 0x40, 0x8b, 0x80, 0x88, 0x81, 0x5e, 0xc5, 0xc2, 0x12,
+	0x39, 0xce, 0xd5, 0x8d, 0xea, 0xe4, 0xdc, 0xf3, 0xb9, 0x28, 0x4c, 0x8c, 0x8c, 0x5d, 0xd8, 0x53,
+	0x89, 0x81, 0xdf, 0xc1, 0xc4, 0xd8, 0x11, 0x89, 0xa5, 0x31, 0x4b, 0xc7, 0xfe, 0x04, 0xe4, 0x3b,
+	0x5f, 0x52, 0x85, 0xa2, 0xb2, 0xdd, 0xf7, 0xfc, 0xbd, 0xf7, 0x7d, 0xf7, 0xde, 0xf3, 0xc1, 0xb5,
+	0x8f, 0x27, 0x38, 0x22, 0xde, 0x30, 0x09, 0xbd, 0xe3, 0x14, 0xd3, 0xb1, 0x1b, 0x53, 0xc2, 0x88,
+	0x55, 0xe5, 0x61, 0x77, 0x98, 0x84, 0xf5, 0xf5, 0x39, 0xa3, 0xef, 0x33, 0x3f, 0xc1, 0x4c, 0x70,
+	0xea, 0xeb, 0x21, 0x21, 0x61, 0x84, 0x3d, 0x1a, 0x07, 0x5e, 0xc2, 0x7c, 0x96, 0x26, 0xc5, 0x87,
+	0x47, 0xe1, 0x80, 0x1d, 0xa6, 0x3d, 0x37, 0x20, 0x43, 0x2f, 0x24, 0x21, 0xf1, 0x78, 0xb8, 0x97,
+	0x1e, 0x70, 0xc4, 0x01, 0x3f, 0x09, 0x7a, 0xeb, 0x31, 0x34, 0xf7, 0x72, 0xe9, 0xb7, 0x24, 0x8a,
+	0x10, 0x3e, 0x4e, 0x71, 0xc2, 0xac, 0x7b, 0x10, 0x52, 0x71, 0xec, 0x0e, 0xfa, 0x36, 0x68, 0x82,
+	0x76, 0x15, 0x55, 0x8b, 0xc8, 0xeb, 0x7e, 0xeb, 0x2b, 0x80, 0x35, 0x9e, 0xb3, 0xcf, 0x75, 0xad,
+	0x3a, 0x34, 0x02, 0x32, 0x8c, 0x23, 0xcc, 0x30, 0x27, 0x1b, 0x68, 0x86, 0xad, 0x36, 0x2c, 0x61,
+	0x4a, 0x09, 0xb5, 0xd5, 0x26, 0x68, 0xd7, 0x36, 0x2c, 0x57, 0xd8, 0x76, 0x69, 0x1c, 0xb8, 0x22,
+	0x1d, 0x09, 0x42, 0x2e, 0x7a, 0x80, 0x59, 0x70, 0xd8, 0x0d, 0x48, 0x1f, 0xdb, 0x5a, 0x13, 0xb4,
+	0x4b, 0xa8, 0xca, 0x23, 0x3b, 0xa4, 0x8f, 0x73, 0x91, 0x88, 0x04, 0x3e, 0x1b, 0x90, 0x91, 0xad,
+	0x73, 0x47, 0x33, 0xbc, 0xb5, 0x3a, 0x99, 0x34, 0x94, 0xcb, 0x49, 0x43, 0xf9, 0x7c, 0xd6, 0x50,
+	0x4e, 0xcf, 0x1a, 0xca, 0xe4, 0xac, 0xa1, 0xb4, 0xbe, 0xa8, 0x85, 0x4d, 0x84, 0x93, 0x34, 0xba,
+	0xed, 0x56, 0xd6, 0x36, 0x34, 0x29, 0x4e, 0x62, 0x32, 0x4a, 0x70, 0xb7, 0x68, 0xb5, 0x5d, 0x29,
+	0x4c, 0xcf, 0xe6, 0xe1, 0xee, 0xfa, 0xcc, 0xdf, 0xc7, 0x0c, 0xad, 0x48, 0xee, 0xae, 0xa0, 0x5a,
+	0x26, 0xd4, 0x52, 0x1a, 0xd9, 0x06, 0x2f, 0x9b, 0x1f, 0xad, 0x07, 0x70, 0x45, 0xea, 0xc9, 0x7a,
+	0xd5, 0xa6, 0xd6, 0x5e, 0x46, 0x77, 0x8a, 0xb0, 0x4c, 0xdd, 0x84, 0x4b, 0x7c, 0xfa, 0x5d, 0x31,
+	0x47, 0x1b, 0x72, 0xd5, 0xbb, 0xd7, 0x54, 0xaf, 0x75, 0x1b, 0xd5, 0x8e, 0xe7, 0xe0, 0xe6, 0x9b,
+	0x77, 0x74, 0x43, 0x35, 0xb5, 0x8e, 0x6e, 0x68, 0xa6, 0xde, 0xd1, 0x0d, 0xdd, 0x2c, 0x75, 0x74,
+	0xa3, 0x64, 0x96, 0x3b, 0xba, 0x51, 0x36, 0x2b, 0xad, 0x5f, 0x2a, 0x5c, 0x2e, 0xfa, 0xc2, 0x6d,
+	0x24, 0xd2, 0x3b, 0x68, 0x6a, 0xd2, 0xfb, 0x36, 0xac, 0x04, 0x64, 0xc4, 0xf0, 0x88, 0xd9, 0x6a,
+	0x53, 0x6b, 0xd7, 0x36, 0xee, 0x2f, 0xba, 0x91, 0xc9, 0xee, 0x3b, 0xf4, 0x66, 0x47, 0x50, 0x91,
+	0xcc, 0xe1, 0x1b, 0xe1, 0x47, 0x51, 0xcf, 0x0f, 0x8e, 0xf8, 0x24, 0xab, 0x68, 0x86, 0x2d, 0x1b,
+	0x56, 0x64, 0x3b, 0x74, 0xde, 0x0e, 0x09, 0xeb, 0xdf, 0x01, 0x84, 0xf3, 0x6a, 0xd2, 0x95, 0x3a,
+	0xef, 0xe8, 0x4b, 0x58, 0x3e, 0xc4, 0x7e, 0x1f, 0x53, 0x5b, 0xe3, 0xa6, 0xbc, 0xff, 0x30, 0xe5,
+	0xbe, 0xe2, 0x19, 0x2f, 0x46, 0x8c, 0x8e, 0x51, 0x91, 0x9e, 0x7b, 0x90, 0xd7, 0x13, 0xbb, 0x24,
+	0x61, 0x7d, 0x13, 0xd6, 0xae, 0x25, 0xe4, 0x1e, 0x8e, 0xf0, 0xb8, 0x58, 0x96, 0xfc, 0x68, 0xad,
+	0xc2, 0xd2, 0x89, 0x1f, 0xa5, 0xb8, 0xf0, 0x25, 0xc0, 0x96, 0xfa, 0x14, 0x74, 0x74, 0x03, 0x98,
+	0x6a, 0xeb, 0x03, 0x84, 0x85, 0x95, 0x38, 0x1a, 0x2f, 0xec, 0x9c, 0xba, 0xb8, 0x73, 0xb3, 0xbf,
+	0x43, 0xbf, 0xe5, 0xef, 0xf8, 0xe7, 0xa0, 0x81, 0xa9, 0x8a, 0x41, 0xb7, 0xf6, 0xe0, 0xd2, 0x4c,
+	0x78, 0x80, 0x13, 0xeb, 0x21, 0x2c, 0xd1, 0xdc, 0x03, 0x1f, 0x6b, 0x6d, 0x63, 0xed, 0xef, 0x5e,
+	0xc5, 0xd1, 0x18, 0x09, 0xce, 0xcd, 0xe5, 0x9f, 0x3f, 0x3b, 0x9f, 0x3a, 0xca, 0xcf, 0xa9, 0xa3,
+	0x5c, 0x4c, 0x1d, 0x70, 0x35, 0x75, 0xc0, 0xa7, 0xcc, 0x01, 0xdf, 0x32, 0x07, 0xfc, 0xc8, 0x1c,
+	0x70, 0x9e, 0x39, 0xe0, 0x22, 0x73, 0xc0, 0x65, 0xe6, 0x28, 0x57, 0x99, 0x03, 0x4e, 0x7f, 0x3b,
+	0xca, 0xfb, 0x25, 0x21, 0x32, 0xe0, 0x2f, 0x56, 0xaf, 0xcc, 0x9f, 0x98, 0x27, 0x7f, 0x02, 0x00,
+	0x00, 0xff, 0xff, 0x27, 0x76, 0x51, 0x32, 0xe7, 0x04, 0x00, 0x00,
 }
