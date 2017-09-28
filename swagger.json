@@ -109,18 +109,10 @@
           "format": "int64"
         },
         "verdict": {
-          "$ref": "#/definitions/MaliciousVerdict"
+          "type": "integer",
+          "format": "int64"
         }
       }
-    },
-    "MaliciousVerdict": {
-      "type": "string",
-      "default": "VERDICT_UNKNOWN",
-      "enum": [
-        "VERDICT_UNKNOWN",
-        "VERDICT_CLEAN",
-        "VERDICT_MALICIOUS"
-      ]
     },
     "QueryRequestsURLContent": {
       "type": "object",
