@@ -103,6 +103,31 @@ func (s *apiServer) postCallbacks(u string, reqIDs ...string) {
 	}
 }
 
+func (s *apiServer) handleQuery(u string, ds []uint32, out *msg.QueryReplies, reqIDs *[]string) error {
+	reqID := ksuid.New().String()
+	*reqIDs = append(*reqIDs, reqID)
+
+	r := result{
+		QueryResult: msg.QueryResult{
+			RequestId:      reqID,
+			Url:            u,
+			RequestDataset: ds,
+		},
+	}
+
+	if err := parseURL(u, ds, &r); err != nil {
+		return status.Errorf(codes.Internal, "error parsing url %s: %s", u, err)
+	}
+
+	s.store(reqID, &r)
+
+	out.Reply = append(out.Reply, &msg.QueryReply{
+		RequestId: reqID,
+	})
+
+	return nil
+}
+
 func (s *apiServer) QueryV1(_ context.Context, in *msg.QueryRequests) (*msg.QueryReplies, error) {
 	if len(in.Dataset) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "no datasets requested")
@@ -111,38 +136,24 @@ func (s *apiServer) QueryV1(_ context.Context, in *msg.QueryRequests) (*msg.Quer
 	var out msg.QueryReplies
 	var reqIDs []string
 
-	urls := in.Url
-	for _, c := range in.Content {
-		if c != nil {
-			urls = append(urls, c.Url)
-		}
-	}
-
-	for _, u := range urls {
+	for _, u := range in.Url {
 		if u == "" {
 			continue
 		}
 
-		reqID := ksuid.New().String()
-		reqIDs = append(reqIDs, reqID)
+		if err := s.handleQuery(u, in.Dataset, &out, &reqIDs); err != nil {
+			return nil, err
+		}
+	}
 
-		r := result{
-			QueryResult: msg.QueryResult{
-				RequestId:      reqID,
-				Url:            u,
-				RequestDataset: in.Dataset,
-			},
+	for _, c := range in.Content {
+		if c == nil || (c.Url == "" && c.Content == "") {
+			continue
 		}
 
-		if err := parseURL(u, in.Dataset, &r); err != nil {
-			return nil, status.Errorf(codes.Internal, "error parsing url %s: %s", u, err)
+		if err := s.handleQuery(c.Url, in.Dataset, &out, &reqIDs); err != nil {
+			return nil, err
 		}
-
-		s.store(reqID, &r)
-
-		out.Reply = append(out.Reply, &msg.QueryReply{
-			RequestId: reqID,
-		})
 	}
 
 	if len(reqIDs) == 0 {

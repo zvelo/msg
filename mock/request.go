@@ -227,7 +227,7 @@ func parseURL(rawurl string, ds []uint32, r *result) error {
 		}
 
 		WithFetchCode(int32(code))(r)
-	} else {
+	} else if u != nil && u.Host != "" {
 		WithFetchCode(http.StatusOK)(r)
 	}
 
