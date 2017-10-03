@@ -11,6 +11,7 @@ import (
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"math/big"
+	"net"
 	"net/http"
 	"strings"
 	"time"
@@ -124,9 +125,43 @@ func selfSignedCert() (*x509.Certificate, tls.Certificate, error) {
 	return x509Cert, tlsCert, nil
 }
 
+type ServeOption func(*serveOpts)
+
+type serveOpts struct {
+	ready chan<- struct{}
+}
+
+func defaultServeOpts() *serveOpts {
+	return &serveOpts{}
+}
+
+func WithOnReady(ready chan<- struct{}) ServeOption {
+	return func(o *serveOpts) {
+		o.ready = ready
+	}
+}
+
 // ListenAndServeTLS listens for tls connections using a self-signed certificate
 // on addr and serves the mock APIServer
-func ListenAndServeTLS(ctx context.Context, addr string) error {
+func ListenAndServeTLS(ctx context.Context, addr string, opts ...ServeOption) error {
+	if addr == "" {
+		addr = ":https"
+	}
+
+	l, err := net.Listen("tcp", addr)
+	if err != nil {
+		return err
+	}
+
+	return ServeTLS(ctx, l, opts...)
+}
+
+func ServeTLS(ctx context.Context, l net.Listener, opts ...ServeOption) error {
+	o := defaultServeOpts()
+	for _, opt := range opts {
+		opt(o)
+	}
+
 	h := handler{
 		grpc: grpc.NewServer(),
 		rest: runtime.NewServeMux(
@@ -150,7 +185,7 @@ func ListenAndServeTLS(ctx context.Context, addr string) error {
 	rootCAs := x509.NewCertPool()
 	rootCAs.AddCert(x509Cert)
 
-	err = msg.RegisterAPIHandlerFromEndpoint(ctx, h.rest, addr, []grpc.DialOption{
+	err = msg.RegisterAPIHandlerFromEndpoint(ctx, h.rest, l.Addr().String(), []grpc.DialOption{
 		grpc.WithTransportCredentials(
 			credentials.NewTLS(&tls.Config{
 				ServerName: "mock.api.zvelo.com",
@@ -163,7 +198,7 @@ func ListenAndServeTLS(ctx context.Context, addr string) error {
 	}
 
 	s := http.Server{
-		Addr:    addr,
+		Addr:    l.Addr().String(),
 		Handler: h,
 		TLSConfig: &tls.Config{
 			Certificates: []tls.Certificate{tlsCert},
@@ -171,5 +206,12 @@ func ListenAndServeTLS(ctx context.Context, addr string) error {
 		},
 	}
 
-	return s.ListenAndServeTLS("", "")
+	errCh := make(chan error)
+	go func() { errCh <- s.ServeTLS(l, "", "") }()
+
+	if o.ready != nil {
+		close(o.ready)
+	}
+
+	return <-errCh
 }

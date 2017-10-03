@@ -104,12 +104,8 @@ func (s *apiServer) postCallbacks(u string, reqIDs ...string) {
 }
 
 func (s *apiServer) handleQuery(u string, ds []uint32, out *msg.QueryReplies, reqIDs *[]string) error {
-	reqID := ksuid.New().String()
-	*reqIDs = append(*reqIDs, reqID)
-
 	r := result{
 		QueryResult: msg.QueryResult{
-			RequestId:      reqID,
 			Url:            u,
 			RequestDataset: ds,
 		},
@@ -118,6 +114,9 @@ func (s *apiServer) handleQuery(u string, ds []uint32, out *msg.QueryReplies, re
 	if err := parseURL(u, ds, &r); err != nil {
 		return status.Errorf(codes.Internal, "error parsing url %s: %s", u, err)
 	}
+
+	reqID := ksuid.New().String()
+	*reqIDs = append(*reqIDs, reqID)
 
 	s.store(reqID, &r)
 
