@@ -59,7 +59,7 @@ func (s *apiServer) result(reqID string) *result {
 	return r
 }
 
-func (s *apiServer) store(reqID string, r *result) {
+func (s *apiServer) store(r *result) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -69,7 +69,7 @@ func (s *apiServer) store(reqID string, r *result) {
 		s.requests = map[string]*result{}
 	}
 
-	s.requests[reqID] = r
+	s.requests[r.RequestId] = r
 }
 
 func (s *apiServer) handleCallback(u, reqID string) {
@@ -109,13 +109,13 @@ func (s *apiServer) handleQuery(u string, ds []uint32, out *msg.QueryReplies, re
 		return status.Errorf(codes.Internal, "error parsing url %s: %s", u, err)
 	}
 
-	reqID := ksuid.New().String()
-	*reqIDs = append(*reqIDs, reqID)
+	r.RequestId = ksuid.New().String()
+	*reqIDs = append(*reqIDs, r.RequestId)
 
-	s.store(reqID, &r)
+	s.store(&r)
 
 	out.Reply = append(out.Reply, &msg.QueryReply{
-		RequestId: reqID,
+		RequestId: r.RequestId,
 	})
 
 	return nil

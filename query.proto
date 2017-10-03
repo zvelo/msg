@@ -38,7 +38,9 @@ message QueryResult {
   option (gogoproto.unmarshaler) = false;
   option (gogoproto.sizer) = false;
 
-  reserved 1;
+  // Request ID for tracking requests
+  string request_id = 1;
+
   reserved 2;
   reserved 3;
   reserved 4;

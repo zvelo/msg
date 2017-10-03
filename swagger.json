@@ -214,6 +214,10 @@
         "query_status": {
           "$ref": "#/definitions/msgQueryStatus"
         },
+        "request_id": {
+          "type": "string",
+          "title": "Request ID for tracking requests"
+        },
         "response_dataset": {
           "$ref": "#/definitions/msgDataSet"
         }
