@@ -214,18 +214,8 @@
         "query_status": {
           "$ref": "#/definitions/msgQueryStatus"
         },
-        "request_dataset": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "int64"
-          }
-        },
         "response_dataset": {
           "$ref": "#/definitions/msgDataSet"
-        },
-        "url": {
-          "type": "string"
         }
       }
     },

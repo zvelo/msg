@@ -104,13 +104,7 @@ func (s *apiServer) postCallbacks(u string, reqIDs ...string) {
 }
 
 func (s *apiServer) handleQuery(u string, ds []uint32, out *msg.QueryReplies, reqIDs *[]string) error {
-	r := result{
-		QueryResult: msg.QueryResult{
-			Url:            u,
-			RequestDataset: ds,
-		},
-	}
-
+	var r result
 	if err := parseURL(u, ds, &r); err != nil {
 		return status.Errorf(codes.Internal, "error parsing url %s: %s", u, err)
 	}

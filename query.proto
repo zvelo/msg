@@ -46,8 +46,9 @@ message QueryResult {
   reserved 6;
 
   DataSet response_dataset        = 7;
-  string url                      = 8;
-  repeated uint32 request_dataset = 9;
+
+  reserved 8;
+  reserved 9;
 
   QueryStatus query_status = 10;
 };
