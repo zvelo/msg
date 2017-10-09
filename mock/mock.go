@@ -24,8 +24,6 @@ import (
 	"zvelo.io/msg"
 )
 
-var outgoingHeaders = map[string]string{}
-
 type handler struct {
 	grpc *grpc.Server
 	rest *runtime.ServeMux
@@ -164,15 +162,7 @@ func ServeTLS(ctx context.Context, l net.Listener, opts ...ServeOption) error {
 
 	h := handler{
 		grpc: grpc.NewServer(),
-		rest: runtime.NewServeMux(
-			runtime.WithOutgoingHeaderMatcher(func(key string) (string, bool) {
-				if newkey, ok := outgoingHeaders[key]; ok {
-					return newkey, true
-				}
-
-				return key, false
-			}),
-		),
+		rest: msg.NewServeMux(),
 	}
 
 	msg.RegisterAPIServer(h.grpc, &apiServer{})

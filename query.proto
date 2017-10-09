@@ -47,7 +47,7 @@ message QueryResult {
   reserved 5;
   reserved 6;
 
-  DataSet response_dataset        = 7;
+  DataSet response_dataset = 7;
 
   reserved 8;
   reserved 9;
@@ -81,8 +81,10 @@ message QueryRequests {
   // The callback url will receive the final result
   string callback = 3;
 
+  reserved 4;
+
   // The datasets to query for each URL
-  repeated uint32 dataset = 4;
+  repeated DataSetType dataset = 5;
 }
 
 // QueryReply

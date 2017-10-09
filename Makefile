@@ -38,7 +38,7 @@ $(patsubst %,zvelo/msg/%,$(PROTO_FILES))
 endef
 
 define protoc-grpc-gateway
---grpc-gateway_out=logtostderr=true:. \
+--grpc-gateway_out=logtostderr=true,request_context=true:. \
 $(patsubst %,zvelo/msg/%,$^)
 endef
 

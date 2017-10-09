@@ -3,7 +3,6 @@ package mock
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -13,10 +12,13 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/gogo/protobuf/jsonpb"
 	"github.com/segmentio/ksuid"
 
 	"zvelo.io/msg"
 )
+
+var jsonMarshaler jsonpb.Marshaler
 
 type apiServer struct {
 	mu       sync.Mutex
@@ -86,7 +88,7 @@ func (s *apiServer) handleCallback(u, reqID string) {
 	}
 
 	var buf bytes.Buffer
-	if err := json.NewEncoder(&buf).Encode(s.result(reqID)); err == nil {
+	if err := jsonMarshaler.Marshal(&buf, &s.result(reqID).QueryResult); err == nil {
 		if _, err = http.Post(u, "application/json", &buf); err != nil {
 			fmt.Fprintf(os.Stderr, "error posting callback: %s\n", err)
 		}
@@ -103,7 +105,7 @@ func (s *apiServer) postCallbacks(u string, reqIDs ...string) {
 	}
 }
 
-func (s *apiServer) handleQuery(u string, ds []uint32, out *msg.QueryReplies, reqIDs *[]string) error {
+func (s *apiServer) handleQuery(u string, ds []msg.DataSetType, out *msg.QueryReplies, reqIDs *[]string) error {
 	var r result
 	if err := parseURL(u, ds, &r); err != nil {
 		return status.Errorf(codes.Internal, "error parsing url %s: %s", u, err)
