@@ -70,6 +70,34 @@ func timeoutDecode(s string) (time.Duration, error) {
 	return d * time.Duration(t), nil
 }
 
+var validHeaderNames = []string{
+	"uber-trace-id",
+	"jaeger-debug-id",
+	"jaeger-baggage",
+	"authorization",
+}
+
+var validHeaderPrefixes = []string{
+	"uberctx-",
+}
+
+func validHeader(name string) bool {
+	for _, header := range validHeaderNames {
+		if strings.EqualFold(name, header) {
+			return true
+		}
+	}
+
+	lname := strings.ToLower(name)
+	for _, prefix := range validHeaderPrefixes {
+		if strings.HasPrefix(lname, prefix) {
+			return true
+		}
+	}
+
+	return false
+}
+
 func annotateContext(req *http.Request) (context.Context, context.CancelFunc, error) {
 	var pairs []string
 	ctx := req.Context()
@@ -89,8 +117,12 @@ func annotateContext(req *http.Request) (context.Context, context.CancelFunc, er
 		ctx, cancel = context.WithTimeout(ctx, timeout)
 	}
 
-	if auth := req.Header.Get("authorization"); auth != "" {
-		pairs = append(pairs, "authorization", auth)
+	for k, vs := range req.Header {
+		if validHeader(k) {
+			for _, v := range vs {
+				pairs = append(pairs, k, v)
+			}
+		}
 	}
 
 	if host := req.Header.Get(xForwardedHost); host != "" {
@@ -116,6 +148,19 @@ func annotateContext(req *http.Request) (context.Context, context.CancelFunc, er
 	return metadata.NewOutgoingContext(ctx, metadata.Pairs(pairs...)), cancel, nil
 }
 
+type metadataKey struct{}
+
+func metadataFromContext(ctx context.Context) *metadata.MD {
+	if md, ok := ctx.Value(metadataKey{}).(*metadata.MD); ok {
+		return md
+	}
+	return &metadata.MD{}
+}
+
+func newMetadataContext(ctx context.Context, md *metadata.MD) context.Context {
+	return context.WithValue(ctx, metadataKey{}, md)
+}
+
 func (h relay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var params struct {
 		Query         string                 `json:"query"`
@@ -134,6 +179,9 @@ func (h relay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	defer cancel()
 
+	var md metadata.MD
+	ctx = newMetadataContext(ctx, &md)
+
 	response := h.Schema.Exec(ctx, params.Query, params.OperationName, params.Variables)
 	responseJSON, err := json.Marshal(response)
 	if err != nil {
@@ -142,5 +190,14 @@ func (h relay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+
+	for k, vs := range md {
+		if validHeader(k) {
+			for _, v := range vs {
+				w.Header().Add(k, v)
+			}
+		}
+	}
+
 	_, _ = w.Write(responseJSON)
 }

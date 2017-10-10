@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	google_rpc "google.golang.org/genproto/googleapis/rpc/status"
+	grpc "google.golang.org/grpc"
 
 	"github.com/neelance/graphql-go"
 	"github.com/pkg/errors"
@@ -47,7 +48,8 @@ func (r graphQLResolver) URL(ctx context.Context, args graphQLQueryURL) (*graphQ
 		req.Dataset = append(req.Dataset, DataSetType(id))
 	}
 
-	replies, err := r.client.QueryV1(ctx, &req)
+	md := metadataFromContext(ctx)
+	replies, err := r.client.QueryV1(ctx, &req, grpc.Header(md))
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +92,8 @@ func (r graphQLResolver) Content(ctx context.Context, args graphQLQueryContent) 
 		req.Dataset = append(req.Dataset, DataSetType(id))
 	}
 
-	replies, err := r.client.QueryV1(ctx, &req)
+	md := metadataFromContext(ctx)
+	replies, err := r.client.QueryV1(ctx, &req, grpc.Header(md))
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +106,8 @@ func (r graphQLResolver) Content(ctx context.Context, args graphQLQueryContent) 
 }
 
 func (r graphQLResolver) Result(ctx context.Context, args struct{ RequestID graphql.ID }) (*graphQLQueryResult, error) {
-	result, err := r.client.QueryResultV1(ctx, &QueryPollRequest{RequestId: string(args.RequestID)})
+	md := metadataFromContext(ctx)
+	result, err := r.client.QueryResultV1(ctx, &QueryPollRequest{RequestId: string(args.RequestID)}, grpc.Header(md))
 	if err != nil {
 		return nil, err
 	}
