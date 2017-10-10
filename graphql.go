@@ -44,7 +44,7 @@ func (r graphQLResolver) URL(ctx context.Context, args graphQLQueryURL) (*graphQ
 		if !ok {
 			return nil, errors.Errorf("invalid dataset type: %s", name)
 		}
-		req.Dataset = append(req.Dataset, uint32(id))
+		req.Dataset = append(req.Dataset, DataSetType(id))
 	}
 
 	replies, err := r.client.QueryV1(ctx, &req)
@@ -87,7 +87,7 @@ func (r graphQLResolver) Content(ctx context.Context, args graphQLQueryContent) 
 		if !ok {
 			return nil, errors.Errorf("invalid dataset type: %s", name)
 		}
-		req.Dataset = append(req.Dataset, uint32(id))
+		req.Dataset = append(req.Dataset, DataSetType(id))
 	}
 
 	replies, err := r.client.QueryV1(ctx, &req)

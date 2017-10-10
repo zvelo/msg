@@ -52,9 +52,9 @@ type DataSet {
 }
 
 enum DataSetMaliciousVerdict {
-  UNKNOWN
-  CLEAN
-  MALICIOUS
+  VERDICT_UNKNOWN
+  VERDICT_CLEAN
+  VERDICT_MALICIOUS
 }
 
 type DataSetMalicious {
