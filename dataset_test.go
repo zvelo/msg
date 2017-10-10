@@ -161,12 +161,12 @@ func TestNewDataSetType(t *testing.T) {
 func TestMergeDatasets(t *testing.T) {
 	d1 := &DataSet{
 		Categorization: &DataSet_Categorization{
-			Value: []uint32{1},
+			Value: []Category{1},
 		},
 	}
 	d2 := &DataSet{
 		Malicious: &DataSet_Malicious{
-			Verdict: uint32(VERDICT_MALICIOUS),
+			Verdict: VERDICT_MALICIOUS,
 		},
 	}
 
@@ -203,7 +203,7 @@ func TestMergeDatasets(t *testing.T) {
 		t.Error("d3.Malicious should not be nil")
 	}
 
-	if d3.Malicious.Verdict != uint32(VERDICT_MALICIOUS) {
+	if d3.Malicious.Verdict != VERDICT_MALICIOUS {
 		t.Error("d3.Malicious.Verdict should be true")
 	}
 }
@@ -212,7 +212,7 @@ func TestMergeDatasetsOneEmpty(t *testing.T) {
 	d1 := &DataSet{}
 	d2 := &DataSet{
 		Malicious: &DataSet_Malicious{
-			Verdict: uint32(VERDICT_MALICIOUS),
+			Verdict: VERDICT_MALICIOUS,
 		},
 	}
 
@@ -245,7 +245,7 @@ func TestMergeDatasetsOneEmpty(t *testing.T) {
 		t.Error("d3.Malicious should not be nil")
 	}
 
-	if d3.Malicious.Verdict != uint32(VERDICT_MALICIOUS) {
+	if d3.Malicious.Verdict != VERDICT_MALICIOUS {
 		t.Error("d3.Malicious.Verdict should be true")
 	}
 }
@@ -288,7 +288,7 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 	var d1 *DataSet
 	d2 := &DataSet{
 		Malicious: &DataSet_Malicious{
-			Verdict: uint32(VERDICT_MALICIOUS),
+			Verdict: VERDICT_MALICIOUS,
 		},
 	}
 
@@ -313,7 +313,7 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 		t.Error("d3.Malicious should not be nil")
 	}
 
-	if d3.Malicious.Verdict != uint32(VERDICT_MALICIOUS) {
+	if d3.Malicious.Verdict != VERDICT_MALICIOUS {
 		t.Error("d3.Malicious.Verdict should be true")
 	}
 }

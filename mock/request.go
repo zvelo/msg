@@ -29,10 +29,7 @@ func WithCategories(val ...msg.Category) Option {
 			r.ResponseDataset.Categorization = &msg.DataSet_Categorization{}
 		}
 
-		r.ResponseDataset.Categorization.Value = make([]uint32, len(val))
-		for i, cid := range val {
-			r.ResponseDataset.Categorization.Value[i] = uint32(cid)
-		}
+		r.ResponseDataset.Categorization.Value = val
 	}
 }
 
@@ -46,8 +43,8 @@ func WithMalicious(verdict msg.DataSet_Malicious_Verdict, cat msg.Category) Opti
 			r.ResponseDataset.Malicious = &msg.DataSet_Malicious{}
 		}
 
-		r.ResponseDataset.Malicious.Verdict = uint32(verdict)
-		r.ResponseDataset.Malicious.Category = uint32(cat)
+		r.ResponseDataset.Malicious.Verdict = verdict
+		r.ResponseDataset.Malicious.Category = cat
 	}
 }
 
@@ -116,7 +113,7 @@ func NewQueryURL(rawurl string, opts ...Option) (string, error) {
 				query.Set("zvelo_malicious_category", strconv.Itoa(int(m.Category)))
 			}
 
-			if m.Verdict != uint32(msg.VERDICT_UNKNOWN) {
+			if m.Verdict != msg.VERDICT_UNKNOWN {
 				query.Set("zvelo_malicious_verdict", strconv.Itoa(int(m.Verdict)))
 			}
 		}
@@ -151,7 +148,7 @@ func NewQueryURL(rawurl string, opts ...Option) (string, error) {
 	return u.String(), nil
 }
 
-func parseURL(rawurl string, ds []uint32, r *result) error {
+func parseURL(rawurl string, ds []msg.DataSetType, r *result) error {
 	u, err := url.Parse(rawurl)
 	if err != nil {
 		return err

@@ -4,6 +4,8 @@ package zvelo.msg;
 
 option go_package = "zvelo.io/msg";
 
+import "zvelo/msg/category.proto";
+
 enum DataSetType {
   CATEGORIZATION = 0;
   // 1 is reserved
@@ -19,7 +21,8 @@ message DataSet {
   // Categorization
   message Categorization {
     reserved 1;
-    repeated uint32 value = 2;
+    reserved 2;
+    repeated Category value = 3;
   }
 
   // Malicious
@@ -33,8 +36,10 @@ message DataSet {
     reserved 1;
     reserved 2;
     reserved 3;
-    uint32 category = 4;
-    uint32 verdict  = 5;
+    reserved 4;
+    reserved 5;
+    Category category = 6;
+    Verdict  verdict  = 7;
   }
 
   // Echo
