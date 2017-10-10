@@ -17,6 +17,8 @@ import (
 // The only difference is this uses the "gogo" protobuf imports instead of
 // "golang". This is required so that our non-standard enum names can be
 // properly parsed.
+//
+// github.com/grpc-ecosystem/grpc-gateway is licensed under BSD-3-Clause
 
 func NewServeMux(opts ...runtime.ServeMuxOption) *runtime.ServeMux {
 	return runtime.NewServeMux(append([]runtime.ServeMuxOption{

@@ -7,14 +7,13 @@ import (
 	google_rpc "google.golang.org/genproto/googleapis/rpc/status"
 
 	"github.com/neelance/graphql-go"
-	"github.com/neelance/graphql-go/relay"
 	"github.com/pkg/errors"
 
-	igraphql "zvelo.io/msg/internal/graphql"
+	"zvelo.io/msg/internal/static"
 )
 
 func GraphQLHandler(client APIClient, opts ...graphql.SchemaOpt) (http.Handler, error) {
-	schemaFile, err := igraphql.FSString(false, "/schema.graphql")
+	schemaFile, err := static.FSString(false, "/schema.graphql")
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +22,8 @@ func GraphQLHandler(client APIClient, opts ...graphql.SchemaOpt) (http.Handler, 
 	if err != nil {
 		return nil, err
 	}
-	return &relay.Handler{Schema: schema}, nil
+
+	return relay{Schema: schema}, nil
 }
 
 type graphQLResolver struct {
@@ -148,7 +148,7 @@ func (r graphQLQueryReply) RequestID() *graphql.ID {
 }
 
 func (r graphQLQueryReply) Error() *graphQLStatus {
-	if r.msg == nil {
+	if r.msg == nil || r.msg.Error == nil {
 		return nil
 	}
 
@@ -186,14 +186,14 @@ func (r graphQLQueryResult) RequestID() *graphql.ID {
 }
 
 func (r graphQLQueryResult) ResponseDataSet() *graphQLDataSet {
-	if r.msg == nil {
+	if r.msg == nil || r.msg.ResponseDataset == nil {
 		return nil
 	}
 	return &graphQLDataSet{r.msg.ResponseDataset}
 }
 
 func (r graphQLQueryResult) QueryStatus() *graphQLQueryStatus {
-	if r.msg == nil {
+	if r.msg == nil || r.msg.QueryStatus == nil {
 		return nil
 	}
 	return &graphQLQueryStatus{r.msg.QueryStatus}
@@ -212,7 +212,7 @@ func (s graphQLQueryStatus) Complete() bool {
 }
 
 func (s graphQLQueryStatus) Error() *graphQLStatus {
-	if s.msg == nil {
+	if s.msg == nil || s.msg.Error == nil {
 		return nil
 	}
 	return &graphQLStatus{s.msg.Error}
@@ -222,14 +222,16 @@ func (s graphQLQueryStatus) FetchCode() *int32 {
 	if s.msg == nil {
 		return nil
 	}
-	return &s.msg.FetchCode
+	code := s.msg.FetchCode
+	return &code
 }
 
 func (s graphQLQueryStatus) Location() *string {
 	if s.msg == nil {
 		return nil
 	}
-	return &s.msg.Location
+	loc := s.msg.Location
+	return &loc
 }
 
 type graphQLDataSet struct {
@@ -243,14 +245,14 @@ func (s graphQLDataSet) Categorization() *[]string {
 
 	categories := make([]string, len(s.msg.Categorization.Value))
 	for i, id := range s.msg.Categorization.Value {
-		categories[i] = Category(id).String()
+		categories[i] = id.String()
 	}
 
 	return &categories
 }
 
 func (s graphQLDataSet) Malicious() *graphQLDataSetMalicious {
-	if s.msg == nil {
+	if s.msg == nil || s.msg.Malicious == nil {
 		return nil
 	}
 
@@ -262,25 +264,24 @@ func (s graphQLDataSet) Echo() *string {
 		return nil
 	}
 
-	return &s.msg.Echo.Url
+	u := s.msg.Echo.Url
+	return &u
 }
 
 type graphQLDataSetMalicious struct {
 	msg *DataSet_Malicious
 }
 
-func (s graphQLDataSetMalicious) Category() *string {
+func (s graphQLDataSetMalicious) Category() string {
 	if s.msg == nil {
-		return nil
+		return UNKNOWN_CATEGORY.String()
 	}
-	str := Category(s.msg.Category).String()
-	return &str
+	return s.msg.Category.String()
 }
 
-func (s graphQLDataSetMalicious) Verdict() *string {
+func (s graphQLDataSetMalicious) Verdict() string {
 	if s.msg == nil {
-		return nil
+		return VERDICT_UNKNOWN.String()
 	}
-	str := DataSet_Malicious_Verdict(s.msg.Verdict).String()
-	return &str
+	return s.msg.Verdict.String()
 }

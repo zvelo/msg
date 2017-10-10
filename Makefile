@@ -4,7 +4,7 @@ GO_PB_FILES              := $(patsubst %.proto,%.pb.go,$(PROTO_FILES))
 PY_PB_FILES              := $(patsubst %.proto,%_pb2.py,$(PROTO_FILES))
 GRPC_GATEWAY_PROTO_FILES := api.proto
 GRPC_GATEWAY_FILES       := $(patsubst %.proto,%.pb.gw.go,$(GRPC_GATEWAY_PROTO_FILES))
-GRAPHQL_STATIC           := internal/graphql/static.go
+STATIC_FILE              := internal/static/static.go
 
 .PHONY: default
 default: go grpc-gateway swagger.json graphql
@@ -19,7 +19,7 @@ python: $(PY_PB_FILES)
 grpc-gateway: $(GRPC_GATEWAY_FILES)
 
 .PHONY: graphql
-graphql: $(GRAPHQL_STATIC)
+graphql: $(STATIC_FILE)
 
 define wrap-cmd
 @rm -f ../../zvelo
@@ -74,12 +74,12 @@ swagger.json: $(GRPC_GATEWAY_PROTO_FILES) $(PROTO_FILES) internal/swagger-patch/
 $(PY_PB_FILES): %_pb2.py: %.proto
 	$(call wrap-cmd,$(protoc-python))
 
-$(GRAPHQL_STATIC): schema.graphql
+$(STATIC_FILE): schema.graphql swagger.json
 	mkdir -p static
-	cp -a schema.graphql static
-	esc -o $@ -pkg graphql -prefix static static
+	cp -a $^ static
+	esc -o $@ -pkg static -prefix static static
 	rm -rf static
 
 .PHONY: clean
 clean:
-	rm -rf $(GO_PB_FILES) $(PY_PB_FILES) $(GRPC_GATEWAY_FILES) swagger.json $(GRAPHQL_STATIC)
+	rm -rf $(GO_PB_FILES) $(PY_PB_FILES) $(GRPC_GATEWAY_FILES) swagger.json $(STATIC_FILE)

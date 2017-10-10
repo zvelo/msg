@@ -10,23 +10,26 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
+	"fmt"
 	"math/big"
 	"net"
 	"net/http"
+	"os"
 	"strings"
 	"time"
-
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
 	"zvelo.io/msg"
+	"zvelo.io/msg/internal/static"
 )
+
+var staticFS = http.FileServer(static.FS(false))
 
 type handler struct {
 	grpc *grpc.Server
-	rest *runtime.ServeMux
+	rest http.Handler
 }
 
 func grpcContentType(t string) bool {
@@ -133,9 +136,9 @@ func defaultServeOpts() *serveOpts {
 	return &serveOpts{}
 }
 
-func WithOnReady(ready chan<- struct{}) ServeOption {
+func WithOnReady(val chan<- struct{}) ServeOption {
 	return func(o *serveOpts) {
-		o.ready = ready
+		o.ready = val
 	}
 }
 
@@ -160,13 +163,6 @@ func ServeTLS(ctx context.Context, l net.Listener, opts ...ServeOption) error {
 		opt(o)
 	}
 
-	h := handler{
-		grpc: grpc.NewServer(),
-		rest: msg.NewServeMux(),
-	}
-
-	msg.RegisterAPIServer(h.grpc, &apiServer{})
-
 	x509Cert, tlsCert, err := selfSignedCert()
 	if err != nil {
 		return err
@@ -175,20 +171,48 @@ func ServeTLS(ctx context.Context, l net.Listener, opts ...ServeOption) error {
 	rootCAs := x509.NewCertPool()
 	rootCAs.AddCert(x509Cert)
 
-	err = msg.RegisterAPIHandlerFromEndpoint(ctx, h.rest, l.Addr().String(), []grpc.DialOption{
+	conn, err := grpc.DialContext(ctx, l.Addr().String(),
 		grpc.WithTransportCredentials(
 			credentials.NewTLS(&tls.Config{
 				ServerName: "mock.api.zvelo.com",
 				RootCAs:    rootCAs,
 			}),
 		),
-	})
+	)
 	if err != nil {
 		return err
 	}
 
+	defer func() {
+		if cerr := conn.Close(); cerr != nil {
+			fmt.Fprintf(os.Stderr, "error closing connection: %s\n", cerr)
+		}
+	}()
+
+	graphQLHandler, err := msg.GraphQLHandler(msg.NewAPIClient(conn))
+	if err != nil {
+		return err
+	}
+
+	rest := msg.NewServeMux()
+	if err = msg.RegisterAPIHandler(ctx, rest, conn); err != nil {
+		return err
+	}
+
+	mux := http.NewServeMux()
+	mux.Handle("/swagger.json", staticFS)
+	mux.Handle("/schema.graphql", staticFS)
+	mux.Handle("/graphql", graphQLHandler)
+	mux.Handle("/", rest)
+
+	h := handler{
+		grpc: grpc.NewServer(),
+		rest: mux,
+	}
+
+	msg.RegisterAPIServer(h.grpc, &apiServer{})
+
 	s := http.Server{
-		Addr:    l.Addr().String(),
 		Handler: h,
 		TLSConfig: &tls.Config{
 			Certificates: []tls.Certificate{tlsCert},
