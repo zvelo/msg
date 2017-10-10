@@ -74,7 +74,7 @@ swagger.json: $(GRPC_GATEWAY_PROTO_FILES) $(PROTO_FILES) internal/swagger-patch/
 $(PY_PB_FILES): %_pb2.py: %.proto
 	$(call wrap-cmd,$(protoc-python))
 
-$(STATIC_FILE): schema.graphql swagger.json
+$(STATIC_FILE): schema.graphql
 	mkdir -p static
 	cp -a $^ static
 	esc -o $@ -pkg static -prefix static static

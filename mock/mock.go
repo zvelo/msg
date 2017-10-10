@@ -22,10 +22,7 @@ import (
 	"google.golang.org/grpc/credentials"
 
 	"zvelo.io/msg"
-	"zvelo.io/msg/internal/static"
 )
-
-var staticFS = http.FileServer(static.FS(false))
 
 type handler struct {
 	grpc *grpc.Server
@@ -200,8 +197,6 @@ func ServeTLS(ctx context.Context, l net.Listener, opts ...ServeOption) error {
 	}
 
 	mux := http.NewServeMux()
-	mux.Handle("/swagger.json", staticFS)
-	mux.Handle("/schema.graphql", staticFS)
 	mux.Handle("/graphql", graphQLHandler)
 	mux.Handle("/", rest)
 
