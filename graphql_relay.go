@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/neelance/graphql-go"
@@ -148,17 +149,22 @@ func annotateContext(req *http.Request) (context.Context, context.CancelFunc, er
 	return metadata.NewOutgoingContext(ctx, metadata.Pairs(pairs...)), cancel, nil
 }
 
-type metadataKey struct{}
+type serverMetadataKey struct{}
 
-func metadataFromContext(ctx context.Context) *metadata.MD {
-	if md, ok := ctx.Value(metadataKey{}).(*metadata.MD); ok {
-		return md
-	}
-	return &metadata.MD{}
+type serverMetadata struct {
+	sync.Mutex
+	Header metadata.MD
 }
 
-func newMetadataContext(ctx context.Context, md *metadata.MD) context.Context {
-	return context.WithValue(ctx, metadataKey{}, md)
+func serverMetadataFromContext(ctx context.Context) *serverMetadata {
+	if md, ok := ctx.Value(serverMetadataKey{}).(*serverMetadata); ok {
+		return md
+	}
+	return &serverMetadata{}
+}
+
+func newServerMetadataContext(ctx context.Context, md *serverMetadata) context.Context {
+	return context.WithValue(ctx, serverMetadataKey{}, md)
 }
 
 func (h relay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -179,8 +185,8 @@ func (h relay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	defer cancel()
 
-	var md metadata.MD
-	ctx = newMetadataContext(ctx, &md)
+	var md serverMetadata
+	ctx = newServerMetadataContext(ctx, &md)
 
 	response := h.Schema.Exec(ctx, params.Query, params.OperationName, params.Variables)
 	responseJSON, err := json.Marshal(response)
@@ -191,7 +197,10 @@ func (h relay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	for k, vs := range md {
+	md.Lock()
+	defer md.Unlock()
+
+	for k, vs := range md.Header {
 		if validHeader(k) {
 			for _, v := range vs {
 				w.Header().Add(k, v)

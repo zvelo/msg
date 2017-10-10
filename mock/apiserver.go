@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/gogo/protobuf/jsonpb"
+	"github.com/gogo/protobuf/proto"
 	"github.com/segmentio/ksuid"
 
 	"zvelo.io/msg"
@@ -39,15 +40,29 @@ func (r result) Complete() bool {
 	return time.Now().After(r.CompleteAt())
 }
 
+func (r result) Clone() (*result, error) {
+	var cpy msg.QueryResult
+	if err := copyProto(&cpy, &r.QueryResult); err != nil {
+		return nil, err
+	}
+	r.QueryResult = cpy
+	return &r, nil
+}
+
 var _ msg.APIServer = (*apiServer)(nil)
 
-func (s *apiServer) result(reqID string) *result {
+func (s *apiServer) result(reqID string) (*result, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	r, ok := s.requests[reqID]
-	if !ok {
-		return nil
+	if !ok || r == nil {
+		return nil, status.Errorf(codes.NotFound, "request ID not found: %s", reqID)
+	}
+
+	r, err := r.Clone()
+	if err != nil {
+		return nil, err
 	}
 
 	if r.Complete() {
@@ -58,7 +73,16 @@ func (s *apiServer) result(reqID string) *result {
 		r.QueryStatus.Complete = true
 	}
 
-	return r
+	return r, nil
+}
+
+func copyProto(dst, src proto.Message) error {
+	data, err := proto.Marshal(src)
+	if err != nil {
+		return err
+	}
+
+	return proto.Unmarshal(data, dst)
 }
 
 func (s *apiServer) store(r *result) {
@@ -75,7 +99,12 @@ func (s *apiServer) store(r *result) {
 }
 
 func (s *apiServer) handleCallback(u, reqID string) {
-	result := s.result(reqID)
+	result, err := s.result(reqID)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
+
 	if result == nil {
 		return
 	}
@@ -88,7 +117,7 @@ func (s *apiServer) handleCallback(u, reqID string) {
 	}
 
 	var buf bytes.Buffer
-	if err := jsonMarshaler.Marshal(&buf, &s.result(reqID).QueryResult); err == nil {
+	if err := jsonMarshaler.Marshal(&buf, &result.QueryResult); err == nil {
 		if _, err = http.Post(u, "application/json", &buf); err != nil {
 			fmt.Fprintf(os.Stderr, "error posting callback: %s\n", err)
 		}
@@ -161,9 +190,9 @@ func (s *apiServer) QueryV1(_ context.Context, in *msg.QueryRequests) (*msg.Quer
 }
 
 func (s *apiServer) QueryResultV1(_ context.Context, in *msg.QueryPollRequest) (*msg.QueryResult, error) {
-	result := s.result(in.RequestId)
-	if result == nil {
-		return nil, status.Errorf(codes.NotFound, "request ID not found: %s", in.RequestId)
+	result, err := s.result(in.RequestId)
+	if err != nil {
+		return nil, err
 	}
 
 	return &result.QueryResult, nil
