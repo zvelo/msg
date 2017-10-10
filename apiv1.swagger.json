@@ -27,10 +27,17 @@
     "/v1/query": {
       "post": {
         "tags": [
-          "API"
+          "APIv1"
         ],
         "summary": "Create new query",
-        "operationId": "QueryV1",
+        "operationId": "Query",
+        "security": [
+          {
+            "authorization": [
+              "zvelo.dataset"
+            ]
+          }
+        ],
         "parameters": [
           {
             "name": "body",
@@ -54,10 +61,17 @@
     "/v1/query/{request_id}": {
       "get": {
         "tags": [
-          "API"
+          "APIv1"
         ],
         "summary": "Results of active or unexpired query",
-        "operationId": "QueryResultV1",
+        "operationId": "Result",
+        "security": [
+          {
+            "authorization": [
+              "zvelo.dataset"
+            ]
+          }
+        ],
         "parameters": [
           {
             "type": "string",

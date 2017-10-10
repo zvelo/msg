@@ -2,12 +2,12 @@ FIRST_GOPATH             := $(firstword $(subst :, ,$(GOPATH)))
 PROTO_FILES              := $(wildcard *.proto)
 GO_PB_FILES              := $(patsubst %.proto,%.pb.go,$(PROTO_FILES))
 PY_PB_FILES              := $(patsubst %.proto,%_pb2.py,$(PROTO_FILES))
-GRPC_GATEWAY_PROTO_FILES := api.proto
+GRPC_GATEWAY_PROTO_FILES := apiv1.proto
 GRPC_GATEWAY_FILES       := $(patsubst %.proto,%.pb.gw.go,$(GRPC_GATEWAY_PROTO_FILES))
 STATIC_FILE              := internal/static/static.go
 
 .PHONY: default
-default: go grpc-gateway swagger.json graphql
+default: go grpc-gateway apiv1.swagger.json graphql
 
 .PHONY: go
 go: $(GO_PB_FILES) $(GRPC_GATEWAY_FILES)
@@ -66,15 +66,14 @@ $(GO_PB_FILES): %.pb.go: %.proto
 $(GRPC_GATEWAY_FILES): %.pb.gw.go: $(GRPC_GATEWAY_PROTO_FILES)
 	$(call wrap-cmd,$(call wrap-protoc,$(protoc-grpc-gateway)))
 
-swagger.json: $(GRPC_GATEWAY_PROTO_FILES) $(PROTO_FILES) internal/swagger-patch/main.go
+apiv1.swagger.json: $(GRPC_GATEWAY_PROTO_FILES) $(PROTO_FILES) internal/swagger-patch/main.go
 	$(call wrap-cmd,$(call wrap-protoc,$(protoc-swagger)))
-	@mv $(patsubst %.proto,%.swagger.json,$<) swagger.json
-	go run ./internal/swagger-patch/main.go
+	go run ./internal/swagger-patch/main.go $@
 
 $(PY_PB_FILES): %_pb2.py: %.proto
 	$(call wrap-cmd,$(protoc-python))
 
-$(STATIC_FILE): schema.graphql
+$(STATIC_FILE): schema.graphql apiv1.swagger.json
 	mkdir -p static
 	cp -a $^ static
 	esc -o $@ -pkg static -prefix static static
@@ -82,4 +81,4 @@ $(STATIC_FILE): schema.graphql
 
 .PHONY: clean
 clean:
-	rm -rf $(GO_PB_FILES) $(PY_PB_FILES) $(GRPC_GATEWAY_FILES) swagger.json $(STATIC_FILE)
+	rm -rf $(GO_PB_FILES) $(PY_PB_FILES) $(GRPC_GATEWAY_FILES) apiv1.swagger.json $(STATIC_FILE)

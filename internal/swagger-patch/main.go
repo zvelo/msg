@@ -26,10 +26,14 @@ func MarshalJSON(s *spec.Swagger) ([]byte, error) {
 }
 
 func main() {
-	doc, err := loads.Spec("swagger.json")
+	if len(os.Args) < 2 {
+		log.Fatalln("filename is required")
+	}
+
+	file := os.Args[1]
+	doc, err := loads.Spec(file)
 	if err != nil {
-		log.Println(err)
-		os.Exit(1)
+		log.Fatalln(err)
 	}
 
 	s := doc.Spec()
@@ -61,16 +65,8 @@ func main() {
 	}
 
 	security := map[string][]string{
-		"Post:/v1/queries/content":             {"zvelo.dataset"},
-		"Get:/v1/queries/content/{request_id}": {"zvelo.dataset"},
-		"Post:/v1/queries/url":                 {"zvelo.dataset"},
-		"Get:/v1/queries/url/{request_id}":     {"zvelo.dataset"},
-		"Get:/v1/overrides/{url}":              {"zvelo.override"},
-		"Post:/v1/overrides":                   {"zvelo.override"},
-		"Delete:/v1/overrides/{url}":           {"zvelo.override"},
-		"Get:/v1/overrides/matching/{url}":     {"zvelo.override"},
-		"Get:/v1/overrides":                    {"zvelo.override"},
-		"Get:/v1/overrides/expired":            {"zvelo.override"},
+		"Post:/v1/query":             {"zvelo.dataset"},
+		"Get:/v1/query/{request_id}": {"zvelo.dataset"},
 	}
 
 	for p, v := range s.Paths.Paths {
@@ -107,14 +103,12 @@ func main() {
 
 	data, err := MarshalJSON(s)
 	if err != nil {
-		log.Println(err)
-		os.Exit(1)
+		log.Fatalln(err)
 	}
 
 	data = bytes.Replace(data, []byte(`"n/a"`), []byte(`""`), -1)
 
-	if err = ioutil.WriteFile("swagger.json", data, 0644); err != nil {
-		log.Println(err)
-		os.Exit(1)
+	if err = ioutil.WriteFile(file, data, 0644); err != nil {
+		log.Fatalln(err)
 	}
 }

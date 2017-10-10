@@ -13,7 +13,7 @@ import (
 	"zvelo.io/msg/internal/static"
 )
 
-func GraphQLHandler(client APIClient, opts ...graphql.SchemaOpt) (http.Handler, error) {
+func GraphQLHandler(client APIv1Client, opts ...graphql.SchemaOpt) (http.Handler, error) {
 	schemaFile, err := static.FSString(false, "/schema.graphql")
 	if err != nil {
 		return nil, err
@@ -28,7 +28,7 @@ func GraphQLHandler(client APIClient, opts ...graphql.SchemaOpt) (http.Handler, 
 }
 
 type graphQLResolver struct {
-	client APIClient
+	client APIv1Client
 }
 
 func (r graphQLResolver) URL(ctx context.Context, args graphQLQueryURL) (*graphQLQueryReply, error) {
@@ -52,7 +52,7 @@ func (r graphQLResolver) URL(ctx context.Context, args graphQLQueryURL) (*graphQ
 	md.Lock()
 	defer md.Unlock()
 
-	replies, err := r.client.QueryV1(ctx, &req, grpc.Header(&md.Header))
+	replies, err := r.client.Query(ctx, &req, grpc.Header(&md.Header))
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (r graphQLResolver) Content(ctx context.Context, args graphQLQueryContent) 
 	md.Lock()
 	defer md.Unlock()
 
-	replies, err := r.client.QueryV1(ctx, &req, grpc.Header(&md.Header))
+	replies, err := r.client.Query(ctx, &req, grpc.Header(&md.Header))
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +116,7 @@ func (r graphQLResolver) Result(ctx context.Context, args struct{ RequestID grap
 	md.Lock()
 	defer md.Unlock()
 
-	result, err := r.client.QueryResultV1(ctx, &QueryPollRequest{RequestId: string(args.RequestID)}, grpc.Header(&md.Header))
+	result, err := r.client.Result(ctx, &RequestID{RequestId: string(args.RequestID)}, grpc.Header(&md.Header))
 	if err != nil {
 		return nil, err
 	}

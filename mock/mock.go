@@ -16,6 +16,7 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"path"
 	"strings"
 	"time"
 
@@ -25,7 +26,10 @@ import (
 	"google.golang.org/grpc/credentials"
 
 	"zvelo.io/msg"
+	"zvelo.io/msg/internal/static"
 )
+
+var staticFS = static.FS(false)
 
 type handler struct {
 	grpc *grpc.Server
@@ -126,38 +130,52 @@ func selfSignedCert() (*x509.Certificate, tls.Certificate, error) {
 	return x509Cert, tlsCert, nil
 }
 
-type ServeOption func(*serveOpts)
+type APIv1Option func(*apiv1)
 
-type serveOpts struct {
+type apiv1 struct {
 	ready            chan<- struct{}
 	compressionLevel int
 }
 
-func defaultServeOpts() *serveOpts {
-	return &serveOpts{
+func defaultsAPIv1() *apiv1 {
+	return &apiv1{
 		compressionLevel: gzip.DefaultCompression,
 	}
 }
 
-func WithOnReady(val chan<- struct{}) ServeOption {
-	return func(o *serveOpts) {
+func WhenReady(val chan<- struct{}) APIv1Option {
+	return func(o *apiv1) {
 		o.ready = val
 	}
 }
 
-func WithCompressionLevel(val int) ServeOption {
+func WithCompressionLevel(val int) APIv1Option {
 	if val == 0 {
 		val = gzip.DefaultCompression
 	}
 
-	return func(o *serveOpts) {
+	return func(o *apiv1) {
 		o.compressionLevel = val
 	}
 }
 
+type Server interface {
+	ServeTLS(ctx context.Context, l net.Listener) error
+	ListenAndServeTLS(ctx context.Context, addr string) error
+}
+
+func APIv1(opts ...APIv1Option) Server {
+	o := defaultsAPIv1()
+	for _, opt := range opts {
+		opt(o)
+	}
+
+	return o
+}
+
 // ListenAndServeTLS listens for tls connections using a self-signed certificate
 // on addr and serves the mock APIServer
-func ListenAndServeTLS(ctx context.Context, addr string, opts ...ServeOption) error {
+func (srv apiv1) ListenAndServeTLS(ctx context.Context, addr string) error {
 	if addr == "" {
 		addr = ":https"
 	}
@@ -167,15 +185,10 @@ func ListenAndServeTLS(ctx context.Context, addr string, opts ...ServeOption) er
 		return err
 	}
 
-	return ServeTLS(ctx, l, opts...)
+	return srv.ServeTLS(ctx, l)
 }
 
-func ServeTLS(ctx context.Context, l net.Listener, opts ...ServeOption) error {
-	o := defaultServeOpts()
-	for _, opt := range opts {
-		opt(o)
-	}
-
+func (srv apiv1) ServeTLS(ctx context.Context, l net.Listener) error {
 	x509Cert, tlsCert, err := selfSignedCert()
 	if err != nil {
 		return err
@@ -202,21 +215,28 @@ func ServeTLS(ctx context.Context, l net.Listener, opts ...ServeOption) error {
 		}
 	}()
 
-	graphQLHandler, err := msg.GraphQLHandler(msg.NewAPIClient(conn))
+	graphQLHandler, err := msg.GraphQLHandler(msg.NewAPIv1Client(conn))
 	if err != nil {
 		return err
 	}
 
 	rest := msg.NewServeMux()
-	if err = msg.RegisterAPIHandler(ctx, rest, conn); err != nil {
+	if err = msg.RegisterAPIv1Handler(ctx, rest, conn); err != nil {
 		return err
 	}
 
 	mux := http.NewServeMux()
 	mux.Handle("/graphql", graphQLHandler)
-	mux.Handle("/", rest)
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if shouldServeFile(r.URL.Path) {
+			http.FileServer(staticFS).ServeHTTP(w, r)
+			return
+		}
 
-	gz, err := gziphandler.NewGzipLevelHandler(o.compressionLevel)
+		rest.ServeHTTP(w, r)
+	})
+
+	gz, err := gziphandler.NewGzipLevelHandler(srv.compressionLevel)
 	if err != nil {
 		return err
 	}
@@ -226,7 +246,7 @@ func ServeTLS(ctx context.Context, l net.Listener, opts ...ServeOption) error {
 		rest: gz(mux),
 	}
 
-	msg.RegisterAPIServer(h.grpc, &apiServer{})
+	msg.RegisterAPIv1Server(h.grpc, &apiServer{})
 
 	s := http.Server{
 		Handler: h,
@@ -239,9 +259,32 @@ func ServeTLS(ctx context.Context, l net.Listener, opts ...ServeOption) error {
 	errCh := make(chan error)
 	go func() { errCh <- s.ServeTLS(l, "", "") }()
 
-	if o.ready != nil {
-		close(o.ready)
+	if srv.ready != nil {
+		close(srv.ready)
 	}
 
 	return <-errCh
+}
+
+func shouldServeFile(name string) bool {
+	if !strings.HasPrefix(name, "/") {
+		name = "/" + name
+	}
+
+	if name == "/" {
+		return false
+	}
+
+	f, err := staticFS.Open(path.Clean(name))
+	if err != nil {
+		return false
+	}
+
+	defer func() { _ = f.Close() }()
+
+	if _, err := f.Stat(); err != nil {
+		return false
+	}
+
+	return true
 }

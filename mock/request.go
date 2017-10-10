@@ -13,9 +13,9 @@ import (
 	"zvelo.io/msg"
 )
 
-type Option func(*result)
+type URLOption func(*result)
 
-func WithCategories(val ...msg.Category) Option {
+func WithCategories(val ...msg.Category) URLOption {
 	return func(r *result) {
 		if len(val) == 0 {
 			return
@@ -33,7 +33,7 @@ func WithCategories(val ...msg.Category) Option {
 	}
 }
 
-func WithMalicious(verdict msg.DataSet_Malicious_Verdict, cat msg.Category) Option {
+func WithMalicious(verdict msg.DataSet_Malicious_Verdict, cat msg.Category) URLOption {
 	return func(r *result) {
 		if r.ResponseDataset == nil {
 			r.ResponseDataset = &msg.DataSet{}
@@ -48,13 +48,13 @@ func WithMalicious(verdict msg.DataSet_Malicious_Verdict, cat msg.Category) Opti
 	}
 }
 
-func WithCompleteAfter(val time.Duration) Option {
+func WithCompleteAfter(val time.Duration) URLOption {
 	return func(r *result) {
 		r.CompleteAfter = val
 	}
 }
 
-func WithFetchCode(val int32) Option {
+func WithFetchCode(val int32) URLOption {
 	return func(r *result) {
 		if r.QueryStatus == nil {
 			r.QueryStatus = &msg.QueryStatus{}
@@ -64,7 +64,7 @@ func WithFetchCode(val int32) Option {
 	}
 }
 
-func WithLocation(val string) Option {
+func WithLocation(val string) URLOption {
 	return func(r *result) {
 		if r.QueryStatus == nil {
 			r.QueryStatus = &msg.QueryStatus{}
@@ -74,7 +74,7 @@ func WithLocation(val string) Option {
 	}
 }
 
-func WithError(c codes.Code, str string) Option {
+func WithError(c codes.Code, str string) URLOption {
 	return func(r *result) {
 		if r.QueryStatus == nil {
 			r.QueryStatus = &msg.QueryStatus{}
@@ -84,7 +84,7 @@ func WithError(c codes.Code, str string) Option {
 	}
 }
 
-func NewQueryURL(rawurl string, opts ...Option) (string, error) {
+func QueryURL(rawurl string, opts ...URLOption) (string, error) {
 	if !strings.Contains(rawurl, "://") {
 		rawurl = "http://" + rawurl
 	}

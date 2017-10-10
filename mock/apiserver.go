@@ -49,7 +49,7 @@ func (r result) Clone() (*result, error) {
 	return &r, nil
 }
 
-var _ msg.APIServer = (*apiServer)(nil)
+var _ msg.APIv1Server = (*apiServer)(nil)
 
 func (s *apiServer) result(reqID string) (*result, error) {
 	s.mu.Lock()
@@ -152,7 +152,7 @@ func (s *apiServer) handleQuery(u string, ds []msg.DataSetType, out *msg.QueryRe
 	return nil
 }
 
-func (s *apiServer) QueryV1(_ context.Context, in *msg.QueryRequests) (*msg.QueryReplies, error) {
+func (s *apiServer) Query(_ context.Context, in *msg.QueryRequests) (*msg.QueryReplies, error) {
 	if len(in.Dataset) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "no datasets requested")
 	}
@@ -189,7 +189,7 @@ func (s *apiServer) QueryV1(_ context.Context, in *msg.QueryRequests) (*msg.Quer
 	return &out, nil
 }
 
-func (s *apiServer) QueryResultV1(_ context.Context, in *msg.QueryPollRequest) (*msg.QueryResult, error) {
+func (s *apiServer) Result(_ context.Context, in *msg.RequestID) (*msg.QueryResult, error) {
 	result, err := s.result(in.RequestId)
 	if err != nil {
 		return nil, err

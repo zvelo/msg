@@ -8,9 +8,9 @@ option go_package = "zvelo.io/msg";
 import "zvelo/msg/query.proto";
 import "google/api/annotations.proto";
 
-service API {
+service APIv1 {
   // Create new query
-  rpc QueryV1(QueryRequests) returns (QueryReplies) {
+  rpc Query(QueryRequests) returns (QueryReplies) {
     option (google.api.http) = {
       post: "/v1/query"
       body: "*"
@@ -18,7 +18,7 @@ service API {
   }
 
   // Results of active or unexpired query
-  rpc QueryResultV1(QueryPollRequest) returns (QueryResult) {
+  rpc Result(RequestID) returns (QueryResult) {
     option (google.api.http) = {
       get: "/v1/query/{request_id}"
     };
