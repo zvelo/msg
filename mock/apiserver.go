@@ -134,10 +134,10 @@ func (s *apiServer) postCallbacks(u string, reqIDs ...string) {
 	}
 }
 
-func (s *apiServer) handleQuery(u string, ds []msg.DataSetType, out *msg.QueryReplies, reqIDs *[]string) error {
+func (s *apiServer) handleQuery(ctx context.Context, u string, content bool, ds []msg.DataSetType, out *msg.QueryReplies, reqIDs *[]string) error {
 	var r result
-	if err := parseURL(u, ds, &r); err != nil {
-		return status.Errorf(codes.Internal, "error parsing url %s: %s", u, err)
+	if err := parseOpts(ctx, u, content, ds, &r); err != nil {
+		return status.Errorf(codes.Internal, "error parsing opts: %s", err)
 	}
 
 	r.RequestId = ksuid.New().String()
@@ -152,7 +152,7 @@ func (s *apiServer) handleQuery(u string, ds []msg.DataSetType, out *msg.QueryRe
 	return nil
 }
 
-func (s *apiServer) Query(_ context.Context, in *msg.QueryRequests) (*msg.QueryReplies, error) {
+func (s *apiServer) Query(ctx context.Context, in *msg.QueryRequests) (*msg.QueryReplies, error) {
 	if len(in.Dataset) == 0 {
 		return nil, status.Error(codes.InvalidArgument, "no datasets requested")
 	}
@@ -165,7 +165,7 @@ func (s *apiServer) Query(_ context.Context, in *msg.QueryRequests) (*msg.QueryR
 			continue
 		}
 
-		if err := s.handleQuery(u, in.Dataset, &out, &reqIDs); err != nil {
+		if err := s.handleQuery(ctx, u, false, in.Dataset, &out, &reqIDs); err != nil {
 			return nil, err
 		}
 	}
@@ -175,7 +175,7 @@ func (s *apiServer) Query(_ context.Context, in *msg.QueryRequests) (*msg.QueryR
 			continue
 		}
 
-		if err := s.handleQuery(c.Url, in.Dataset, &out, &reqIDs); err != nil {
+		if err := s.handleQuery(ctx, c.Url, true, in.Dataset, &out, &reqIDs); err != nil {
 			return nil, err
 		}
 	}
