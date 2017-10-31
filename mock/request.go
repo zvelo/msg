@@ -3,7 +3,6 @@ package mock
 import (
 	"context"
 	"net/http"
-	"net/textproto"
 	"strconv"
 	"time"
 
@@ -86,14 +85,14 @@ func WithError(c codes.Code, str string) ContextOption {
 }
 
 const (
-	headerCategory          = "Zvelo-Mock-Category"
-	headerMaliciousVerdict  = "Zvelo-Mock-Malicious-Verdict"
-	headerMaliciousCategory = "Zvelo-Mock-Malicious-Category"
-	headerCompleteAfter     = "Zvelo-Mock-Complete-After"
-	headerFetchCode         = "Zvelo-Mock-Fetch-Code"
-	headerLocation          = "Zvelo-Mock-Location"
-	headerErrorCode         = "Zvelo-Mock-Error-Code"
-	headerErrorMessage      = "Zvelo-Mock-Error-Message"
+	headerCategory          = "zvelo-mock-category"
+	headerMaliciousVerdict  = "zvelo-mock-malicious-verdict"
+	headerMaliciousCategory = "zvelo-mock-malicious-category"
+	headerCompleteAfter     = "zvelo-mock-complete-after"
+	headerFetchCode         = "zvelo-mock-fetch-code"
+	headerLocation          = "zvelo-mock-location"
+	headerErrorCode         = "zvelo-mock-error-code"
+	headerErrorMessage      = "zvelo-mock-error-message"
 )
 
 func QueryContext(ctx context.Context, opts ...ContextOption) context.Context {
@@ -102,54 +101,68 @@ func QueryContext(ctx context.Context, opts ...ContextOption) context.Context {
 		opt(&r)
 	}
 
-	h := http.Header{}
-	if md, ok := metadata.FromOutgoingContext(ctx); ok {
-		h = http.Header(md.Copy())
-	}
+	var pairs []string
 
 	if ds := r.ResponseDataset; ds != nil {
 		if c := ds.Categorization; c != nil {
 			for _, cat := range c.Value {
-				h.Add(headerCategory, cat.String())
+				pairs = append(pairs, headerCategory, cat.String())
 			}
 		}
 
 		if m := ds.Malicious; m != nil {
 			if m.Category != 0 {
-				h.Set(headerMaliciousCategory, m.Category.String())
+				pairs = append(pairs, headerMaliciousCategory, m.Category.String())
 			}
 
 			if m.Verdict != msg.VERDICT_UNKNOWN {
-				h.Set(headerMaliciousVerdict, m.Verdict.String())
+				pairs = append(pairs, headerMaliciousVerdict, m.Verdict.String())
 			}
 		}
 	}
 
 	if r.CompleteAfter > 0 {
-		h.Set(headerCompleteAfter, r.CompleteAfter.String())
+		pairs = append(pairs, headerCompleteAfter, r.CompleteAfter.String())
 	}
 
 	if qs := r.QueryStatus; qs != nil {
 		if qs.FetchCode != 0 {
-			h.Set(headerFetchCode, strconv.Itoa(int(qs.FetchCode)))
+			pairs = append(pairs, headerFetchCode, strconv.Itoa(int(qs.FetchCode)))
 		}
 
 		if qs.Location != "" {
-			h.Set(headerLocation, qs.Location)
+			pairs = append(pairs, headerLocation, qs.Location)
 		}
 
 		if e := qs.Error; e != nil {
 			if e.Code != 0 {
-				h.Set(headerErrorCode, strconv.Itoa(int(e.Code)))
+				pairs = append(pairs, headerErrorCode, strconv.Itoa(int(e.Code)))
 			}
 
 			if e.Message != "" {
-				h.Set(headerErrorMessage, e.Message)
+				pairs = append(pairs, headerErrorMessage, e.Message)
 			}
 		}
 	}
 
-	return metadata.NewOutgoingContext(ctx, metadata.MD(h))
+	md := metadata.Pairs(pairs...)
+
+	if cmd, ok := metadata.FromOutgoingContext(ctx); ok {
+		md = metadata.Join(cmd, md)
+	}
+
+	return metadata.NewOutgoingContext(ctx, md)
+}
+
+func mdGet(md metadata.MD, key string) string {
+	if md == nil {
+		return ""
+	}
+	v := md[key]
+	if len(v) == 0 {
+		return ""
+	}
+	return v[0]
 }
 
 func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetType, r *result) error {
@@ -157,8 +170,6 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 	if !ok {
 		return nil
 	}
-
-	h := http.Header(md)
 
 	for _, t := range ds {
 		switch msg.DataSetType(t) {
@@ -169,7 +180,7 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 
 			r.ResponseDataset.Categorization = &msg.DataSet_Categorization{}
 
-			if categoryNames, ok := h[textproto.CanonicalMIMEHeaderKey(headerCategory)]; ok {
+			if categoryNames, ok := md[headerCategory]; ok {
 				categories := make([]msg.Category, len(categoryNames))
 				for i, categoryName := range categoryNames {
 					if categoryID, ok := msg.Category_value[categoryName]; ok {
@@ -186,13 +197,13 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 
 			r.ResponseDataset.Malicious = &msg.DataSet_Malicious{}
 
-			if v := h.Get(headerMaliciousVerdict); v != "" {
+			if v := mdGet(md, headerMaliciousVerdict); v != "" {
 				if verdict, ok := msg.DataSet_Malicious_Verdict_value[v]; ok {
 					WithMalicious(msg.DataSet_Malicious_Verdict(verdict), msg.UNKNOWN_CATEGORY)(r)
 				}
 			}
 
-			if categoryName := h.Get(headerMaliciousCategory); categoryName != "" {
+			if categoryName := mdGet(md, headerMaliciousCategory); categoryName != "" {
 				if categoryID, ok := msg.Category_value[categoryName]; ok {
 					WithMalicious(msg.VERDICT_MALICIOUS, msg.Category(categoryID))(r)
 				}
@@ -206,7 +217,7 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 		}
 	}
 
-	if s := h.Get(headerCompleteAfter); s != "" {
+	if s := mdGet(md, headerCompleteAfter); s != "" {
 		d, err := time.ParseDuration(s)
 		if err != nil {
 			return err
@@ -215,7 +226,7 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 		WithCompleteAfter(d)(r)
 	}
 
-	if c := h.Get(headerFetchCode); c != "" {
+	if c := mdGet(md, headerFetchCode); c != "" {
 		code, err := strconv.ParseInt(c, 10, 32)
 		if err != nil {
 			return err
@@ -226,12 +237,12 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 		WithFetchCode(http.StatusOK)(r)
 	}
 
-	if l := h.Get(headerLocation); l != "" {
+	if l := mdGet(md, headerLocation); l != "" {
 		WithLocation(l)(r)
 	}
 
 	var errorCode codes.Code
-	if c := h.Get(headerErrorCode); c != "" {
+	if c := mdGet(md, headerErrorCode); c != "" {
 		code, err := strconv.ParseUint(c, 10, 32)
 		if err != nil {
 			return err
@@ -240,7 +251,7 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 		errorCode = codes.Code(code)
 	}
 
-	errorMsg := h.Get(headerErrorMessage)
+	errorMsg := mdGet(md, headerErrorMessage)
 
 	if errorCode != 0 || errorMsg != "" {
 		WithError(errorCode, errorMsg)(r)

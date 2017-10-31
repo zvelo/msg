@@ -21,6 +21,7 @@ import (
 	"time"
 
 	"github.com/NYTimes/gziphandler"
+	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -220,7 +221,19 @@ func (srv apiv1) ServeTLS(ctx context.Context, l net.Listener) error {
 		return err
 	}
 
-	rest := msg.NewServeMux()
+	rest := msg.NewServeMux(
+		runtime.WithIncomingHeaderMatcher(func(key string) (string, bool) {
+			if k, ok := runtime.DefaultHeaderMatcher(key); ok {
+				return k, ok
+			}
+
+			if strings.HasPrefix(key, "Zvelo-Mock-") {
+				return key, true
+			}
+
+			return "", false
+		}),
+	)
 	if err = msg.RegisterAPIv1Handler(ctx, rest, conn); err != nil {
 		return err
 	}
