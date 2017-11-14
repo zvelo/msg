@@ -6,7 +6,9 @@ package zvelo.msg;
 option go_package = "zvelo.io/msg";
 
 import "zvelo/msg/query.proto";
+import "zvelo/msg/suggest.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 service APIv1 {
   // Create new query
@@ -21,6 +23,14 @@ service APIv1 {
   rpc Result(RequestID) returns (QueryResult) {
     option (google.api.http) = {
       get: "/v1/query/{request_id}"
+    };
+  }
+
+  // Suggest new datasets for a URL
+  rpc Suggest(Suggestion) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/suggest"
+      body: "*"
     };
   }
 }

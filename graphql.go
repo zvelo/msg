@@ -65,7 +65,7 @@ func (r graphQLResolver) URL(ctx context.Context, args graphQLQueryURL) (*graphQ
 }
 
 func (r graphQLResolver) Content(ctx context.Context, args graphQLQueryContent) (*graphQLQueryReply, error) {
-	content := QueryRequests_URLContent{
+	content := URLContent{
 		Content: args.Content.Content,
 	}
 
@@ -80,7 +80,7 @@ func (r graphQLResolver) Content(ctx context.Context, args graphQLQueryContent) 
 	}
 
 	req := QueryRequests{
-		Content: []*QueryRequests_URLContent{&content},
+		Content: []*URLContent{&content},
 	}
 
 	if args.Callback != nil {

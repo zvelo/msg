@@ -55,23 +55,23 @@ message QueryResult {
   QueryStatus query_status = 10;
 };
 
+message URLContent {
+  reserved 1;
+
+  // url the content came from, not required
+  string url = 2;
+
+  // headers
+  //
+  // header key/value pairs
+  map<string, string> header = 3;
+
+  // the actual content to process. required
+  string content = 4;
+}
+
 // QueryRequests
 message QueryRequests {
-  message URLContent {
-    reserved 1;
-
-    // url the content came from, not required
-    string url = 2;
-
-    // headers
-    //
-    // header key/value pairs
-    map<string, string> header = 3;
-
-    // the actual content to process. required
-    string content = 4;
-  }
-
   // The URLs to categorize
   repeated string url = 1;
 

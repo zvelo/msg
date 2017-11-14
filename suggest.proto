@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zvelo.msg;
+
+option go_package = "zvelo.io/msg";
+
+import "zvelo/msg/dataset.proto";
+
+message Suggestion {
+  string  url     = 1;
+  DataSet dataset = 2;
+}

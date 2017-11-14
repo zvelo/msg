@@ -14,6 +14,7 @@ import (
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/gogo/protobuf/proto"
+	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/segmentio/ksuid"
 
 	"zvelo.io/msg"
@@ -196,4 +197,8 @@ func (s *apiServer) Result(_ context.Context, in *msg.RequestID) (*msg.QueryResu
 	}
 
 	return &result.QueryResult, nil
+}
+
+func (s *apiServer) Suggest(_ context.Context, _ *msg.Suggestion) (*empty.Empty, error) {
+	return nil, nil
 }
