@@ -31,7 +31,45 @@ type graphQLResolver struct {
 	client APIv1Client
 }
 
-func (r graphQLResolver) URL(ctx context.Context, args graphQLQueryURL) (*graphQLQueryReply, error) {
+func (r graphQLResolver) SuggestURL(ctx context.Context, args graphQLSuggestURL) error {
+	s := Suggestion{
+		Url: args.URL,
+	}
+
+	if args.DataSet != nil {
+		s.Dataset = &DataSet{}
+
+		if cs := args.DataSet.Categorization; cs != nil {
+			s.Dataset.Categorization = &DataSet_Categorization{}
+
+			for _, cn := range *cs {
+				if c := ParseCategory(cn); c != UNKNOWN_CATEGORY {
+					s.Dataset.Categorization.Value = append(s.Dataset.Categorization.Value, c)
+				}
+			}
+		}
+
+		if ms := args.DataSet.Malicious; ms != nil {
+			s.Dataset.Malicious = &DataSet_Malicious{
+				Category: ParseCategory(ms.Category),
+				Verdict:  ParseMaliciousVerdict(ms.Verdict),
+			}
+		}
+
+		if es := args.DataSet.Echo; es != nil {
+			s.Dataset.Echo = &DataSet_Echo{Url: *es}
+		}
+	}
+
+	md := serverMetadataFromContext(ctx)
+	md.Lock()
+	defer md.Unlock()
+
+	_, err := r.client.Suggest(ctx, &s, grpc.Header(&md.Header))
+	return err
+}
+
+func (r graphQLResolver) QueryURL(ctx context.Context, args graphQLQueryURL) (*graphQLQueryReply, error) {
 	req := QueryRequests{
 		Url: []string{args.URL},
 	}
@@ -64,7 +102,7 @@ func (r graphQLResolver) URL(ctx context.Context, args graphQLQueryURL) (*graphQ
 	return &graphQLQueryReply{replies.Reply[0]}, nil
 }
 
-func (r graphQLResolver) Content(ctx context.Context, args graphQLQueryContent) (*graphQLQueryReply, error) {
+func (r graphQLResolver) QueryContent(ctx context.Context, args graphQLQueryContent) (*graphQLQueryReply, error) {
 	content := URLContent{
 		Content: args.Content.Content,
 	}
@@ -133,6 +171,22 @@ type graphQLURLContent struct {
 	URL     *string
 	Header  *[]graphQLHeader
 	Content string
+}
+
+type graphQLSuggestURL struct {
+	URL     string
+	DataSet *graphQLDataSetInput
+}
+
+type graphQLDataSetInput struct {
+	Categorization *[]string
+	Malicious      *graphQLDataSetMaliciousInput
+	Echo           *string
+}
+
+type graphQLDataSetMaliciousInput struct {
+	Category string
+	Verdict  string
 }
 
 type graphQLQueryURL struct {

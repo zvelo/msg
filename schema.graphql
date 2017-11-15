@@ -1,16 +1,19 @@
 schema {
-  query: Query
+  query: APIv1
 }
 
-type Query {
-  url(url: String!, callback: String, dataset: [DataSetType!]!): QueryReply!
-  content(
+type APIv1 {
+  queryUrl(url: String!, callback: String, dataset: [DataSetType!]!): QueryReply!
+  queryContent(
     content: URLContent!
     callback: String
     dataset: [DataSetType!]!
   ): QueryReply!
   result(requestID: ID!): QueryResult
+  suggestUrl(url: String!, dataset: DataSetInput): Empty
 }
+
+type Empty {}
 
 enum DataSetType {
   CATEGORIZATION
@@ -49,6 +52,17 @@ type DataSet {
   categorization: [Category!]
   malicious: DataSetMalicious
   echo: String
+}
+
+input DataSetInput {
+  categorization: [Category!]
+  malicious: DataSetMaliciousInput
+  echo: String
+}
+
+input DataSetMaliciousInput {
+  category: Category!
+  verdict: DataSetMaliciousVerdict!
 }
 
 enum DataSetMaliciousVerdict {

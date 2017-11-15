@@ -1,5 +1,10 @@
 package msg
 
+import (
+	"strconv"
+	"strings"
+)
+
 // CategoryLong is a map from Category to long string names
 var CategoryLong = map[Category]string{
 	UNKNOWN_CATEGORY: "Unknown Category",
@@ -497,4 +502,22 @@ var CategoryLong = map[Category]string{
 // Long returns the category long name
 func (c Category) Long() string {
 	return CategoryLong[c]
+}
+
+// ParseCategory parses a category id or case insensitive short name and returns
+// a Category
+func ParseCategory(name string) Category {
+	if cid, err := strconv.Atoi(name); err == nil {
+		if _, ok := Category_name[int32(cid)]; ok {
+			return Category(cid)
+		}
+	}
+
+	for k, v := range Category_value {
+		if strings.EqualFold(name, k) {
+			return Category(v)
+		}
+	}
+
+	return UNKNOWN_CATEGORY
 }
