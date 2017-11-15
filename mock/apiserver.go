@@ -23,8 +23,11 @@ import (
 var jsonMarshaler jsonpb.Marshaler
 
 type apiServer struct {
-	mu       sync.Mutex
-	requests map[string]*result
+	requestsLock sync.Mutex
+	requests     map[string]*result
+
+	streamsLock sync.Mutex
+	streams     map[chan *msg.QueryResult]struct{}
 }
 
 type result struct {
@@ -53,8 +56,8 @@ func (r result) Clone() (*result, error) {
 var _ msg.APIv1Server = (*apiServer)(nil)
 
 func (s *apiServer) result(reqID string) (*result, error) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	s.requestsLock.Lock()
+	defer s.requestsLock.Unlock()
 
 	r, ok := s.requests[reqID]
 	if !ok || r == nil {
@@ -87,8 +90,8 @@ func copyProto(dst, src proto.Message) error {
 }
 
 func (s *apiServer) store(r *result) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
+	s.requestsLock.Lock()
+	defer s.requestsLock.Unlock()
 
 	r.StoredAt = time.Now()
 
@@ -99,7 +102,7 @@ func (s *apiServer) store(r *result) {
 	s.requests[r.RequestId] = r
 }
 
-func (s *apiServer) handleCallback(u, reqID string) {
+func (s *apiServer) handleResult(callbackURL, reqID string) {
 	result, err := s.result(reqID)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -112,26 +115,34 @@ func (s *apiServer) handleCallback(u, reqID string) {
 
 	if !result.Complete() {
 		time.AfterFunc(time.Until(result.CompleteAt()), func() {
-			s.handleCallback(u, reqID)
+			s.handleResult(callbackURL, reqID)
 		})
 		return
 	}
 
-	var buf bytes.Buffer
-	if err := jsonMarshaler.Marshal(&buf, &result.QueryResult); err == nil {
-		if _, err = http.Post(u, "application/json", &buf); err != nil {
-			fmt.Fprintf(os.Stderr, "error posting callback: %s\n", err)
+	if callbackURL != "" {
+		var buf bytes.Buffer
+		if err = jsonMarshaler.Marshal(&buf, &result.QueryResult); err == nil {
+			if _, err = http.Post(callbackURL, "application/json", &buf); err != nil {
+				fmt.Fprintf(os.Stderr, "error posting callback: %s\n", err)
+			}
+		}
+	}
+
+	s.streamsLock.Lock()
+	defer s.streamsLock.Unlock()
+
+	for stream := range s.streams {
+		select {
+		case stream <- &result.QueryResult:
+		default:
 		}
 	}
 }
 
-func (s *apiServer) postCallbacks(u string, reqIDs ...string) {
-	if u == "" {
-		return
-	}
-
+func (s *apiServer) handleResults(callbackURL string, reqIDs ...string) {
 	for _, reqID := range reqIDs {
-		go s.handleCallback(u, reqID)
+		go s.handleResult(callbackURL, reqID)
 	}
 }
 
@@ -185,7 +196,7 @@ func (s *apiServer) Query(ctx context.Context, in *msg.QueryRequests) (*msg.Quer
 		return nil, status.Error(codes.InvalidArgument, "no valid urls in request")
 	}
 
-	defer s.postCallbacks(in.Callback, reqIDs...)
+	defer s.handleResults(in.Callback, reqIDs...)
 
 	return &out, nil
 }
@@ -200,5 +211,41 @@ func (s *apiServer) Result(_ context.Context, in *msg.RequestID) (*msg.QueryResu
 }
 
 func (s *apiServer) Suggest(_ context.Context, _ *msg.Suggestion) (*empty.Empty, error) {
-	return nil, nil
+	return &empty.Empty{}, nil
+}
+
+func (s *apiServer) registerStream() chan *msg.QueryResult {
+	ch := make(chan *msg.QueryResult)
+
+	s.streamsLock.Lock()
+	if s.streams == nil {
+		s.streams = map[chan *msg.QueryResult]struct{}{}
+	}
+	s.streams[ch] = struct{}{}
+	s.streamsLock.Unlock()
+
+	return ch
+}
+
+func (s *apiServer) unregisterStream(ch chan *msg.QueryResult) {
+	s.streamsLock.Lock()
+	delete(s.streams, ch)
+	s.streamsLock.Unlock()
+}
+
+func (s *apiServer) Stream(_ *empty.Empty, stream msg.APIv1_StreamServer) error {
+	ch := s.registerStream()
+	defer s.unregisterStream(ch)
+
+	if err := stream.SendHeader(nil); err != nil {
+		return err
+	}
+
+	for result := range ch {
+		if err := stream.Send(result); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

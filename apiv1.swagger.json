@@ -90,6 +90,23 @@
         }
       }
     },
+    "/v1/stream": {
+      "get": {
+        "tags": [
+          "APIv1"
+        ],
+        "summary": "Stream returns all QueryResult messages processed by zveloAPI",
+        "operationId": "Stream",
+        "responses": {
+          "200": {
+            "description": "(streaming responses)",
+            "schema": {
+              "$ref": "#/definitions/msgQueryResult"
+            }
+          }
+        }
+      }
+    },
     "/v1/suggest": {
       "post": {
         "tags": [
@@ -751,6 +768,9 @@
         },
         "response_dataset": {
           "$ref": "#/definitions/msgDataSet"
+        },
+        "url": {
+          "type": "string"
         }
       }
     },

@@ -33,4 +33,11 @@ service APIv1 {
       body: "*"
     };
   }
+
+  // Stream returns all QueryResult messages processed by zveloAPI
+  rpc Stream(google.protobuf.Empty) returns (stream QueryResult) {
+    option (google.api.http) = {
+      get: "/v1/stream"
+    };
+  }
 }

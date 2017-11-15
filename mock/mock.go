@@ -2,7 +2,6 @@ package mock
 
 import (
 	"bytes"
-	"compress/gzip"
 	"context"
 	"crypto/ecdsa"
 	"crypto/elliptic"
@@ -20,7 +19,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/NYTimes/gziphandler"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 	"google.golang.org/grpc"
@@ -134,29 +132,16 @@ func selfSignedCert() (*x509.Certificate, tls.Certificate, error) {
 type APIv1Option func(*apiv1)
 
 type apiv1 struct {
-	ready            chan<- struct{}
-	compressionLevel int
+	ready chan<- struct{}
 }
 
 func defaultsAPIv1() *apiv1 {
-	return &apiv1{
-		compressionLevel: gzip.DefaultCompression,
-	}
+	return &apiv1{}
 }
 
 func WhenReady(val chan<- struct{}) APIv1Option {
 	return func(o *apiv1) {
 		o.ready = val
-	}
-}
-
-func WithCompressionLevel(val int) APIv1Option {
-	if val == 0 {
-		val = gzip.DefaultCompression
-	}
-
-	return func(o *apiv1) {
-		o.compressionLevel = val
 	}
 }
 
@@ -249,14 +234,9 @@ func (srv apiv1) ServeTLS(ctx context.Context, l net.Listener) error {
 		rest.ServeHTTP(w, r)
 	})
 
-	gz, err := gziphandler.NewGzipLevelHandler(srv.compressionLevel)
-	if err != nil {
-		return err
-	}
-
 	h := handler{
 		grpc: grpc.NewServer(),
-		rest: gz(mux),
+		rest: mux,
 	}
 
 	msg.RegisterAPIv1Server(h.grpc, &apiServer{})
