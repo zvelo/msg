@@ -241,11 +241,14 @@ func (s *apiServer) Stream(_ *empty.Empty, stream msg.APIv1_StreamServer) error 
 		return err
 	}
 
-	for result := range ch {
-		if err := stream.Send(result); err != nil {
-			return err
+	for {
+		select {
+		case result := <-ch:
+			if err := stream.Send(result); err != nil {
+				return err
+			}
+		case <-stream.Context().Done():
+			return stream.Context().Err()
 		}
 	}
-
-	return nil
 }
