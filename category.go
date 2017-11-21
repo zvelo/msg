@@ -517,6 +517,10 @@ func ParseCategory(name string) Category {
 		if strings.EqualFold(name, k) {
 			return Category(v)
 		}
+
+		if strings.EqualFold(name+"_4", k) {
+			return Category(v)
+		}
 	}
 
 	return UNKNOWN_CATEGORY
