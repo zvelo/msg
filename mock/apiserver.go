@@ -20,7 +20,7 @@ import (
 	"zvelo.io/msg"
 )
 
-var jsonMarshaler jsonpb.Marshaler
+var jsonMarshaler = jsonpb.Marshaler{OrigName: true}
 
 type apiServer struct {
 	requestsLock sync.Mutex
