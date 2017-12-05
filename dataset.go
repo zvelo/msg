@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+
+	proto "github.com/gogo/protobuf/proto"
 )
 
 // errInvalidDataSetType indicates an invalid int was used as a DataSetType enum
@@ -68,13 +70,13 @@ func NewDataSetType(name string) (DataSetType, error) {
 }
 
 func (m *DataSet) Clone() (*DataSet, error) {
-	data, err := m.Marshal()
+	data, err := proto.Marshal(m)
 	if err != nil {
 		return nil, err
 	}
 
 	var ret DataSet
-	if err = ret.Unmarshal(data); err != nil {
+	if err = proto.Unmarshal(data, &ret); err != nil {
 		return nil, err
 	}
 

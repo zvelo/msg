@@ -5,8 +5,15 @@ package zvelo.msg;
 option go_package = "zvelo.io/msg";
 
 import "zvelo/msg/dataset.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 
 message Suggestion {
+  option (gogoproto.equal) = false;
+  option (gogoproto.verbose_equal) = false;
+  option (gogoproto.marshaler) = false;
+  option (gogoproto.unmarshaler) = false;
+  option (gogoproto.sizer) = false;
+
   string  url     = 1;
   DataSet dataset = 2;
 }
