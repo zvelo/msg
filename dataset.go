@@ -3,7 +3,6 @@ package msg
 import (
 	"fmt"
 	"reflect"
-	"strconv"
 	"strings"
 
 	proto "github.com/gogo/protobuf/proto"
@@ -111,22 +110,4 @@ func MergeDatasets(d1, d2 *DataSet) (*DataSet, error) {
 	}
 
 	return ret, nil
-}
-
-// ParseMaliciousVerdict parses a malicious verdict id or case insensitive
-// string and returns a Verdict
-func ParseMaliciousVerdict(name string) DataSet_Malicious_Verdict {
-	if cid, err := strconv.Atoi(name); err == nil {
-		if _, ok := DataSet_Malicious_Verdict_name[int32(cid)]; ok {
-			return DataSet_Malicious_Verdict(cid)
-		}
-	}
-
-	for k, v := range DataSet_Malicious_Verdict_value {
-		if strings.EqualFold(name, k) {
-			return DataSet_Malicious_Verdict(v)
-		}
-	}
-
-	return VERDICT_UNKNOWN
 }

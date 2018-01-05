@@ -168,24 +168,15 @@
       "title": "Malicious",
       "properties": {
         "category": {
-          "$ref": "#/definitions/msgCategory"
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/msgCategory"
+          }
         },
         "error": {
           "$ref": "#/definitions/rpcStatus"
-        },
-        "verdict": {
-          "$ref": "#/definitions/MaliciousVerdict"
         }
       }
-    },
-    "MaliciousVerdict": {
-      "type": "string",
-      "default": "VERDICT_UNKNOWN",
-      "enum": [
-        "VERDICT_UNKNOWN",
-        "VERDICT_CLEAN",
-        "VERDICT_MALICIOUS"
-      ]
     },
     "msgCategory": {
       "type": "string",

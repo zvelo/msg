@@ -33,7 +33,7 @@ func WithCategories(val ...msg.Category) ContextOption {
 	}
 }
 
-func WithMalicious(verdict msg.DataSet_Malicious_Verdict, cat msg.Category) ContextOption {
+func WithMalicious(val ...msg.Category) ContextOption {
 	return func(r *result) {
 		if r.ResponseDataset == nil {
 			r.ResponseDataset = &msg.DataSet{}
@@ -43,8 +43,7 @@ func WithMalicious(verdict msg.DataSet_Malicious_Verdict, cat msg.Category) Cont
 			r.ResponseDataset.Malicious = &msg.DataSet_Malicious{}
 		}
 
-		r.ResponseDataset.Malicious.Verdict = verdict
-		r.ResponseDataset.Malicious.Category = cat
+		r.ResponseDataset.Malicious.Category = val
 	}
 }
 
@@ -86,7 +85,6 @@ func WithError(c codes.Code, str string) ContextOption {
 
 const (
 	headerCategory          = "zvelo-mock-category"
-	headerMaliciousVerdict  = "zvelo-mock-malicious-verdict"
 	headerMaliciousCategory = "zvelo-mock-malicious-category"
 	headerCompleteAfter     = "zvelo-mock-complete-after"
 	headerFetchCode         = "zvelo-mock-fetch-code"
@@ -111,12 +109,8 @@ func QueryContext(ctx context.Context, opts ...ContextOption) context.Context {
 		}
 
 		if m := ds.Malicious; m != nil {
-			if m.Category != 0 {
-				pairs = append(pairs, headerMaliciousCategory, m.Category.String())
-			}
-
-			if m.Verdict != msg.VERDICT_UNKNOWN {
-				pairs = append(pairs, headerMaliciousVerdict, m.Verdict.String())
+			for _, cat := range m.Category {
+				pairs = append(pairs, headerMaliciousCategory, cat.String())
 			}
 		}
 	}
@@ -183,9 +177,7 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 			if categoryNames, ok := md[headerCategory]; ok {
 				categories := make([]msg.Category, len(categoryNames))
 				for i, categoryName := range categoryNames {
-					if categoryID, ok := msg.Category_value[categoryName]; ok {
-						categories[i] = msg.Category(categoryID)
-					}
+					categories[i] = msg.ParseCategory(categoryName)
 				}
 
 				WithCategories(categories...)(r)
@@ -197,16 +189,13 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 
 			r.ResponseDataset.Malicious = &msg.DataSet_Malicious{}
 
-			if v := mdGet(md, headerMaliciousVerdict); v != "" {
-				if verdict, ok := msg.DataSet_Malicious_Verdict_value[v]; ok {
-					WithMalicious(msg.DataSet_Malicious_Verdict(verdict), msg.UNKNOWN_CATEGORY)(r)
+			if categoryNames, ok := md[headerMaliciousCategory]; ok {
+				categories := make([]msg.Category, len(categoryNames))
+				for i, categoryName := range categoryNames {
+					categories[i] = msg.ParseCategory(categoryName)
 				}
-			}
 
-			if categoryName := mdGet(md, headerMaliciousCategory); categoryName != "" {
-				if categoryID, ok := msg.Category_value[categoryName]; ok {
-					WithMalicious(msg.VERDICT_MALICIOUS, msg.Category(categoryID))(r)
-				}
+				WithMalicious(categories...)(r)
 			}
 		case msg.ECHO:
 			if r.ResponseDataset == nil {

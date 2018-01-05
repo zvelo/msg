@@ -50,14 +50,13 @@ func (r graphQLResolver) SuggestURL(ctx context.Context, args graphQLSuggestURL)
 		}
 
 		if ms := args.DataSet.Malicious; ms != nil {
-			s.Dataset.Malicious = &DataSet_Malicious{
-				Category: ParseCategory(ms.Category),
-				Verdict:  ParseMaliciousVerdict(ms.Verdict),
-			}
-		}
+			s.Dataset.Malicious = &DataSet_Malicious{}
 
-		if es := args.DataSet.Echo; es != nil {
-			s.Dataset.Echo = &DataSet_Echo{Url: *es}
+			for _, mn := range *ms {
+				if m := ParseCategory(mn); m != UNKNOWN_CATEGORY {
+					s.Dataset.Malicious.Category = append(s.Dataset.Malicious.Category, m)
+				}
+			}
 		}
 	}
 
@@ -180,13 +179,7 @@ type graphQLSuggestURL struct {
 
 type graphQLDataSetInput struct {
 	Categorization *[]string
-	Malicious      *graphQLDataSetMaliciousInput
-	Echo           *string
-}
-
-type graphQLDataSetMaliciousInput struct {
-	Category string
-	Verdict  string
+	Malicious      *[]string
 }
 
 type graphQLQueryURL struct {
@@ -305,17 +298,12 @@ type graphQLDataSet struct {
 	msg *DataSet
 }
 
-func (s graphQLDataSet) Categorization() *[]string {
+func (s graphQLDataSet) Categorization() *graphQLDataSetCategorization {
 	if s.msg == nil || s.msg.Categorization == nil {
 		return nil
 	}
 
-	categories := make([]string, len(s.msg.Categorization.Value))
-	for i, id := range s.msg.Categorization.Value {
-		categories[i] = id.String()
-	}
-
-	return &categories
+	return &graphQLDataSetCategorization{s.msg.Categorization}
 }
 
 func (s graphQLDataSet) Malicious() *graphQLDataSetMalicious {
@@ -326,29 +314,74 @@ func (s graphQLDataSet) Malicious() *graphQLDataSetMalicious {
 	return &graphQLDataSetMalicious{s.msg.Malicious}
 }
 
-func (s graphQLDataSet) Echo() *string {
+func (s graphQLDataSet) Echo() *graphQLDataSetEcho {
 	if s.msg == nil || s.msg.Echo == nil {
 		return nil
 	}
 
-	u := s.msg.Echo.Url
-	return &u
+	return &graphQLDataSetEcho{s.msg.Echo}
+}
+
+type graphQLDataSetCategorization struct {
+	msg *DataSet_Categorization
+}
+
+func (s graphQLDataSetCategorization) Value() *[]string {
+	if s.msg == nil || len(s.msg.Value) == 0 {
+		return nil
+	}
+
+	var ret []string
+	for _, c := range s.msg.Value {
+		ret = append(ret, c.String())
+	}
+	return &ret
+}
+
+func (s graphQLDataSetCategorization) Error() *graphQLStatus {
+	if s.msg == nil || s.msg.Error == nil {
+		return nil
+	}
+	return &graphQLStatus{s.msg.Error}
 }
 
 type graphQLDataSetMalicious struct {
 	msg *DataSet_Malicious
 }
 
-func (s graphQLDataSetMalicious) Category() string {
-	if s.msg == nil {
-		return UNKNOWN_CATEGORY.String()
+func (s graphQLDataSetMalicious) Category() *[]string {
+	if s.msg == nil || len(s.msg.Category) == 0 {
+		return nil
 	}
-	return s.msg.Category.String()
+
+	var ret []string
+	for _, c := range s.msg.Category {
+		ret = append(ret, c.String())
+	}
+	return &ret
 }
 
-func (s graphQLDataSetMalicious) Verdict() string {
-	if s.msg == nil {
-		return VERDICT_UNKNOWN.String()
+func (s graphQLDataSetMalicious) Error() *graphQLStatus {
+	if s.msg == nil || s.msg.Error == nil {
+		return nil
 	}
-	return s.msg.Verdict.String()
+	return &graphQLStatus{s.msg.Error}
+}
+
+type graphQLDataSetEcho struct {
+	msg *DataSet_Echo
+}
+
+func (s graphQLDataSetEcho) URL() *string {
+	if s.msg == nil {
+		return nil
+	}
+	return &s.msg.Url
+}
+
+func (s graphQLDataSetEcho) Error() *graphQLStatus {
+	if s.msg == nil || s.msg.Error == nil {
+		return nil
+	}
+	return &graphQLStatus{s.msg.Error}
 }

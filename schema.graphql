@@ -49,31 +49,29 @@ type QueryResult {
 }
 
 type DataSet {
-  categorization: [Category!]
+  categorization: DataSetCategorization
   malicious: DataSetMalicious
-  echo: String
+  echo: DataSetEcho
 }
 
 input DataSetInput {
   categorization: [Category!]
-  malicious: DataSetMaliciousInput
-  echo: String
+  malicious: [Category!]
 }
 
-input DataSetMaliciousInput {
-  category: Category!
-  verdict: DataSetMaliciousVerdict!
-}
-
-enum DataSetMaliciousVerdict {
-  VERDICT_UNKNOWN
-  VERDICT_CLEAN
-  VERDICT_MALICIOUS
+type DataSetCategorization {
+  value: [Category!]
+  error: Status
 }
 
 type DataSetMalicious {
-  category: Category!
-  verdict: DataSetMaliciousVerdict!
+  category: [Category!]
+  error: Status
+}
+
+type DataSetEcho {
+  url: String
+  error: Status
 }
 
 type QueryStatus {

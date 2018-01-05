@@ -48,20 +48,16 @@ message DataSet {
     option (gogoproto.unmarshaler) = false;
     option (gogoproto.sizer) = false;
 
-    enum Verdict {
-      VERDICT_UNKNOWN   = 0;
-      VERDICT_CLEAN     = 1;
-      VERDICT_MALICIOUS = 2;
-    }
-
     reserved 1;
     reserved 2;
     reserved 3;
     reserved 4;
     reserved 5;
-    Category          category = 6;
-    Verdict           verdict  = 7;
+    reserved 6;
+    reserved 7;
+
     google.rpc.Status error    = 8;
+    repeated Category category = 9;
   }
 
   // Echo

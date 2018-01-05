@@ -166,7 +166,7 @@ func TestMergeDatasets(t *testing.T) {
 	}
 	d2 := &DataSet{
 		Malicious: &DataSet_Malicious{
-			Verdict: VERDICT_MALICIOUS,
+			Category: []Category{MAL_4},
 		},
 	}
 
@@ -203,8 +203,8 @@ func TestMergeDatasets(t *testing.T) {
 		t.Error("d3.Malicious should not be nil")
 	}
 
-	if d3.Malicious.Verdict != VERDICT_MALICIOUS {
-		t.Error("d3.Malicious.Verdict should be true")
+	if d3.Malicious.Category[0] != MAL_4 {
+		t.Error("d3.Malicious.Category wasn't MAL_4")
 	}
 }
 
@@ -212,7 +212,7 @@ func TestMergeDatasetsOneEmpty(t *testing.T) {
 	d1 := &DataSet{}
 	d2 := &DataSet{
 		Malicious: &DataSet_Malicious{
-			Verdict: VERDICT_MALICIOUS,
+			Category: []Category{MAL_4},
 		},
 	}
 
@@ -245,8 +245,8 @@ func TestMergeDatasetsOneEmpty(t *testing.T) {
 		t.Error("d3.Malicious should not be nil")
 	}
 
-	if d3.Malicious.Verdict != VERDICT_MALICIOUS {
-		t.Error("d3.Malicious.Verdict should be true")
+	if d3.Malicious.Category[0] != MAL_4 {
+		t.Error("d3.Malicious.Category wasn't MAL_4")
 	}
 }
 
@@ -288,7 +288,7 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 	var d1 *DataSet
 	d2 := &DataSet{
 		Malicious: &DataSet_Malicious{
-			Verdict: VERDICT_MALICIOUS,
+			Category: []Category{MAL_4},
 		},
 	}
 
@@ -313,8 +313,8 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 		t.Error("d3.Malicious should not be nil")
 	}
 
-	if d3.Malicious.Verdict != VERDICT_MALICIOUS {
-		t.Error("d3.Malicious.Verdict should be true")
+	if d3.Malicious.Category[0] != MAL_4 {
+		t.Error("d3.Malicious.Category wasn't MAL_4")
 	}
 }
 
