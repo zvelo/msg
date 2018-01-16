@@ -8,9 +8,9 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
 
 	"zvelo.io/msg"
+	"zvelo.io/msg/status"
 )
 
 type ContextOption func(*result)

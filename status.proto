@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zvelo.msg;
+
+option go_package = "zvelo.io/msg";
+
+message Status {
+  int32  code    = 1;
+  string message = 2;
+}

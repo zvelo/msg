@@ -31,7 +31,6 @@ endef
 define wrap-protoc
 protoc \
 -I. \
--Izvelo/msg/include \
 -I$(FIRST_GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 $(1)
 endef
