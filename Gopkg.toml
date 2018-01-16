@@ -13,3 +13,13 @@
 [[constraint]]
   name = "google.golang.org/grpc"
   version = "1.9.1"
+
+[[constraint]]
+  name = "google.golang.org/genproto"
+  source = "https://github.com/zvelo/go-genproto"
+  branch = "master"
+
+[[constraint]]
+  name = "github.com/golang/protobuf"
+  source = "https://github.com/zvelo/protobuf"
+  branch = "master"

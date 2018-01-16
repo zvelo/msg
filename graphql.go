@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	google_rpc "google.golang.org/genproto/googleapis/rpc/status"
 	grpc "google.golang.org/grpc"
 
 	"github.com/neelance/graphql-go"
@@ -215,7 +216,7 @@ func (r graphQLQueryReply) Error() *graphQLStatus {
 }
 
 type graphQLStatus struct {
-	msg *Status
+	msg *google_rpc.Status
 }
 
 func (s graphQLStatus) Code() int32 {
