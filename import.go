@@ -1,3 +1,3 @@
 package msg // import "zvelo.io/msg"
 
-//go:generate make go
+//go:generate mage generate

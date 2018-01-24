@@ -5,7 +5,7 @@ package zvelo.msg;
 option go_package = "zvelo.io/msg";
 
 import "zvelo/msg/dataset.proto";
-import "google/rpc/status.proto";
+import "zvelo/msg/status.proto";
 
 message RequestID {
   string request_id = 1;
@@ -13,8 +13,8 @@ message RequestID {
 
 // QueryStatus
 message QueryStatus {
-  bool              complete = 1;
-  google.rpc.Status error    = 2;
+  bool   complete = 1;
+  Status error    = 2;
 
   // the http status code received from the server when fetching a url
   int32 fetch_code = 3;
@@ -83,7 +83,7 @@ message QueryReply {
 
   reserved 3;
 
-  google.rpc.Status error = 4;
+  Status error = 4;
 }
 
 // If a request contained more then one URL, or piece of content, we will reply

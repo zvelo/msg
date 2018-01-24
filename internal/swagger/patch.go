@@ -1,11 +1,9 @@
-package main
+package swagger
 
 import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
-	"log"
-	"os"
 	"reflect"
 
 	"github.com/go-openapi/loads"
@@ -13,27 +11,24 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-func MarshalJSON(s *spec.Swagger) ([]byte, error) {
+func marshalJSON(s *spec.Swagger) ([]byte, error) {
 	b1, err := json.MarshalIndent(s.SwaggerProps, "", "  ")
 	if err != nil {
 		return nil, err
 	}
+
 	b2, err := json.MarshalIndent(s.VendorExtensible, "", "  ")
 	if err != nil {
 		return nil, err
 	}
+
 	return swag.ConcatJSON(b1, b2), nil
 }
 
-func main() {
-	if len(os.Args) < 2 {
-		log.Fatalln("filename is required")
-	}
-
-	file := os.Args[1]
+func Patch(file string) error {
 	doc, err := loads.Spec(file)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
 	s := doc.Spec()
@@ -101,14 +96,12 @@ func main() {
 		}
 	}
 
-	data, err := MarshalJSON(s)
+	data, err := marshalJSON(s)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
 	data = bytes.Replace(data, []byte(`"n/a"`), []byte(`""`), -1)
 
-	if err = ioutil.WriteFile(file, data, 0644); err != nil {
-		log.Fatalln(err)
-	}
+	return ioutil.WriteFile(file, data, 0644)
 }

@@ -5,7 +5,7 @@ package zvelo.msg;
 option go_package = "zvelo.io/msg";
 
 import "zvelo/msg/category.proto";
-import "google/rpc/status.proto";
+import "zvelo/msg/status.proto";
 
 enum DataSetType {
   CATEGORIZATION = 0;
@@ -24,7 +24,7 @@ message DataSet {
     reserved 1;
     reserved 2;
     repeated Category value = 3;
-    google.rpc.Status error = 4;
+    Status            error = 4;
   }
 
   // Malicious
@@ -37,14 +37,14 @@ message DataSet {
     reserved 6;
     reserved 7;
 
-    google.rpc.Status error    = 8;
+    Status            error    = 8;
     repeated Category category = 9;
   }
 
   // Echo
   message Echo {
-    string            url   = 1;
-    google.rpc.Status error = 2;
+    string url   = 1;
+    Status error = 2;
   }
 
   Categorization categorization = 1;

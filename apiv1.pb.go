@@ -11,6 +11,7 @@
 		zvelo/msg/category.proto
 		zvelo/msg/dataset.proto
 		zvelo/msg/query.proto
+		zvelo/msg/status.proto
 		zvelo/msg/suggest.proto
 
 	It has these top-level messages:
@@ -22,6 +23,7 @@
 		QueryRequests
 		QueryReply
 		QueryReplies
+		Status
 		Suggestion
 */
 package msg
@@ -30,12 +32,10 @@ import proto "github.com/gogo/protobuf/proto"
 import fmt "fmt"
 import math "math"
 import _ "google.golang.org/genproto/googleapis/api/annotations"
-import google_protobuf2 "github.com/golang/protobuf/ptypes/empty"
+import google_protobuf1 "github.com/golang/protobuf/ptypes/empty"
 
-import (
-	context "golang.org/x/net/context"
-	grpc "google.golang.org/grpc"
-)
+import context "golang.org/x/net/context"
+import grpc "google.golang.org/grpc"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -64,9 +64,9 @@ type APIv1Client interface {
 	// Results of active or unexpired query
 	Result(ctx context.Context, in *RequestID, opts ...grpc.CallOption) (*QueryResult, error)
 	// Suggest new datasets for a URL
-	Suggest(ctx context.Context, in *Suggestion, opts ...grpc.CallOption) (*google_protobuf2.Empty, error)
+	Suggest(ctx context.Context, in *Suggestion, opts ...grpc.CallOption) (*google_protobuf1.Empty, error)
 	// Stream returns all QueryResult messages processed by zveloAPI
-	Stream(ctx context.Context, in *google_protobuf2.Empty, opts ...grpc.CallOption) (APIv1_StreamClient, error)
+	Stream(ctx context.Context, in *google_protobuf1.Empty, opts ...grpc.CallOption) (APIv1_StreamClient, error)
 }
 
 type aPIv1Client struct {
@@ -95,8 +95,8 @@ func (c *aPIv1Client) Result(ctx context.Context, in *RequestID, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *aPIv1Client) Suggest(ctx context.Context, in *Suggestion, opts ...grpc.CallOption) (*google_protobuf2.Empty, error) {
-	out := new(google_protobuf2.Empty)
+func (c *aPIv1Client) Suggest(ctx context.Context, in *Suggestion, opts ...grpc.CallOption) (*google_protobuf1.Empty, error) {
+	out := new(google_protobuf1.Empty)
 	err := grpc.Invoke(ctx, "/zvelo.msg.APIv1/Suggest", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
@@ -104,7 +104,7 @@ func (c *aPIv1Client) Suggest(ctx context.Context, in *Suggestion, opts ...grpc.
 	return out, nil
 }
 
-func (c *aPIv1Client) Stream(ctx context.Context, in *google_protobuf2.Empty, opts ...grpc.CallOption) (APIv1_StreamClient, error) {
+func (c *aPIv1Client) Stream(ctx context.Context, in *google_protobuf1.Empty, opts ...grpc.CallOption) (APIv1_StreamClient, error) {
 	stream, err := grpc.NewClientStream(ctx, &_APIv1_serviceDesc.Streams[0], c.cc, "/zvelo.msg.APIv1/Stream", opts...)
 	if err != nil {
 		return nil, err
@@ -144,9 +144,9 @@ type APIv1Server interface {
 	// Results of active or unexpired query
 	Result(context.Context, *RequestID) (*QueryResult, error)
 	// Suggest new datasets for a URL
-	Suggest(context.Context, *Suggestion) (*google_protobuf2.Empty, error)
+	Suggest(context.Context, *Suggestion) (*google_protobuf1.Empty, error)
 	// Stream returns all QueryResult messages processed by zveloAPI
-	Stream(*google_protobuf2.Empty, APIv1_StreamServer) error
+	Stream(*google_protobuf1.Empty, APIv1_StreamServer) error
 }
 
 func RegisterAPIv1Server(s *grpc.Server, srv APIv1Server) {
@@ -208,7 +208,7 @@ func _APIv1_Suggest_Handler(srv interface{}, ctx context.Context, dec func(inter
 }
 
 func _APIv1_Stream_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(google_protobuf2.Empty)
+	m := new(google_protobuf1.Empty)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
