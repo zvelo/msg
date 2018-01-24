@@ -18,26 +18,26 @@ import (
 // Default is the default mage target
 var Default = Generate
 
-// Go generates .pb.go files from .proto files
-func Go(ctx context.Context) error {
+// ProtoGo generates .pb.go files from .proto files
+func ProtoGo(ctx context.Context) error {
 	_, err := zmage.ProtoGo()
 	return err
 }
 
-// Python generates _pb2.py and _pb2_grpc.py files from .proto files
-func Python(ctx context.Context) error {
+// ProtoPython generates _pb2.py and _pb2_grpc.py files from .proto files
+func ProtoPython(ctx context.Context) error {
 	_, err := zmage.ProtoPython()
 	return err
 }
 
-// GRPCGateway generates .pb.gw.go files from .proto files
-func GRPCGateway(ctx context.Context) error {
+// ProtoGRPCGateway generates .pb.gw.go files from .proto files
+func ProtoGRPCGateway(ctx context.Context) error {
 	_, err := zmage.ProtoGRPCGateway()
 	return err
 }
 
 // Swagger generates .swagger.json files from .proto files
-func Swagger(ctx context.Context) error {
+func ProtoSwagger(ctx context.Context) error {
 	files, err := zmage.ProtoSwagger()
 	if err != nil {
 		return err
@@ -56,7 +56,7 @@ func Swagger(ctx context.Context) error {
 
 // Static embeds static files into the internal/static package
 func Static(ctx context.Context) error {
-	mg.CtxDeps(ctx, Swagger)
+	mg.CtxDeps(ctx, ProtoSwagger)
 
 	const out = "internal/static/static.go"
 
@@ -79,22 +79,66 @@ func Static(ctx context.Context) error {
 
 // Generate all necessary files
 func Generate(ctx context.Context) error {
-	mg.CtxDeps(ctx, Go, Python, GRPCGateway, Swagger, Static)
+	mg.CtxDeps(ctx, CheckImports, ProtoGo, ProtoPython, ProtoGRPCGateway, ProtoSwagger, Static)
+	return nil
+}
+
+// CheckImports ensures that zvelo import rules are followed
+func CheckImports(ctx context.Context) error {
+	mg.CtxDeps(ctx, ProtoGo, ProtoGRPCGateway, Static)
+
+	pkgs, err := zmage.GoPackages(build.Default)
+	if err != nil {
+		return err
+	}
+
+	var failed bool
+	for _, pkg := range pkgs {
+		for _, imp := range pkg.Imports {
+			if strings.HasPrefix(imp, "github.com/zvelo/") {
+				fmt.Fprintf(os.Stderr, "package %q depends on disallowed import of %s\n", pkg.ImportPath, imp)
+				failed = true
+			}
+
+			if !strings.HasPrefix(imp, "zvelo.io/") {
+				continue
+			}
+
+			if imp == "zvelo.io/msg" {
+				continue
+			}
+
+			if strings.HasPrefix(imp, "zvelo.io/msg/") {
+				continue
+			}
+
+			fmt.Fprintf(os.Stderr, "package %q depends on disallowed import of %s\n", pkg.ImportPath, imp)
+			failed = true
+		}
+	}
+
+	if failed {
+		return fmt.Errorf("import errors")
+	}
+
 	return nil
 }
 
 // Test runs `go vet` and `go test -race` on all packages in the repository
 func Test(ctx context.Context) error {
+	mg.CtxDeps(ctx, ProtoGo, ProtoGRPCGateway)
 	return zmage.GoTest(ctx)
 }
 
 // CoverOnly calculates test coverage for all packages in the repository
 func CoverOnly(ctx context.Context) error {
+	mg.CtxDeps(ctx, ProtoGo, ProtoGRPCGateway)
 	return zmage.CoverOnly()
 }
 
 // Cover runs CoverOnly and opens the results in the browser
 func Cover(ctx context.Context) error {
+	mg.CtxDeps(ctx, ProtoGo, ProtoGRPCGateway)
 	return zmage.Cover()
 }
 
@@ -105,17 +149,19 @@ func Fmt(ctx context.Context) error {
 
 // Install runs `go install ./...`
 func Install(ctx context.Context) error {
-	mg.CtxDeps(ctx, Generate)
+	mg.CtxDeps(ctx, ProtoGo, ProtoGRPCGateway)
 	return zmage.Install(build.Default)
 }
 
 // Lint runs `go vet` and `golint`
 func Lint(ctx context.Context) error {
+	mg.CtxDeps(ctx, ProtoGo, ProtoGRPCGateway)
 	return zmage.GoLint(ctx)
 }
 
 // GoVet runs `go vet`
 func GoVet(ctx context.Context) error {
+	mg.CtxDeps(ctx, ProtoGo, ProtoGRPCGateway)
 	return zmage.GoVet()
 }
 
