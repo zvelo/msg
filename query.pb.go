@@ -9,7 +9,7 @@ import math "math"
 
 import strings "strings"
 import reflect "reflect"
-import sortkeys "github.com/gogo/protobuf/sortkeys"
+import github_com_gogo_protobuf_sortkeys "github.com/gogo/protobuf/sortkeys"
 
 import io "io"
 
@@ -841,7 +841,7 @@ func (this *URLContent) GoString() string {
 	for k, _ := range this.Header {
 		keysForHeader = append(keysForHeader, k)
 	}
-	sortkeys.Strings(keysForHeader)
+	github_com_gogo_protobuf_sortkeys.Strings(keysForHeader)
 	mapStringForHeader := "map[string]string{"
 	for _, k := range keysForHeader {
 		mapStringForHeader += fmt.Sprintf("%#v: %#v,", k, this.Header[k])
@@ -1399,7 +1399,7 @@ func (this *URLContent) String() string {
 	for k, _ := range this.Header {
 		keysForHeader = append(keysForHeader, k)
 	}
-	sortkeys.Strings(keysForHeader)
+	github_com_gogo_protobuf_sortkeys.Strings(keysForHeader)
 	mapStringForHeader := "map[string]string{"
 	for _, k := range keysForHeader {
 		mapStringForHeader += fmt.Sprintf("%v: %v,", k, this.Header[k])
