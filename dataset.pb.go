@@ -199,10 +199,7 @@ func (this *DataSet) VerboseEqual(that interface{}) error {
 }
 func (this *DataSet) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*DataSet)
@@ -215,10 +212,7 @@ func (this *DataSet) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
@@ -273,10 +267,7 @@ func (this *DataSet_Categorization) VerboseEqual(that interface{}) error {
 }
 func (this *DataSet_Categorization) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*DataSet_Categorization)
@@ -289,10 +280,7 @@ func (this *DataSet_Categorization) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
@@ -349,10 +337,7 @@ func (this *DataSet_Malicious) VerboseEqual(that interface{}) error {
 }
 func (this *DataSet_Malicious) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*DataSet_Malicious)
@@ -365,10 +350,7 @@ func (this *DataSet_Malicious) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
@@ -420,10 +402,7 @@ func (this *DataSet_Echo) VerboseEqual(that interface{}) error {
 }
 func (this *DataSet_Echo) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*DataSet_Echo)
@@ -436,10 +415,7 @@ func (this *DataSet_Echo) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
