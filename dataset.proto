@@ -29,10 +29,8 @@ message DataSet {
   }
 
   message Language {
-    reserved 1;
-    string            code    = 2; // TODO(cmeyer): ISO Alpha-2, Alpha-3?
-    reserved 3;
-    Status            error    = 4;
+    string code  = 1;
+    Status error = 2;
   }
 
   // Malicious

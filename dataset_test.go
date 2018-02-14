@@ -7,6 +7,8 @@ import (
 )
 
 func testDS(t *testing.T, ds *DataSet, expectNil bool) {
+	t.Helper()
+
 	// iterate through each valid dataset type
 	for dstID := range DataSetType_name {
 		dst := DataSetType(dstID)
@@ -57,6 +59,16 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 				t.Error("t != ds.Echo")
 
 			}
+		case LANGUAGE:
+			r, ok := i.(*DataSet_Language)
+			if !ok {
+				t.Error("type of i not *DataSet_Language")
+			}
+
+			if r != ds.Language {
+				t.Error("t != ds.Language")
+
+			}
 		default:
 			t.Errorf("unexpected dataset type: %s", dst)
 		}
@@ -68,6 +80,7 @@ func TestDataSetByType(t *testing.T) {
 		Categorization: &DataSet_Categorization{},
 		Malicious:      &DataSet_Malicious{},
 		Echo:           &DataSet_Echo{},
+		Language:       &DataSet_Language{},
 	}, false)
 }
 

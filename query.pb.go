@@ -9,7 +9,7 @@ import math "math"
 
 import strings "strings"
 import reflect "reflect"
-import github_com_gogo_protobuf_sortkeys "github.com/gogo/protobuf/sortkeys"
+import sortkeys "github.com/gogo/protobuf/sortkeys"
 
 import io "io"
 
@@ -278,10 +278,7 @@ func (this *RequestID) VerboseEqual(that interface{}) error {
 }
 func (this *RequestID) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*RequestID)
@@ -294,10 +291,7 @@ func (this *RequestID) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
@@ -347,10 +341,7 @@ func (this *QueryStatus) VerboseEqual(that interface{}) error {
 }
 func (this *QueryStatus) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*QueryStatus)
@@ -363,10 +354,7 @@ func (this *QueryStatus) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
@@ -425,10 +413,7 @@ func (this *QueryResult) VerboseEqual(that interface{}) error {
 }
 func (this *QueryResult) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*QueryResult)
@@ -441,10 +426,7 @@ func (this *QueryResult) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
@@ -505,10 +487,7 @@ func (this *URLContent) VerboseEqual(that interface{}) error {
 }
 func (this *URLContent) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*URLContent)
@@ -521,10 +500,7 @@ func (this *URLContent) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
@@ -600,10 +576,7 @@ func (this *QueryRequests) VerboseEqual(that interface{}) error {
 }
 func (this *QueryRequests) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*QueryRequests)
@@ -616,10 +589,7 @@ func (this *QueryRequests) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
@@ -687,10 +657,7 @@ func (this *QueryReply) VerboseEqual(that interface{}) error {
 }
 func (this *QueryReply) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*QueryReply)
@@ -703,10 +670,7 @@ func (this *QueryReply) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
@@ -755,10 +719,7 @@ func (this *QueryReplies) VerboseEqual(that interface{}) error {
 }
 func (this *QueryReplies) Equal(that interface{}) bool {
 	if that == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	}
 
 	that1, ok := that.(*QueryReplies)
@@ -771,10 +732,7 @@ func (this *QueryReplies) Equal(that interface{}) bool {
 		}
 	}
 	if that1 == nil {
-		if this == nil {
-			return true
-		}
-		return false
+		return this == nil
 	} else if this == nil {
 		return false
 	}
@@ -841,7 +799,7 @@ func (this *URLContent) GoString() string {
 	for k, _ := range this.Header {
 		keysForHeader = append(keysForHeader, k)
 	}
-	github_com_gogo_protobuf_sortkeys.Strings(keysForHeader)
+	sortkeys.Strings(keysForHeader)
 	mapStringForHeader := "map[string]string{"
 	for _, k := range keysForHeader {
 		mapStringForHeader += fmt.Sprintf("%#v: %#v,", k, this.Header[k])
@@ -1399,7 +1357,7 @@ func (this *URLContent) String() string {
 	for k, _ := range this.Header {
 		keysForHeader = append(keysForHeader, k)
 	}
-	github_com_gogo_protobuf_sortkeys.Strings(keysForHeader)
+	sortkeys.Strings(keysForHeader)
 	mapStringForHeader := "map[string]string{"
 	for _, k := range keysForHeader {
 		mapStringForHeader += fmt.Sprintf("%v: %v,", k, this.Header[k])

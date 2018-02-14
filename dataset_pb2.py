@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='zvelo/msg/dataset.proto',
   package='zvelo.msg',
   syntax='proto3',
-  serialized_pb=_b('\n\x17zvelo/msg/dataset.proto\x12\tzvelo.msg\x1a\x18zvelo/msg/category.proto\x1a\x16zvelo/msg/status.proto\"\xc6\x04\n\x07\x44\x61taSet\x12\x39\n\x0e\x63\x61tegorization\x18\x01 \x01(\x0b\x32!.zvelo.msg.DataSet.Categorization\x12/\n\tmalicious\x18\x05 \x01(\x0b\x32\x1c.zvelo.msg.DataSet.Malicious\x12%\n\x04\x65\x63ho\x18\x06 \x01(\x0b\x32\x17.zvelo.msg.DataSet.Echo\x12-\n\x08language\x18\x08 \x01(\x0b\x32\x1b.zvelo.msg.DataSet.Language\x1a\x62\n\x0e\x43\x61tegorization\x12\"\n\x05value\x18\x03 \x03(\x0e\x32\x13.zvelo.msg.Category\x12 \n\x05\x65rror\x18\x04 \x01(\x0b\x32\x11.zvelo.msg.StatusJ\x04\x08\x01\x10\x02J\x04\x08\x02\x10\x03\x1a\x46\n\x08Language\x12\x0c\n\x04\x63ode\x18\x02 \x01(\t\x12 \n\x05\x65rror\x18\x04 \x01(\x0b\x32\x11.zvelo.msg.StatusJ\x04\x08\x01\x10\x02J\x04\x08\x03\x10\x04\x1a~\n\tMalicious\x12 \n\x05\x65rror\x18\x08 \x01(\x0b\x32\x11.zvelo.msg.Status\x12%\n\x08\x63\x61tegory\x18\t \x03(\x0e\x32\x13.zvelo.msg.CategoryJ\x04\x08\x01\x10\x02J\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04J\x04\x08\x04\x10\x05J\x04\x08\x05\x10\x06J\x04\x08\x06\x10\x07J\x04\x08\x07\x10\x08\x1a\x35\n\x04\x45\x63ho\x12\x0b\n\x03url\x18\x01 \x01(\t\x12 \n\x05\x65rror\x18\x02 \x01(\x0b\x32\x11.zvelo.msg.StatusJ\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04J\x04\x08\x04\x10\x05J\x04\x08\x07\x10\x08*H\n\x0b\x44\x61taSetType\x12\x12\n\x0e\x43\x41TEGORIZATION\x10\x00\x12\r\n\tMALICIOUS\x10\x04\x12\x08\n\x04\x45\x43HO\x10\x05\x12\x0c\n\x08LANGUAGE\x10\x07\x42\x0eZ\x0czvelo.io/msgb\x06proto3')
+  serialized_pb=_b('\n\x17zvelo/msg/dataset.proto\x12\tzvelo.msg\x1a\x18zvelo/msg/category.proto\x1a\x16zvelo/msg/status.proto\"\xba\x04\n\x07\x44\x61taSet\x12\x39\n\x0e\x63\x61tegorization\x18\x01 \x01(\x0b\x32!.zvelo.msg.DataSet.Categorization\x12/\n\tmalicious\x18\x05 \x01(\x0b\x32\x1c.zvelo.msg.DataSet.Malicious\x12%\n\x04\x65\x63ho\x18\x06 \x01(\x0b\x32\x17.zvelo.msg.DataSet.Echo\x12-\n\x08language\x18\x08 \x01(\x0b\x32\x1b.zvelo.msg.DataSet.Language\x1a\x62\n\x0e\x43\x61tegorization\x12\"\n\x05value\x18\x03 \x03(\x0e\x32\x13.zvelo.msg.Category\x12 \n\x05\x65rror\x18\x04 \x01(\x0b\x32\x11.zvelo.msg.StatusJ\x04\x08\x01\x10\x02J\x04\x08\x02\x10\x03\x1a:\n\x08Language\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12 \n\x05\x65rror\x18\x02 \x01(\x0b\x32\x11.zvelo.msg.Status\x1a~\n\tMalicious\x12 \n\x05\x65rror\x18\x08 \x01(\x0b\x32\x11.zvelo.msg.Status\x12%\n\x08\x63\x61tegory\x18\t \x03(\x0e\x32\x13.zvelo.msg.CategoryJ\x04\x08\x01\x10\x02J\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04J\x04\x08\x04\x10\x05J\x04\x08\x05\x10\x06J\x04\x08\x06\x10\x07J\x04\x08\x07\x10\x08\x1a\x35\n\x04\x45\x63ho\x12\x0b\n\x03url\x18\x01 \x01(\t\x12 \n\x05\x65rror\x18\x02 \x01(\x0b\x32\x11.zvelo.msg.StatusJ\x04\x08\x02\x10\x03J\x04\x08\x03\x10\x04J\x04\x08\x04\x10\x05J\x04\x08\x07\x10\x08*H\n\x0b\x44\x61taSetType\x12\x12\n\x0e\x43\x41TEGORIZATION\x10\x00\x12\r\n\tMALICIOUS\x10\x04\x12\x08\n\x04\x45\x43HO\x10\x05\x12\x0c\n\x08LANGUAGE\x10\x07\x42\x0eZ\x0czvelo.io/msgb\x06proto3')
   ,
   dependencies=[zvelo_dot_msg_dot_category__pb2.DESCRIPTOR,zvelo_dot_msg_dot_status__pb2.DESCRIPTOR,])
 
@@ -51,8 +51,8 @@ _DATASETTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=673,
-  serialized_end=745,
+  serialized_start=661,
+  serialized_end=733,
 )
 _sym_db.RegisterEnumDescriptor(_DATASETTYPE)
 
@@ -110,14 +110,14 @@ _DATASET_LANGUAGE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='code', full_name='zvelo.msg.DataSet.Language.code', index=0,
-      number=2, type=9, cpp_type=9, label=1,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='error', full_name='zvelo.msg.DataSet.Language.error', index=1,
-      number=4, type=11, cpp_type=10, label=1,
+      number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -135,7 +135,7 @@ _DATASET_LANGUAGE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=394,
-  serialized_end=464,
+  serialized_end=452,
 )
 
 _DATASET_MALICIOUS = _descriptor.Descriptor(
@@ -171,8 +171,8 @@ _DATASET_MALICIOUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=466,
-  serialized_end=592,
+  serialized_start=454,
+  serialized_end=580,
 )
 
 _DATASET_ECHO = _descriptor.Descriptor(
@@ -208,8 +208,8 @@ _DATASET_ECHO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=594,
-  serialized_end=647,
+  serialized_start=582,
+  serialized_end=635,
 )
 
 _DATASET = _descriptor.Descriptor(
@@ -260,7 +260,7 @@ _DATASET = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=89,
-  serialized_end=671,
+  serialized_end=659,
 )
 
 _DATASET_CATEGORIZATION.fields_by_name['value'].enum_type = zvelo_dot_msg_dot_category__pb2._CATEGORY

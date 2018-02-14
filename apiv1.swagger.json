@@ -26,11 +26,6 @@
   "paths": {
     "/v1/query": {
       "post": {
-        "tags": [
-          "APIv1"
-        ],
-        "summary": "Create new query",
-        "operationId": "Query",
         "security": [
           {
             "authorization": [
@@ -38,6 +33,11 @@
             ]
           }
         ],
+        "tags": [
+          "APIv1"
+        ],
+        "summary": "Create new query",
+        "operationId": "Query",
         "parameters": [
           {
             "name": "body",
@@ -60,11 +60,6 @@
     },
     "/v1/query/{request_id}": {
       "get": {
-        "tags": [
-          "APIv1"
-        ],
-        "summary": "Results of active or unexpired query",
-        "operationId": "Result",
         "security": [
           {
             "authorization": [
@@ -72,6 +67,11 @@
             ]
           }
         ],
+        "tags": [
+          "APIv1"
+        ],
+        "summary": "Results of active or unexpired query",
+        "operationId": "Result",
         "parameters": [
           {
             "type": "string",
@@ -160,6 +160,17 @@
         },
         "url": {
           "type": "string"
+        }
+      }
+    },
+    "DataSetLanguage": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/msgStatus"
         }
       }
     },
@@ -684,6 +695,9 @@
         "echo": {
           "$ref": "#/definitions/DataSetEcho"
         },
+        "language": {
+          "$ref": "#/definitions/DataSetLanguage"
+        },
         "malicious": {
           "$ref": "#/definitions/DataSetMalicious"
         }
@@ -691,12 +705,13 @@
     },
     "msgDataSetType": {
       "type": "string",
-      "title": "- MALICIOUS: 1 is reserved\n2 is reserved\n3 is reserved",
+      "title": "- MALICIOUS: 1 is reserved\n2 is reserved\n3 is reserved\n - LANGUAGE: 6 is reserved",
       "default": "CATEGORIZATION",
       "enum": [
         "CATEGORIZATION",
         "MALICIOUS",
-        "ECHO"
+        "ECHO",
+        "LANGUAGE"
       ]
     },
     "msgQueryReplies": {
