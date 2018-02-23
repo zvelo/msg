@@ -74,14 +74,16 @@ func timeoutDecode(s string) (time.Duration, error) {
 
 var incomingHeaders = map[string]string{
 	"zvelo-debug-id": "zvelo-debug-id",
+	"uber-trace-id":  "uber-trace-id",
 }
 
 var outgoingHeaders = map[string]string{
 	"zvelo-trace-id": "zvelo-trace-id",
+	"content-type":   "",
 	"trailer":        "",
 }
 
-func incomingHeaderMatcher(name string) (string, bool) {
+func IncomingHeaderMatcher(name string) (string, bool) {
 	if n, ok := runtime.DefaultHeaderMatcher(name); ok {
 		return n, ok
 	}
@@ -97,7 +99,7 @@ func incomingHeaderMatcher(name string) (string, bool) {
 	return "", false
 }
 
-func outgoingHeaderMatcher(name string) (string, bool) {
+func OutgoingHeaderMatcher(name string) (string, bool) {
 	if n, ok := outgoingHeaders[strings.ToLower(name)]; ok {
 		if n == "" {
 			return n, false
@@ -130,7 +132,7 @@ func annotateContext(req *http.Request) (context.Context, context.CancelFunc, er
 
 	for k, vs := range req.Header {
 		var ok bool
-		if k, ok = incomingHeaderMatcher(k); ok {
+		if k, ok = IncomingHeaderMatcher(k); ok {
 			for _, v := range vs {
 				pairs = append(pairs, k, v)
 			}
@@ -213,7 +215,7 @@ func (h relay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	for k, vs := range md.Header {
 		var ok bool
-		if k, ok = outgoingHeaderMatcher(k); ok {
+		if k, ok = OutgoingHeaderMatcher(k); ok {
 			for _, v := range vs {
 				w.Header().Add(k, v)
 			}
