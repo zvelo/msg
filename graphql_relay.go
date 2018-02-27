@@ -79,6 +79,7 @@ var incomingHeaders = map[string]string{
 
 var outgoingHeaders = map[string]string{
 	"zvelo-trace-id": "zvelo-trace-id",
+	"server-timing":  "server-timing",
 	"content-type":   "",
 	"trailer":        "",
 }
