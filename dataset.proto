@@ -15,6 +15,7 @@ enum DataSetType {
   MALICIOUS      = 4;
   ECHO           = 5; // for internal zvelo use only
   // 6 is reserved
+  LANGUAGE       = 7;
 }
 
 // DataSet
@@ -25,6 +26,11 @@ message DataSet {
     reserved 2;
     repeated Category value = 3;
     Status            error = 4;
+  }
+
+  message Language {
+    string code  = 1;
+    Status error = 2;
   }
 
   // Malicious
@@ -54,4 +60,5 @@ message DataSet {
   Malicious      malicious      = 5;
   Echo           echo           = 6;
   reserved 7;
+  Language       language       = 8;
 }

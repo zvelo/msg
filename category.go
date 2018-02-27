@@ -497,6 +497,14 @@ var CategoryLong = map[Category]string{
 	KIDTRAVEL_4:      "Traveling with Kids",
 	UKTRAVEL_4:       "United Kingdom",
 	TRAVEL_4:         "Travel - Other",
+	TERRORISM_4:      "Terrorism",
+	CRYPTOCUR_4:      "Cryptocurrency",
+	CRYPTOMINE_4:     "Cryptocurrency Mining",
+	BLOCKCHAIN_4:     "Blockchain",
+	FAKENEWS_4:       "Fake News",
+	API_4:            "APIs",
+	IOT_4:            "Internet of Things",
+	AI_ML_4:          "A.I. & M.L.",
 }
 
 // Long returns the category long name

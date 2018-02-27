@@ -47,6 +47,20 @@ func WithMalicious(val ...msg.Category) ContextOption {
 	}
 }
 
+func WithLanguage(val string) ContextOption {
+	return func(r *result) {
+		if r.ResponseDataset == nil {
+			r.ResponseDataset = &msg.DataSet{}
+		}
+
+		if r.ResponseDataset.Language == nil {
+			r.ResponseDataset.Language = &msg.DataSet_Language{}
+		}
+
+		r.ResponseDataset.Language.Code = val
+	}
+}
+
 func WithCompleteAfter(val time.Duration) ContextOption {
 	return func(r *result) {
 		r.CompleteAfter = val
@@ -86,6 +100,7 @@ func WithError(c codes.Code, str string) ContextOption {
 const (
 	headerCategory          = "zvelo-mock-category"
 	headerMaliciousCategory = "zvelo-mock-malicious-category"
+	headerLanguageCode      = "zvelo-mock-language"
 	headerCompleteAfter     = "zvelo-mock-complete-after"
 	headerFetchCode         = "zvelo-mock-fetch-code"
 	headerLocation          = "zvelo-mock-location"
@@ -112,6 +127,10 @@ func QueryContext(ctx context.Context, opts ...ContextOption) context.Context {
 			for _, cat := range m.Category {
 				pairs = append(pairs, headerMaliciousCategory, cat.String())
 			}
+		}
+
+		if l := ds.Language; l != nil {
+			pairs = append(pairs, headerLanguageCode, l.Code)
 		}
 	}
 
@@ -203,6 +222,16 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 			}
 
 			r.ResponseDataset.Echo = &msg.DataSet_Echo{Url: url}
+		case msg.LANGUAGE:
+			if r.ResponseDataset == nil {
+				r.ResponseDataset = &msg.DataSet{}
+			}
+
+			r.ResponseDataset.Language = &msg.DataSet_Language{}
+
+			if langCodes, ok := md[headerLanguageCode]; ok && len(langCodes) > 0 {
+				r.ResponseDataset.Language.Code = langCodes[0]
+			}
 		}
 	}
 

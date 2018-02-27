@@ -19,6 +19,7 @@ enum DataSetType {
   CATEGORIZATION
   MALICIOUS
   ECHO
+  LANGUAGE
 }
 
 input Header {
@@ -52,6 +53,7 @@ type DataSet {
   categorization: DataSetCategorization
   malicious: DataSetMalicious
   echo: DataSetEcho
+  language: DataSetLanguage
 }
 
 input DataSetInput {
@@ -71,6 +73,11 @@ type DataSetMalicious {
 
 type DataSetEcho {
   url: String
+  error: Status
+}
+
+type DataSetLanguage {
+  code: String
   error: Status
 }
 
@@ -572,4 +579,12 @@ enum Category {
   KIDTRAVEL_4
   UKTRAVEL_4
   TRAVEL_4
+  TERRORISM_4
+  CRYPTOCUR_4
+  CRYPTOMINE_4
+  BLOCKCHAIN_4
+  FAKENEWS_4
+  API_4
+  IOT_4
+  AI_ML_4
 }
