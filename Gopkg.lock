@@ -245,7 +245,7 @@
     "googleapis/api/annotations",
     "googleapis/rpc/status"
   ]
-  revision = "2b5a72b8730b0b16380010cfe5286c42108d88e7"
+  revision = "2d9486acae19cf9bd0c093d7dc236a323726a9e4"
 
 [[projects]]
   name = "google.golang.org/grpc"
@@ -287,20 +287,20 @@
   revision = "3f83fa5005286a7fe593b055f0d7771a7dce4655"
 
 [[projects]]
-  branch = "v2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "d670f9405373e636a5a2765eea47fac0c9bc91a4"
+  revision = "7f97868eec74b32b0982dd158a51a446d1da7eb5"
+  version = "v2.1.1"
 
 [[projects]]
   name = "zvelo.io/zmage"
   packages = ["."]
-  revision = "86e17aad4ef99a18e0c0a3aacf02b5de4aea48ce"
-  version = "v3.0.1"
+  revision = "335cf1990ad2938db95ade8a60ed8c3e8597d47a"
+  version = "v3.1.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3ee9e826d4b37c178559af5047f57774d7050dd81658aac176215830cd7f61fe"
+  inputs-digest = "7ed8cc523c62399f8c157e6229402dded0a5b1e3e673102ce23ec005300a200f"
   solver-name = "gps-cdcl"
   solver-version = 1
