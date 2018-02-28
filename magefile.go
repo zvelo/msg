@@ -36,6 +36,12 @@ func ProtoGRPCGateway(ctx context.Context) error {
 	return err
 }
 
+// Protoset generates .protoset files from .proto files
+func Protoset(ctx context.Context) error {
+	_, err := zmage.Protoset("apiv1.proto")
+	return err
+}
+
 // Swagger generates .swagger.json files from .proto files
 func ProtoSwagger(ctx context.Context) error {
 	files, err := zmage.ProtoSwagger()
@@ -79,7 +85,7 @@ func Static(ctx context.Context) error {
 
 // Generate all necessary files
 func Generate(ctx context.Context) error {
-	mg.CtxDeps(ctx, CheckImports, ProtoGo, ProtoPython, ProtoGRPCGateway, ProtoSwagger, Static)
+	mg.CtxDeps(ctx, CheckImports, ProtoGo, ProtoPython, ProtoGRPCGateway, ProtoSwagger, Protoset, Static)
 	return nil
 }
 

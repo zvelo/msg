@@ -34,8 +34,8 @@
 
 [[constraint]]
   name = "google.golang.org/grpc"
-  version = "1.9.2"
+  version = "1.10.0"
 
 [[constraint]]
   name = "zvelo.io/zmage"
-  version = "3.0.1"
+  version = "3.2.0"

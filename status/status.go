@@ -87,3 +87,10 @@ func FromError(err error) (s *Status, ok bool) {
 
 	return New(st.Code(), st.Message()), true
 }
+
+// Convert is a convenience function which removes the need to handle the
+// boolean return value from FromError.
+func Convert(err error) *Status {
+	s, _ := FromError(err)
+	return s
+}

@@ -185,7 +185,7 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 	}
 
 	for _, t := range ds {
-		switch msg.DataSetType(t) {
+		switch t {
 		case msg.CATEGORIZATION:
 			if r.ResponseDataset == nil {
 				r.ResponseDataset = &msg.DataSet{}
