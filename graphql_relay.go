@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/graph-gophers/graphql-go"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/neelance/graphql-go"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"

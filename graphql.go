@@ -6,7 +6,7 @@ import (
 
 	grpc "google.golang.org/grpc"
 
-	"github.com/neelance/graphql-go"
+	"github.com/graph-gophers/graphql-go"
 	"github.com/pkg/errors"
 
 	"zvelo.io/msg/internal/static"
