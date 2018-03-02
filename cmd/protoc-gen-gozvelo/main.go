@@ -1,9 +1,15 @@
 package main
 
 import (
+	"github.com/gogo/protobuf/gogoproto"
+	"github.com/gogo/protobuf/protoc-gen-gogo/descriptor"
 	"github.com/gogo/protobuf/vanity"
 	"github.com/gogo/protobuf/vanity/command"
 )
+
+func TurnOnGoProtoRegistration(file *descriptor.FileDescriptorProto) {
+	vanity.SetBoolFileOption(gogoproto.E_GoprotoRegistration, true)(file)
+}
 
 func main() {
 	req := command.Read()
@@ -27,6 +33,7 @@ func main() {
 	vanity.ForEachFile(files, vanity.TurnOnStringerAll)    // gogoslick
 
 	vanity.ForEachFile(files, vanity.TurnOnVerboseEqualAll) // zvelo
+	vanity.ForEachFile(files, TurnOnGoProtoRegistration)    // zvelo
 
 	resp := command.Generate(req)
 	command.Write(resp)
