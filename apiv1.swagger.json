@@ -682,7 +682,15 @@
         "THEMEPARK_4",
         "KIDTRAVEL_4",
         "UKTRAVEL_4",
-        "TRAVEL_4"
+        "TRAVEL_4",
+        "TERRORISM_4",
+        "CRYPTOCUR_4",
+        "CRYPTOMINE_4",
+        "BLOCKCHAIN_4",
+        "FAKENEWS_4",
+        "API_4",
+        "IOT_4",
+        "AI_ML_4"
       ]
     },
     "msgDataSet": {
