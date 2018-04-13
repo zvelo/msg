@@ -22,7 +22,7 @@
 
 [[constraint]]
   name = "github.com/magefile/mage"
-  version = "2.0.1"
+  version = "2.1"
 
 [[constraint]]
   name = "github.com/pkg/errors"
@@ -34,8 +34,8 @@
 
 [[constraint]]
   name = "google.golang.org/grpc"
-  version = "1.10.0"
+  version = "1.11.3"
 
 [[constraint]]
   name = "zvelo.io/zmage"
-  version = "3.2.0"
+  version = "3.2.2"

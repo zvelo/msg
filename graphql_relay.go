@@ -127,15 +127,14 @@ func annotateContext(req *http.Request) (context.Context, context.CancelFunc, er
 		}
 	}
 
-	if timeout != 0 {
-		ctx, cancel = context.WithTimeout(ctx, timeout)
-	}
-
-	for k, vs := range req.Header {
-		var ok bool
-		if k, ok = IncomingHeaderMatcher(k); ok {
-			for _, v := range vs {
-				pairs = append(pairs, k, v)
+	for key, vals := range req.Header {
+		for _, val := range vals {
+			// For backwards-compatibility, pass through 'authorization' header with no prefix.
+			if strings.ToLower(key) == "authorization" {
+				pairs = append(pairs, "authorization", val)
+			}
+			if h, ok := IncomingHeaderMatcher(key); ok {
+				pairs = append(pairs, h, val)
 			}
 		}
 	}
@@ -154,6 +153,10 @@ func annotateContext(req *http.Request) (context.Context, context.CancelFunc, er
 				pairs = append(pairs, strings.ToLower(xForwardedFor), fmt.Sprintf("%s, %s", fwd, remoteIP))
 			}
 		}
+	}
+
+	if timeout != 0 {
+		ctx, cancel = context.WithTimeout(ctx, timeout)
 	}
 
 	if len(pairs) == 0 {
