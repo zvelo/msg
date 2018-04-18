@@ -77,6 +77,11 @@ func ErrorProto(s *msg.Status) error {
 	return status.Error(codes.Code(s.Code), s.Message)
 }
 
+// FromProto returns a Status representing s.
+func FromProto(s *msg.Status) *Status {
+	return &Status{s: proto.Clone(s).(*msg.Status)}
+}
+
 // FromError returns a Status representing err if it was produced from this
 // package, otherwise it returns nil, false.
 func FromError(err error) (s *Status, ok bool) {
