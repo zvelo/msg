@@ -23,7 +23,7 @@
   branch = "master"
   name = "github.com/go-openapi/analysis"
   packages = ["."]
-  revision = "f59a71f0ece6f9dfb438be7f45148f006cbad88e"
+  revision = "863ac7f90e00e88e507095639a8457bbbf3c2ec9"
 
 [[projects]]
   branch = "master"
@@ -53,7 +53,7 @@
   branch = "master"
   name = "github.com/go-openapi/spec"
   packages = ["."]
-  revision = "370d9e047557906322be8396e77cb0376be6cb96"
+  revision = "bcff419492eeeb01f76e77d2ebc714dc97b607f5"
 
 [[projects]]
   branch = "master"
@@ -207,6 +207,7 @@
   name = "golang.org/x/net"
   packages = [
     "context",
+    "http/httpguts",
     "http2",
     "http2/hpack",
     "idna",
@@ -214,7 +215,7 @@
     "lex/httplex",
     "trace"
   ]
-  revision = "61147c48b25b599e5b561d2e9c4f3e1ef489ca41"
+  revision = "5f9ae10d9af5b1c89ae6904293b14b064d4ada23"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -245,7 +246,7 @@
     "googleapis/api/annotations",
     "googleapis/rpc/status"
   ]
-  revision = "51d0944304c3cbce4afe9e5247e21100037bff78"
+  revision = "7fd901a49ba6a7f87732eb344f6e3c5b19d1b200"
 
 [[projects]]
   name = "google.golang.org/grpc"
@@ -295,12 +296,12 @@
 [[projects]]
   name = "zvelo.io/zmage"
   packages = ["."]
-  revision = "a60a30727820bd07ddb4d1437a99461003eba7c9"
-  version = "v3.2.2"
+  revision = "bff8a76ec5e1a014cbd9cf65c78c005b0ad49322"
+  version = "v3.2.4"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "207120d0095119e07e852ff94a2d1bd6eca2fd97b991ca118c86bfea70daf8d5"
+  inputs-digest = "55494d2edcf969c614a09aff30f7e241439fea12c9934e14021882929885b390"
   solver-name = "gps-cdcl"
   solver-version = 1
