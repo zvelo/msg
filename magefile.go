@@ -40,7 +40,7 @@ func ProtoGRPCGateway(ctx context.Context) error {
 func Descriptor(ctx context.Context) error {
 	_, err := zmage.Descriptor("zvelo-api.protoset",
 		"apiv1.proto",
-		"google.golang.org/grpc/health/grpc_health_v1/health.proto",
+		"health/health.proto",
 	)
 	return err
 }
@@ -176,7 +176,7 @@ func GoVet(ctx context.Context) error {
 
 // Clean up after yourself
 func Clean(ctx context.Context) error {
-	return zmage.Clean()
+	return zmage.Clean("zvelo-api.protoset")
 }
 
 // GoPackages lists all the non-vendor packages in the repository
