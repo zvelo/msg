@@ -1,3 +1,4 @@
+---
 version: 2
 
 jobs:
@@ -17,6 +18,9 @@ jobs:
             go get github.com/mattn/goveralls
             dep ensure
             touch *.pb.go *.pb.gw.go internal/static/static.go
+            touch health/health.swagger.json
+            echo "package health" > health/health.pb.go
+            echo "package health" > health/health.pb.gw.go
       - run: mage -v checkImports
       - run:
           name: Calculate unit test coverage
