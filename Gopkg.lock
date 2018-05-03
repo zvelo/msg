@@ -114,8 +114,8 @@
     "ptypes/struct",
     "ptypes/timestamp"
   ]
-  revision = "925541529c1fa6821df4e44ce2723319eb2be768"
-  version = "v1.0.0"
+  revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
+  version = "v1.1.0"
 
 [[projects]]
   branch = "master"
@@ -215,7 +215,7 @@
     "lex/httplex",
     "trace"
   ]
-  revision = "5f9ae10d9af5b1c89ae6904293b14b064d4ada23"
+  revision = "640f4622ab692b87c2f3a94265e6f579fe38263d"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -246,7 +246,7 @@
     "googleapis/api/annotations",
     "googleapis/rpc/status"
   ]
-  revision = "7fd901a49ba6a7f87732eb344f6e3c5b19d1b200"
+  revision = "86e600f69ee4704c6efbf6a2a40a5c10700e76c2"
 
 [[projects]]
   name = "google.golang.org/grpc"
@@ -296,12 +296,12 @@
 [[projects]]
   name = "zvelo.io/zmage"
   packages = ["."]
-  revision = "587e9df0c49e4ccf145a784ffb1027c56c62de2a"
-  version = "v4.0.2"
+  revision = "437fe99f59c40d0a137087136725b8b26895c98b"
+  version = "v4.1.0"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3630216ca30cad6195ec46c803f0ed016b63f22e3581ea7414603c665367f4bd"
+  inputs-digest = "d17e48921d4eac96486509e8f6ef9d8b87fc9ac9273c0d056f047f77e3d65cfc"
   solver-name = "gps-cdcl"
   solver-version = 1

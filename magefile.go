@@ -4,7 +4,7 @@ package main
 
 import (
 	"context"
-	fmt "fmt"
+	"fmt"
 	"go/build"
 	"os"
 	"strings"
@@ -28,6 +28,14 @@ func ProtoGo(ctx context.Context) error {
 func ProtoPython(ctx context.Context) error {
 	_, err := zmage.ProtoPython()
 	return err
+}
+
+func ProtoJS(ctx context.Context) error {
+	if err := zmage.ProtoJS("js"); err != nil {
+		return err
+	}
+
+	return zmage.ClosureCompile("apiv1.js", "proto.zvelo.msg.APIv1Client", "js")
 }
 
 // ProtoGRPCGateway generates .pb.gw.go files from .proto files
@@ -176,7 +184,7 @@ func GoVet(ctx context.Context) error {
 
 // Clean up after yourself
 func Clean(ctx context.Context) error {
-	return zmage.Clean("zvelo-api.protoset")
+	return zmage.Clean("zvelo-api.protoset", "js", "apiv1.js")
 }
 
 // GoPackages lists all the non-vendor packages in the repository
