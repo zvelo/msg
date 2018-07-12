@@ -20,52 +20,52 @@
   version = "v9"
 
 [[projects]]
-  branch = "master"
   name = "github.com/go-openapi/analysis"
   packages = ["."]
-  revision = "863ac7f90e00e88e507095639a8457bbbf3c2ec9"
+  revision = "3c8fe72ed5d307113ef76c7c3035964d7e4d4b73"
+  version = "0.15.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/go-openapi/errors"
   packages = ["."]
-  revision = "7bcb96a367bac6b76e6e42fa84155bb5581dcff8"
+  revision = "b2b2befaf267d082d779bcef52d682a47c779517"
+  version = "0.15.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/go-openapi/jsonpointer"
   packages = ["."]
   revision = "3a0015ad55fa9873f41605d3e8f28cd279c32ab2"
+  version = "0.15.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/go-openapi/jsonreference"
   packages = ["."]
   revision = "3fb327e6747da3043567ee86abd02bb6376b6be2"
+  version = "0.15.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/go-openapi/loads"
   packages = ["."]
   revision = "2a2b323bab96e6b1fdee110e57d959322446e9c9"
+  version = "0.15.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/go-openapi/spec"
   packages = ["."]
-  revision = "bcff419492eeeb01f76e77d2ebc714dc97b607f5"
+  revision = "bce47c9386f9ecd6b86f450478a80103c3fe1402"
+  version = "0.15.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/go-openapi/strfmt"
   packages = ["."]
-  revision = "481808443b00a14745fada967cb5eeff0f9b1df2"
+  revision = "913ee058e387ac83a67e2d9f13acecdcd5769fc6"
+  version = "0.15.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/go-openapi/swag"
   packages = ["."]
-  revision = "811b1089cde9dad18d4d0c2d09fbdbf28dbd27a5"
+  revision = "2b0bd4f193d011c203529df626a65d63cb8a79e8"
+  version = "0.15.0"
 
 [[projects]]
   name = "github.com/gogo/protobuf"
@@ -135,7 +135,7 @@
     "log",
     "trace"
   ]
-  revision = "e698b6abc17ead17ea89d3d22a4b2625299701e3"
+  revision = "bb9738501bd42a6536227b96068349b814379d6e"
 
 [[projects]]
   name = "github.com/grpc-ecosystem/grpc-gateway"
@@ -144,8 +144,8 @@
     "runtime/internal",
     "utilities"
   ]
-  revision = "07f5e79768022f9a3265235f0db4ac8c3f675fec"
-  version = "v1.3.1"
+  revision = "92583770e3f01b09a0d3e9bdf64321d8bebd48f2"
+  version = "v1.4.1"
 
 [[projects]]
   name = "github.com/magefile/mage"
@@ -166,13 +166,13 @@
     "jlexer",
     "jwriter"
   ]
-  revision = "8b799c424f57fa123fc63a99d6383bc6e4c02578"
+  revision = "3fdea8d05856a0c8df22ed4bc71b3219245e4485"
 
 [[projects]]
   branch = "master"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
-  revision = "00c29f56e2386353d58c599509e8dc3801b0d716"
+  revision = "bb74f1db0675b241733089d5a1faa5dd8b0ef57b"
 
 [[projects]]
   name = "github.com/mjibson/esc"
@@ -214,7 +214,7 @@
     "internal/timeseries",
     "trace"
   ]
-  revision = "f73e4c9ed3b7ebdd5f699a16a880c2b1994e50dd"
+  revision = "a45b4abe13d2d168ea021b6ec8d8798fe33a7cc9"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -245,7 +245,7 @@
     "googleapis/api/annotations",
     "googleapis/rpc/status"
   ]
-  revision = "86e600f69ee4704c6efbf6a2a40a5c10700e76c2"
+  revision = "e92b116572682a5b432ddd840aeaba2a559eeff1"
 
 [[projects]]
   name = "google.golang.org/grpc"
@@ -254,15 +254,16 @@
     "balancer",
     "balancer/base",
     "balancer/roundrobin",
-    "channelz",
     "codes",
     "connectivity",
     "credentials",
     "encoding",
     "encoding/proto",
-    "grpclb/grpc_lb_v1/messages",
     "grpclog",
     "internal",
+    "internal/backoff",
+    "internal/channelz",
+    "internal/grpcrand",
     "keepalive",
     "metadata",
     "naming",
@@ -275,8 +276,8 @@
     "tap",
     "transport"
   ]
-  revision = "41344da2231b913fa3d983840a57a6b1b7b631a1"
-  version = "v1.12.0"
+  revision = "168a6198bcb0ef175f7dacec0b8691fc141dc9b8"
+  version = "v1.13.0"
 
 [[projects]]
   branch = "v2"
@@ -285,7 +286,7 @@
     "bson",
     "internal/json"
   ]
-  revision = "3f83fa5005286a7fe593b055f0d7771a7dce4655"
+  revision = "9856a29383ce1c59f308dd1cf0363a79b5bef6b5"
 
 [[projects]]
   name = "gopkg.in/yaml.v2"
@@ -296,12 +297,12 @@
 [[projects]]
   name = "zvelo.io/zmage"
   packages = ["."]
-  revision = "437fe99f59c40d0a137087136725b8b26895c98b"
-  version = "v4.1.0"
+  revision = "5688ca8af4498b75ac1b18a109a8de84cb0d3c88"
+  version = "v4.1.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d17e48921d4eac96486509e8f6ef9d8b87fc9ac9273c0d056f047f77e3d65cfc"
+  inputs-digest = "7fb863fea3d32cebe5cea663e575f407da7f011a5d2361b056132d07a2c099a2"
   solver-name = "gps-cdcl"
   solver-version = 1

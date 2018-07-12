@@ -15,19 +15,18 @@ require (
 	github.com/gogo/protobuf v1.0.0
 	github.com/golang/protobuf v1.1.0
 	github.com/graph-gophers/graphql-go v0.0.0-20180509231322-e698b6abc17e
-	github.com/grpc-ecosystem/grpc-gateway v1.3.1
-	github.com/magefile/mage v1.0.2
+	github.com/grpc-ecosystem/grpc-gateway v1.4.1
 	github.com/mailru/easyjson v0.0.0-20180323154445-8b799c424f57
 	github.com/mitchellh/mapstructure v0.0.0-20180220230111-00c29f56e238
 	github.com/mjibson/esc v0.1.0
+	github.com/opentracing/opentracing-go v1.0.2
 	github.com/pkg/errors v0.8.0
-	github.com/segmentio/ksuid v0.0.0-20180216234339-801bc4434082
+	github.com/segmentio/ksuid v0.0.0-20180711015022-46a0ee1899b0
 	golang.org/x/net v0.0.0-20180509002218-f73e4c9ed3b7
 	golang.org/x/text v0.3.0
 	google.golang.org/genproto v0.0.0-20180427144745-86e600f69ee4
-	google.golang.org/grpc v1.12.0
+	google.golang.org/grpc v1.13.0
 	gopkg.in/check.v1 v1.0.0-20161208181325-20d25e280405
 	gopkg.in/mgo.v2 v2.0.0-20160818020120-3f83fa500528
 	gopkg.in/yaml.v2 v2.2.1
-	zvelo.io/zmage v1.0.8
 )
