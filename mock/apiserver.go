@@ -146,7 +146,7 @@ func (s *apiServer) handleResults(callbackURL string, reqIDs ...string) {
 	}
 }
 
-func (s *apiServer) handleQuery(ctx context.Context, u string, content bool, ds []msg.DataSetType, out *msg.QueryReplies, reqIDs *[]string) error {
+func (s *apiServer) handleQuery(ctx context.Context, u string, content bool, ds []msg.DatasetType, out *msg.QueryReplies, reqIDs *[]string) error {
 	var r result
 	if err := parseOpts(ctx, u, content, ds, &r); err != nil {
 		return status.Errorf(codes.Internal, "error parsing opts: %s", err)

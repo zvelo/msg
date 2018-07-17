@@ -3,19 +3,19 @@ schema {
 }
 
 type APIv1 {
-  queryUrl(url: String!, callback: String, dataset: [DataSetType!]!): QueryReply!
+  queryUrl(url: String!, callback: String, dataset: [DatasetType!]!): QueryReply!
   queryContent(
     content: URLContent!
     callback: String
-    dataset: [DataSetType!]!
+    dataset: [DatasetType!]!
   ): QueryReply!
   result(requestID: ID!): QueryResult
-  suggestUrl(url: String!, dataset: DataSetInput): Empty
+  suggestUrl(url: String!, dataset: DatasetInput): Empty
 }
 
 type Empty {}
 
-enum DataSetType {
+enum DatasetType {
   CATEGORIZATION
   MALICIOUS
   ECHO
@@ -45,38 +45,38 @@ type Status {
 
 type QueryResult {
   requestID: ID
-  responseDataSet: DataSet
+  responseDataset: Dataset
   queryStatus: QueryStatus!
 }
 
-type DataSet {
-  categorization: DataSetCategorization
-  malicious: DataSetMalicious
-  echo: DataSetEcho
-  language: DataSetLanguage
+type Dataset {
+  categorization: DatasetCategorization
+  malicious: DatasetMalicious
+  echo: DatasetEcho
+  language: DatasetLanguage
 }
 
-input DataSetInput {
+input DatasetInput {
   categorization: [Category!]
   malicious: [Category!]
 }
 
-type DataSetCategorization {
+type DatasetCategorization {
   value: [Category!]
   error: Status
 }
 
-type DataSetMalicious {
+type DatasetMalicious {
   category: [Category!]
   error: Status
 }
 
-type DataSetEcho {
+type DatasetEcho {
   url: String
   error: Status
 }
 
-type DataSetLanguage {
+type DatasetLanguage {
   code: String
   error: Status
 }

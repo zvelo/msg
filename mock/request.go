@@ -22,11 +22,11 @@ func WithCategories(val ...msg.Category) ContextOption {
 		}
 
 		if r.ResponseDataset == nil {
-			r.ResponseDataset = &msg.DataSet{}
+			r.ResponseDataset = &msg.Dataset{}
 		}
 
 		if r.ResponseDataset.Categorization == nil {
-			r.ResponseDataset.Categorization = &msg.DataSet_Categorization{}
+			r.ResponseDataset.Categorization = &msg.Dataset_Categorization{}
 		}
 
 		r.ResponseDataset.Categorization.Value = val
@@ -36,11 +36,11 @@ func WithCategories(val ...msg.Category) ContextOption {
 func WithMalicious(val ...msg.Category) ContextOption {
 	return func(r *result) {
 		if r.ResponseDataset == nil {
-			r.ResponseDataset = &msg.DataSet{}
+			r.ResponseDataset = &msg.Dataset{}
 		}
 
 		if r.ResponseDataset.Malicious == nil {
-			r.ResponseDataset.Malicious = &msg.DataSet_Malicious{}
+			r.ResponseDataset.Malicious = &msg.Dataset_Malicious{}
 		}
 
 		r.ResponseDataset.Malicious.Category = val
@@ -50,11 +50,11 @@ func WithMalicious(val ...msg.Category) ContextOption {
 func WithLanguage(val string) ContextOption {
 	return func(r *result) {
 		if r.ResponseDataset == nil {
-			r.ResponseDataset = &msg.DataSet{}
+			r.ResponseDataset = &msg.Dataset{}
 		}
 
 		if r.ResponseDataset.Language == nil {
-			r.ResponseDataset.Language = &msg.DataSet_Language{}
+			r.ResponseDataset.Language = &msg.Dataset_Language{}
 		}
 
 		r.ResponseDataset.Language.Code = val
@@ -178,7 +178,7 @@ func mdGet(md metadata.MD, key string) string {
 	return v[0]
 }
 
-func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetType, r *result) error {
+func parseOpts(ctx context.Context, url string, content bool, ds []msg.DatasetType, r *result) error {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return nil
@@ -188,10 +188,10 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 		switch t {
 		case msg.CATEGORIZATION:
 			if r.ResponseDataset == nil {
-				r.ResponseDataset = &msg.DataSet{}
+				r.ResponseDataset = &msg.Dataset{}
 			}
 
-			r.ResponseDataset.Categorization = &msg.DataSet_Categorization{}
+			r.ResponseDataset.Categorization = &msg.Dataset_Categorization{}
 
 			if categoryNames, ok := md[headerCategory]; ok {
 				categories := make([]msg.Category, len(categoryNames))
@@ -203,10 +203,10 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 			}
 		case msg.MALICIOUS:
 			if r.ResponseDataset == nil {
-				r.ResponseDataset = &msg.DataSet{}
+				r.ResponseDataset = &msg.Dataset{}
 			}
 
-			r.ResponseDataset.Malicious = &msg.DataSet_Malicious{}
+			r.ResponseDataset.Malicious = &msg.Dataset_Malicious{}
 
 			if categoryNames, ok := md[headerMaliciousCategory]; ok {
 				categories := make([]msg.Category, len(categoryNames))
@@ -218,16 +218,16 @@ func parseOpts(ctx context.Context, url string, content bool, ds []msg.DataSetTy
 			}
 		case msg.ECHO:
 			if r.ResponseDataset == nil {
-				r.ResponseDataset = &msg.DataSet{}
+				r.ResponseDataset = &msg.Dataset{}
 			}
 
-			r.ResponseDataset.Echo = &msg.DataSet_Echo{Url: url}
+			r.ResponseDataset.Echo = &msg.Dataset_Echo{Url: url}
 		case msg.LANGUAGE:
 			if r.ResponseDataset == nil {
-				r.ResponseDataset = &msg.DataSet{}
+				r.ResponseDataset = &msg.Dataset{}
 			}
 
-			r.ResponseDataset.Language = &msg.DataSet_Language{}
+			r.ResponseDataset.Language = &msg.Dataset_Language{}
 
 			if langCodes, ok := md[headerLanguageCode]; ok && len(langCodes) > 0 {
 				r.ResponseDataset.Language.Code = langCodes[0]

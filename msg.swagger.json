@@ -136,7 +136,7 @@
     }
   },
   "definitions": {
-    "DataSetCategorization": {
+    "DatasetCategorization": {
       "type": "object",
       "title": "Categorization",
       "properties": {
@@ -151,7 +151,7 @@
         }
       }
     },
-    "DataSetEcho": {
+    "DatasetEcho": {
       "type": "object",
       "title": "Echo",
       "properties": {
@@ -163,7 +163,7 @@
         }
       }
     },
-    "DataSetLanguage": {
+    "DatasetLanguage": {
       "type": "object",
       "properties": {
         "code": {
@@ -174,7 +174,7 @@
         }
       }
     },
-    "DataSetMalicious": {
+    "DatasetMalicious": {
       "type": "object",
       "title": "Malicious",
       "properties": {
@@ -693,25 +693,25 @@
         "AI_ML_4"
       ]
     },
-    "msgDataSet": {
+    "msgDataset": {
       "type": "object",
-      "title": "DataSet",
+      "title": "Dataset",
       "properties": {
         "categorization": {
-          "$ref": "#/definitions/DataSetCategorization"
+          "$ref": "#/definitions/DatasetCategorization"
         },
         "echo": {
-          "$ref": "#/definitions/DataSetEcho"
+          "$ref": "#/definitions/DatasetEcho"
         },
         "language": {
-          "$ref": "#/definitions/DataSetLanguage"
+          "$ref": "#/definitions/DatasetLanguage"
         },
         "malicious": {
-          "$ref": "#/definitions/DataSetMalicious"
+          "$ref": "#/definitions/DatasetMalicious"
         }
       }
     },
-    "msgDataSetType": {
+    "msgDatasetType": {
       "type": "string",
       "title": "- MALICIOUS: 1 is reserved\n2 is reserved\n3 is reserved\n - LANGUAGE: 6 is reserved",
       "default": "CATEGORIZATION",
@@ -766,7 +766,7 @@
           "type": "array",
           "title": "The datasets to query for each URL",
           "items": {
-            "$ref": "#/definitions/msgDataSetType"
+            "$ref": "#/definitions/msgDatasetType"
           }
         },
         "url": {
@@ -790,7 +790,7 @@
           "title": "Request ID for tracking requests"
         },
         "response_dataset": {
-          "$ref": "#/definitions/msgDataSet"
+          "$ref": "#/definitions/msgDataset"
         },
         "url": {
           "type": "string"
@@ -837,7 +837,7 @@
       "type": "object",
       "properties": {
         "dataset": {
-          "$ref": "#/definitions/msgDataSet"
+          "$ref": "#/definitions/msgDataset"
         },
         "url": {
           "type": "string"

@@ -6,16 +6,16 @@ import (
 	"testing"
 )
 
-func testDS(t *testing.T, ds *DataSet, expectNil bool) {
+func testDS(t *testing.T, ds *Dataset, expectNil bool) {
 	t.Helper()
 
 	// iterate through each valid dataset type
-	for dstID := range DataSetType_name {
-		dst := DataSetType(dstID)
+	for dstID := range DatasetType_name {
+		dst := DatasetType(dstID)
 
 		i, err := ds.FieldByType(dst)
 		if err != nil {
-			t.Error("DataSetByType returned error", err)
+			t.Error("DatasetByType returned error", err)
 		}
 
 		if i == nil && !expectNil {
@@ -32,27 +32,27 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 
 		switch dst {
 		case CATEGORIZATION:
-			r, ok := i.(*DataSet_Categorization)
+			r, ok := i.(*Dataset_Categorization)
 			if !ok {
-				t.Error("type of i not *DataSet_Categorization")
+				t.Error("type of i not *Dataset_Categorization")
 			}
 
 			if r != ds.Categorization {
 				t.Error("t != ds.Categorization")
 			}
 		case MALICIOUS:
-			r, ok := i.(*DataSet_Malicious)
+			r, ok := i.(*Dataset_Malicious)
 			if !ok {
-				t.Error("type of i not *DataSet_Malicious")
+				t.Error("type of i not *Dataset_Malicious")
 			}
 
 			if r != ds.Malicious {
 				t.Error("t != ds.Malicious")
 			}
 		case ECHO:
-			r, ok := i.(*DataSet_Echo)
+			r, ok := i.(*Dataset_Echo)
 			if !ok {
-				t.Error("type of i not *DataSet_Echo")
+				t.Error("type of i not *Dataset_Echo")
 			}
 
 			if r != ds.Echo {
@@ -60,9 +60,9 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 
 			}
 		case LANGUAGE:
-			r, ok := i.(*DataSet_Language)
+			r, ok := i.(*Dataset_Language)
 			if !ok {
-				t.Error("type of i not *DataSet_Language")
+				t.Error("type of i not *Dataset_Language")
 			}
 
 			if r != ds.Language {
@@ -75,34 +75,34 @@ func testDS(t *testing.T, ds *DataSet, expectNil bool) {
 	}
 }
 
-func TestDataSetByType(t *testing.T) {
-	testDS(t, &DataSet{
-		Categorization: &DataSet_Categorization{},
-		Malicious:      &DataSet_Malicious{},
-		Echo:           &DataSet_Echo{},
-		Language:       &DataSet_Language{},
+func TestDatasetByType(t *testing.T) {
+	testDS(t, &Dataset{
+		Categorization: &Dataset_Categorization{},
+		Malicious:      &Dataset_Malicious{},
+		Echo:           &Dataset_Echo{},
+		Language:       &Dataset_Language{},
 	}, false)
 }
 
-func TestNilDataSetByType(t *testing.T) {
-	testDS(t, &DataSet{}, true)
+func TestNilDatasetByType(t *testing.T) {
+	testDS(t, &Dataset{}, true)
 }
 
-func TestDataSetByTypeErr(t *testing.T) {
-	ds := &DataSet{}
-	i, err := ds.FieldByType(DataSetType(-1))
+func TestDatasetByTypeErr(t *testing.T) {
+	ds := &Dataset{}
+	i, err := ds.FieldByType(DatasetType(-1))
 
 	if err == nil {
-		t.Error("DataSetByType didn't return error for invalid dataset type")
+		t.Error("DatasetByType didn't return error for invalid dataset type")
 	}
 
 	if i != nil {
-		t.Error("expected DataSetByType to return nil interface when err != nil ")
+		t.Error("expected DatasetByType to return nil interface when err != nil ")
 	}
 
-	e, ok := err.(errInvalidDataSetType)
+	e, ok := err.(errInvalidDatasetType)
 	if !ok {
-		t.Error("error was not of type errInvalidDataSetType")
+		t.Error("error was not of type errInvalidDatasetType")
 	}
 
 	const errMsg0 = "invalid dataset type: -1"
@@ -114,71 +114,71 @@ func TestDataSetByTypeErr(t *testing.T) {
 	i, err = ds.FieldByType(CATEGORIZATION)
 
 	if err == nil {
-		t.Error("DataSetByType didn't return error for nil dataset")
+		t.Error("DatasetByType didn't return error for nil dataset")
 	}
 
 	if i != nil {
-		t.Error("expected DataSetByType to return nil interface when err != nil ")
+		t.Error("expected DatasetByType to return nil interface when err != nil ")
 	}
 
-	if err != ErrNilDataSet {
+	if err != ErrNilDataset {
 		t.Error("unexpected error type")
 	}
 }
 
-func ExampleDataSet_FieldByType() {
-	ds := &DataSet{
-		Categorization: &DataSet_Categorization{},
+func ExampleDataset_FieldByType() {
+	ds := &Dataset{
+		Categorization: &Dataset_Categorization{},
 	}
 
 	i, _ := ds.FieldByType(CATEGORIZATION)
 
-	c := i.(*DataSet_Categorization)
+	c := i.(*Dataset_Categorization)
 
 	fmt.Printf("c == ds.Categorization => %v\n", c == ds.Categorization)
 	// Output: c == ds.Categorization => true
 }
 
-func testDataSetType(t *testing.T, dstValue int32, dstName string) {
-	dst, err := NewDataSetType(strings.ToLower(dstName))
+func testDatasetType(t *testing.T, dstValue int32, dstName string) {
+	dst, err := NewDatasetType(strings.ToLower(dstName))
 	if err != nil {
 		t.Error("unexpected error")
 	}
 
-	if DataSetType(dstValue) != dst {
+	if DatasetType(dstValue) != dst {
 		t.Error("unexpected dataset type value")
 	}
 }
 
-func TestNewDataSetType(t *testing.T) {
-	for dstValue, dstName := range DataSetType_name {
-		testDataSetType(t, dstValue, dstName)
-		testDataSetType(t, dstValue, strings.ToLower(dstName))
-		testDataSetType(t, dstValue, strings.ToUpper(dstName))
+func TestNewDatasetType(t *testing.T) {
+	for dstValue, dstName := range DatasetType_name {
+		testDatasetType(t, dstValue, dstName)
+		testDatasetType(t, dstValue, strings.ToLower(dstName))
+		testDatasetType(t, dstValue, strings.ToUpper(dstName))
 	}
 
-	dst, err := NewDataSetType("invalid dataset type name")
+	dst, err := NewDatasetType("invalid dataset type name")
 	if err == nil {
-		t.Error("NewDataSetType should have returned an error")
+		t.Error("NewDatasetType should have returned an error")
 	}
 
-	if err != ErrInvalidDataSetType {
-		t.Error("NewDataSetType returned the wrong error")
+	if err != ErrInvalidDatasetType {
+		t.Error("NewDatasetType returned the wrong error")
 	}
 
-	if dst != DataSetType(-1) {
-		t.Error("NewDataSetType returned wrong response")
+	if dst != DatasetType(-1) {
+		t.Error("NewDatasetType returned wrong response")
 	}
 }
 
 func TestMergeDatasets(t *testing.T) {
-	d1 := &DataSet{
-		Categorization: &DataSet_Categorization{
+	d1 := &Dataset{
+		Categorization: &Dataset_Categorization{
 			Value: []Category{1},
 		},
 	}
-	d2 := &DataSet{
-		Malicious: &DataSet_Malicious{
+	d2 := &Dataset{
+		Malicious: &Dataset_Malicious{
 			Category: []Category{MAL_4},
 		},
 	}
@@ -222,9 +222,9 @@ func TestMergeDatasets(t *testing.T) {
 }
 
 func TestMergeDatasetsOneEmpty(t *testing.T) {
-	d1 := &DataSet{}
-	d2 := &DataSet{
-		Malicious: &DataSet_Malicious{
+	d1 := &Dataset{}
+	d2 := &Dataset{
+		Malicious: &Dataset_Malicious{
 			Category: []Category{MAL_4},
 		},
 	}
@@ -264,8 +264,8 @@ func TestMergeDatasetsOneEmpty(t *testing.T) {
 }
 
 func TestMergeDatasetsBothEmpty(t *testing.T) {
-	d1 := &DataSet{}
-	d2 := &DataSet{}
+	d1 := &Dataset{}
+	d2 := &Dataset{}
 
 	if d1.Categorization != nil {
 		t.Error("d1.Categorization should be nil")
@@ -298,9 +298,9 @@ func TestMergeDatasetsBothEmpty(t *testing.T) {
 }
 
 func TestMergeDatasetsOneNil(t *testing.T) {
-	var d1 *DataSet
-	d2 := &DataSet{
-		Malicious: &DataSet_Malicious{
+	var d1 *Dataset
+	d2 := &Dataset{
+		Malicious: &Dataset_Malicious{
 			Category: []Category{MAL_4},
 		},
 	}
@@ -332,8 +332,8 @@ func TestMergeDatasetsOneNil(t *testing.T) {
 }
 
 func TestMergeDatasetsBothNil(t *testing.T) {
-	var d1 *DataSet
-	var d2 *DataSet
+	var d1 *Dataset
+	var d2 *Dataset
 	d3, err := MergeDatasets(d1, d2)
 	if err != nil {
 		t.Errorf("MergeDatasets returned an error: %s", err)

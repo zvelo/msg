@@ -527,7 +527,7 @@ message RequestID {
 
 message Suggestion {
   string url = 1;
-  DataSet dataset = 2;
+  Dataset dataset = 2;
 }
 
 // QueryStatus
@@ -549,7 +549,7 @@ message QueryResult {
   reserved 4;
   reserved 5;
   reserved 6;
-  DataSet response_dataset = 7;
+  Dataset response_dataset = 7;
   string url = 8;
   reserved 9;
   QueryStatus query_status = 10;
@@ -577,7 +577,7 @@ message QueryRequests {
   string callback = 3;
   reserved 4;
   // The datasets to query for each URL
-  repeated DataSetType dataset = 5;
+  repeated DatasetType dataset = 5;
 }
 
 // QueryReply
@@ -599,7 +599,7 @@ message QueryReplies {
   repeated QueryReply reply = 1; // this contains a reply for each sub query
 }
 
-enum DataSetType {
+enum DatasetType {
   CATEGORIZATION = 0;
   // 1 is reserved
   // 2 is reserved
@@ -610,8 +610,8 @@ enum DataSetType {
   LANGUAGE = 7;
 }
 
-// DataSet
-message DataSet {
+// Dataset
+message Dataset {
   // Categorization
   message Categorization {
     reserved 1;
