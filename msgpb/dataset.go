@@ -104,7 +104,7 @@ func MergeDatasets(d1, d2 *Dataset) (*Dataset, error) {
 	numFields := val1.Elem().NumField()
 	for i := 0; i < numFields; i++ {
 		fieldVal := val2.Elem().Field(i)
-		if !fieldVal.IsNil() {
+		if fieldVal.Kind() == reflect.Ptr && !fieldVal.IsNil() {
 			val1.Elem().Field(i).Set(fieldVal)
 		}
 	}

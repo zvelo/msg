@@ -68,6 +68,7 @@
   version = "0.15.0"
 
 [[projects]]
+  branch = "master"
   name = "github.com/gogo/protobuf"
   packages = [
     "gogoproto",
@@ -91,6 +92,7 @@
     "proto",
     "protoc-gen-gogo/descriptor",
     "protoc-gen-gogo/generator",
+    "protoc-gen-gogo/generator/internal/remap",
     "protoc-gen-gogo/grpc",
     "protoc-gen-gogo/plugin",
     "sortkeys",
@@ -98,8 +100,7 @@
     "vanity",
     "vanity/command"
   ]
-  revision = "1adfc126b41513cc696b209667c8656ea7aac67c"
-  version = "v1.0.0"
+  revision = "636bf0302bc95575d69441b25a2603156ffdddf1"
 
 [[projects]]
   name = "github.com/golang/protobuf"
@@ -166,13 +167,13 @@
     "jlexer",
     "jwriter"
   ]
-  revision = "3fdea8d05856a0c8df22ed4bc71b3219245e4485"
+  revision = "efc7eb8984d6655c26b5c9d2e65c024e5767c37c"
 
 [[projects]]
   branch = "master"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
-  revision = "bb74f1db0675b241733089d5a1faa5dd8b0ef57b"
+  revision = "f15292f7a699fcc1a38a80977f80a046874ba8ac"
 
 [[projects]]
   name = "github.com/mjibson/esc"
@@ -214,7 +215,7 @@
     "internal/timeseries",
     "trace"
   ]
-  revision = "a45b4abe13d2d168ea021b6ec8d8798fe33a7cc9"
+  revision = "d0887baf81f4598189d4e12a37c6da86f0bba4d0"
 
 [[projects]]
   name = "golang.org/x/text"
@@ -245,7 +246,7 @@
     "googleapis/api/annotations",
     "googleapis/rpc/status"
   ]
-  revision = "e92b116572682a5b432ddd840aeaba2a559eeff1"
+  revision = "2731d4fa720b67f9fe38e9051a2a9b38e4609260"
 
 [[projects]]
   name = "google.golang.org/grpc"
@@ -303,6 +304,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7fb863fea3d32cebe5cea663e575f407da7f011a5d2361b056132d07a2c099a2"
+  inputs-digest = "7b8f8b87327e7203a5875e902d8d97bb27dd04bf3c7a57b6bd3eac4cf0e6ad64"
   solver-name = "gps-cdcl"
   solver-version = 1

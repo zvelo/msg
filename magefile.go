@@ -23,9 +23,22 @@ var Default = Generate
 
 // Prototool generates protobuf files
 func Prototool(ctx context.Context) error {
-	modified, err := zmage.Modified("msgpb/msg.pb.go", "msg.proto", "prototool.yaml")
-	if err != nil {
-		return err
+	destinations := []string{
+		"msgpb/msg.pb.go",
+		"msgpb/msg.pb.gw.go",
+		"msg.swagger.json",
+	}
+
+	var modified bool
+	for _, dest := range destinations {
+		var err error
+		modified, err = zmage.Modified(dest, "msg.proto", "prototool.yaml")
+		if err != nil {
+			return err
+		}
+		if modified {
+			break
+		}
 	}
 
 	if !modified {
@@ -208,7 +221,7 @@ func GoVet(ctx context.Context) error {
 
 // Clean up after yourself
 func Clean(ctx context.Context) error {
-	return zmage.Clean("zvelo-api.protoset")
+	return zmage.Clean("msg.protoset")
 }
 
 // GoPackages lists all the non-vendor packages in the repository

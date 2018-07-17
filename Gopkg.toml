@@ -3,14 +3,9 @@
   non-go = true
   go-tests = true
 
-  [[prune.project]]
-    name = "github.com/grpc-ecosystem/grpc-gateway"
-    unused-packages = false
-    non-go = false
-
 [[constraint]]
   name = "github.com/gogo/protobuf"
-  version = "1.0.0"
+  branch = "master"
 
 [[constraint]]
   name = "github.com/golang/protobuf"
@@ -19,10 +14,6 @@
 [[constraint]]
   name = "github.com/grpc-ecosystem/grpc-gateway"
   version = "1.4.1"
-
-[[constraint]]
-  name = "github.com/magefile/mage"
-  version = "2.1"
 
 [[constraint]]
   name = "github.com/pkg/errors"
@@ -35,7 +26,3 @@
 [[constraint]]
   name = "google.golang.org/grpc"
   version = "1.13.0"
-
-[[constraint]]
-  name = "zvelo.io/zmage"
-  version = "4.1.1"
