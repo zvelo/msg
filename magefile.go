@@ -23,6 +23,15 @@ var Default = Generate
 
 // Prototool generates protobuf files
 func Prototool(ctx context.Context) error {
+	modified, err := zmage.Modified("msgpb/msg.pb.go", "msg.proto", "prototool.yaml")
+	if err != nil {
+		return err
+	}
+
+	if !modified {
+		return nil
+	}
+
 	if err := sh.Run("prototool", "gen"); err != nil {
 		return err
 	}
@@ -66,6 +75,15 @@ func ProtoPython(ctx context.Context) error {
 
 // Descriptor generates protobuf file descriptor set files from .proto files
 func Descriptor(ctx context.Context) error {
+	modified, err := zmage.Modified("msg.protoset", "msg.proto", "include/health/health.proto")
+	if err != nil {
+		return err
+	}
+
+	if !modified {
+		return nil
+	}
+
 	return sh.Run(
 		"protoc",
 		"-Iinclude",
