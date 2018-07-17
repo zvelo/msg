@@ -17,7 +17,7 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/segmentio/ksuid"
 
-	"zvelo.io/msg"
+	msg "zvelo.io/msg/msgpb"
 )
 
 var jsonMarshaler = jsonpb.Marshaler{OrigName: true}

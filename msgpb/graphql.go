@@ -1,4 +1,4 @@
-package msg
+package msgpb
 
 import (
 	"context"
@@ -97,7 +97,7 @@ func (r graphQLResolver) QueryURL(ctx context.Context, args graphQLQueryURL) (*g
 		return nil, errors.New("didn't get a reply")
 	}
 
-	return &graphQLQueryReply{replies.Reply[0]}, nil
+	return &graphQLQueryReply{msg: replies.Reply[0]}, nil
 }
 
 func (r graphQLResolver) QueryContent(ctx context.Context, args graphQLQueryContent) (*graphQLQueryReply, error) {
@@ -144,7 +144,7 @@ func (r graphQLResolver) QueryContent(ctx context.Context, args graphQLQueryCont
 		return nil, errors.New("didn't get a reply")
 	}
 
-	return &graphQLQueryReply{replies.Reply[0]}, nil
+	return &graphQLQueryReply{msg: replies.Reply[0]}, nil
 }
 
 func (r graphQLResolver) Result(ctx context.Context, args struct{ RequestID graphql.ID }) (*graphQLQueryResult, error) {
@@ -157,7 +157,7 @@ func (r graphQLResolver) Result(ctx context.Context, args struct{ RequestID grap
 		return nil, err
 	}
 
-	return &graphQLQueryResult{result}, nil
+	return &graphQLQueryResult{msg: result}, nil
 }
 
 type graphQLHeader struct {
@@ -211,7 +211,7 @@ func (r graphQLQueryReply) Error() *graphQLStatus {
 		return nil
 	}
 
-	return &graphQLStatus{r.msg.Error}
+	return &graphQLStatus{msg: r.msg.Error}
 }
 
 type graphQLStatus struct {
@@ -248,14 +248,14 @@ func (r graphQLQueryResult) ResponseDataSet() *graphQLDataSet {
 	if r.msg == nil || r.msg.ResponseDataset == nil {
 		return nil
 	}
-	return &graphQLDataSet{r.msg.ResponseDataset}
+	return &graphQLDataSet{msg: r.msg.ResponseDataset}
 }
 
 func (r graphQLQueryResult) QueryStatus() *graphQLQueryStatus {
 	if r.msg == nil || r.msg.QueryStatus == nil {
 		return nil
 	}
-	return &graphQLQueryStatus{r.msg.QueryStatus}
+	return &graphQLQueryStatus{msg: r.msg.QueryStatus}
 }
 
 type graphQLQueryStatus struct {
@@ -274,7 +274,7 @@ func (s graphQLQueryStatus) Error() *graphQLStatus {
 	if s.msg == nil || s.msg.Error == nil {
 		return nil
 	}
-	return &graphQLStatus{s.msg.Error}
+	return &graphQLStatus{msg: s.msg.Error}
 }
 
 func (s graphQLQueryStatus) FetchCode() *int32 {
@@ -302,7 +302,7 @@ func (s graphQLDataSet) Categorization() *graphQLDataSetCategorization {
 		return nil
 	}
 
-	return &graphQLDataSetCategorization{s.msg.Categorization}
+	return &graphQLDataSetCategorization{msg: s.msg.Categorization}
 }
 
 func (s graphQLDataSet) Malicious() *graphQLDataSetMalicious {
@@ -310,7 +310,7 @@ func (s graphQLDataSet) Malicious() *graphQLDataSetMalicious {
 		return nil
 	}
 
-	return &graphQLDataSetMalicious{s.msg.Malicious}
+	return &graphQLDataSetMalicious{msg: s.msg.Malicious}
 }
 
 func (s graphQLDataSet) Echo() *graphQLDataSetEcho {
@@ -318,7 +318,7 @@ func (s graphQLDataSet) Echo() *graphQLDataSetEcho {
 		return nil
 	}
 
-	return &graphQLDataSetEcho{s.msg.Echo}
+	return &graphQLDataSetEcho{msg: s.msg.Echo}
 }
 
 func (s graphQLDataSet) Language() *graphQLDataSetLanguage {
@@ -326,7 +326,7 @@ func (s graphQLDataSet) Language() *graphQLDataSetLanguage {
 		return nil
 	}
 
-	return &graphQLDataSetLanguage{s.msg.Language}
+	return &graphQLDataSetLanguage{msg: s.msg.Language}
 }
 
 type graphQLDataSetCategorization struct {
@@ -338,9 +338,9 @@ func (s graphQLDataSetCategorization) Value() *[]string {
 		return nil
 	}
 
-	var ret []string
-	for _, c := range s.msg.Value {
-		ret = append(ret, c.String())
+	ret := make([]string, len(s.msg.Value))
+	for i, c := range s.msg.Value {
+		ret[i] = c.String()
 	}
 	return &ret
 }
@@ -349,7 +349,7 @@ func (s graphQLDataSetCategorization) Error() *graphQLStatus {
 	if s.msg == nil || s.msg.Error == nil {
 		return nil
 	}
-	return &graphQLStatus{s.msg.Error}
+	return &graphQLStatus{msg: s.msg.Error}
 }
 
 type graphQLDataSetMalicious struct {
@@ -361,9 +361,9 @@ func (s graphQLDataSetMalicious) Category() *[]string {
 		return nil
 	}
 
-	var ret []string
-	for _, c := range s.msg.Category {
-		ret = append(ret, c.String())
+	ret := make([]string, len(s.msg.Category))
+	for i, c := range s.msg.Category {
+		ret[i] = c.String()
 	}
 	return &ret
 }
@@ -372,7 +372,7 @@ func (s graphQLDataSetMalicious) Error() *graphQLStatus {
 	if s.msg == nil || s.msg.Error == nil {
 		return nil
 	}
-	return &graphQLStatus{s.msg.Error}
+	return &graphQLStatus{msg: s.msg.Error}
 }
 
 type graphQLDataSetEcho struct {
@@ -390,7 +390,7 @@ func (s graphQLDataSetEcho) Error() *graphQLStatus {
 	if s.msg == nil || s.msg.Error == nil {
 		return nil
 	}
-	return &graphQLStatus{s.msg.Error}
+	return &graphQLStatus{msg: s.msg.Error}
 }
 
 type graphQLDataSetLanguage struct {
@@ -408,5 +408,5 @@ func (s graphQLDataSetLanguage) Error() *graphQLStatus {
 	if s.msg == nil || s.msg.Error == nil {
 		return nil
 	}
-	return &graphQLStatus{s.msg.Error}
+	return &graphQLStatus{msg: s.msg.Error}
 }

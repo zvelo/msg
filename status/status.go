@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"zvelo.io/msg"
+	msg "zvelo.io/msg/msgpb"
 )
 
 // Status represents an RPC status code, message, and details.  It is immutable

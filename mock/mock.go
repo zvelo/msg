@@ -24,8 +24,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"zvelo.io/msg"
 	"zvelo.io/msg/internal/static"
+	msg "zvelo.io/msg/msgpb"
 )
 
 var staticFS = static.FS(false)

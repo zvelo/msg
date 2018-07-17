@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 
-	"zvelo.io/msg"
+	msg "zvelo.io/msg/msgpb"
 	"zvelo.io/msg/status"
 )
 
