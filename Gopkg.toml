@@ -4,6 +4,18 @@
   go-tests = true
 
 [[constraint]]
+  name = "github.com/go-openapi/loads"
+  version = "0.15.0"
+
+[[constraint]]
+  name = "github.com/go-openapi/spec"
+  version = "0.15.0"
+
+[[constraint]]
+  name = "github.com/go-openapi/swag"
+  version = "0.15.0"
+
+[[constraint]]
   name = "github.com/gogo/protobuf"
   version = "1.1.1"
 
@@ -12,8 +24,16 @@
   version = "1.1.0"
 
 [[constraint]]
+  name = "github.com/graph-gophers/graphql-go"
+  branch = "master"
+
+[[constraint]]
   name = "github.com/grpc-ecosystem/grpc-gateway"
   version = "1.4.1"
+
+[[constraint]]
+  name = "github.com/magefile/mage"
+  version = "2.1.0"
 
 [[constraint]]
   name = "github.com/pkg/errors"
@@ -24,5 +44,17 @@
   version = "1.0.1"
 
 [[constraint]]
+  name = "golang.org/x/net"
+  branch = "master"
+
+[[constraint]]
+  name = "google.golang.org/genproto"
+  branch = "master"
+
+[[constraint]]
   name = "google.golang.org/grpc"
   version = "1.13.0"
+
+[[constraint]]
+  name = "zvelo.io/zmage"
+  version = "4.1.2"

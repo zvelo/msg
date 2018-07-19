@@ -12,8 +12,8 @@ github.com/go-openapi/spec v0.0.0-20180710175419-bce47c9386f9 h1:t9ogKTKyAuCXNge
 github.com/go-openapi/spec v0.0.0-20180710175419-bce47c9386f9/go.mod h1:J8+jY1nAiCcj+friV/PDoE1/3eeccG9LYBs0tYvLOWc=
 github.com/go-openapi/strfmt v0.0.0-20180703152050-913ee058e387 h1:ZMbaOR0ORyF4gpp0DCcDYCijolal+2OHO+jSmSm2PBw=
 github.com/go-openapi/strfmt v0.0.0-20180703152050-913ee058e387/go.mod h1:/bCWipNKhC9QMhD8HRe2EGbU8G0D4Yvh0G6X4k1Xwvg=
-github.com/go-openapi/swag v0.0.0-20180715190254-becd2f08beaf h1:7lg/DRYbE2t6UvEipbKopk3GzYhRnv9/+qpUMYNfiAw=
-github.com/go-openapi/swag v0.0.0-20180715190254-becd2f08beaf/go.mod h1:DXUve3Dpr1UfpPtxFw+EFuQ41HhCWZfha5jSVRG7C7I=
+github.com/go-openapi/swag v0.0.0-20180703152219-2b0bd4f193d0 h1:KOHIkUyLtY/OapQTEisSFx2qbfP5mKIl9OYnBl4Uwd8=
+github.com/go-openapi/swag v0.0.0-20180703152219-2b0bd4f193d0/go.mod h1:DXUve3Dpr1UfpPtxFw+EFuQ41HhCWZfha5jSVRG7C7I=
 github.com/gogo/protobuf v1.1.1 h1:72R+M5VuhED/KujmZVcIquuo8mBgX4oVda//DQb3PXo=
 github.com/gogo/protobuf v1.1.1/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b/go.mod h1:SBH7ygxi8pfUlaOkMMuAQtPIUF8ecWP5IEl/CR7VP2Q=
@@ -23,6 +23,7 @@ github.com/grpc-ecosystem/grpc-gateway v1.4.1/go.mod h1:RSKVYQBd5MCa4OVpNdGskqpg
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
+github.com/kr/pty v1.1.2/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
 github.com/mailru/easyjson v0.0.0-20180717111219-efc7eb8984d6 h1:8/+Y8SKf0xCZ8cCTfnrMdY7HNzlEjPAt3bPjalNb6CA=
@@ -36,8 +37,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/segmentio/ksuid v0.0.0-20171124201050-112f929a3020/go.mod h1:BXuJDr2byAiHuQaQtSKoXh1J0YmUDurywOXgB2w+OSU=
 github.com/stretchr/testify v1.2.2 h1:bSDNvY7ZPG5RlJ8otE/7V6gMiyenm9RtJ7IUVIAoJ1w=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
-golang.org/x/net v0.0.0-20180712202826-d0887baf81f4 h1:KDF3PK6A+dkI7c4O8QbMtJqcXE3LdNJFGZECIlifQOg=
-golang.org/x/net v0.0.0-20180712202826-d0887baf81f4/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
+golang.org/x/net v0.0.0-20180719001425-81d44fd177a9 h1:BN4Q1JAtkPK2SJ//1vLij2bjj2ZPrBi6w1VEpdevHDA=
+golang.org/x/net v0.0.0-20180719001425-81d44fd177a9/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 google.golang.org/genproto v0.0.0-20180716172848-2731d4fa720b h1:mXqBiicV0B+k8wzFNkKeNBRL7LyRV5xG0s+S6ffLb/E=

@@ -12,7 +12,7 @@ require (
 	github.com/go-openapi/loads v0.0.0-20171207192234-2a2b323bab96
 	github.com/go-openapi/spec v0.0.0-20180710175419-bce47c9386f9
 	github.com/go-openapi/strfmt v0.0.0-20180703152050-913ee058e387 // indirect
-	github.com/go-openapi/swag v0.0.0-20180715190254-becd2f08beaf
+	github.com/go-openapi/swag v0.0.0-20180703152219-2b0bd4f193d0
 	github.com/gogo/protobuf v1.1.1
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b // indirect
 	github.com/golang/protobuf v1.1.0
@@ -27,7 +27,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/segmentio/ksuid v0.0.0-20171124201050-112f929a3020
 	github.com/stretchr/testify v1.2.2 // indirect
-	golang.org/x/net v0.0.0-20180712202826-d0887baf81f4
+	golang.org/x/net v0.0.0-20180719001425-81d44fd177a9
 	golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f // indirect
 	golang.org/x/text v0.3.0 // indirect
 	google.golang.org/genproto v0.0.0-20180716172848-2731d4fa720b
