@@ -4,8 +4,6 @@ import (
 	"context"
 	"net/http"
 
-	grpc "google.golang.org/grpc"
-
 	"github.com/graph-gophers/graphql-go"
 	"github.com/pkg/errors"
 
@@ -59,11 +57,7 @@ func (r graphQLResolver) SuggestURL(ctx context.Context, args graphQLSuggestURL)
 		}
 	}
 
-	md := serverMetadataFromContext(ctx)
-	md.Lock()
-	defer md.Unlock()
-
-	_, err := r.client.Suggest(ctx, &s, grpc.Header(&md.Header), grpc.Trailer(&md.Trailer))
+	_, err := r.client.Suggest(ctx, &s)
 	return err
 }
 
@@ -84,11 +78,7 @@ func (r graphQLResolver) QueryURL(ctx context.Context, args graphQLQueryURL) (*g
 		req.Dataset = append(req.Dataset, DatasetType(id))
 	}
 
-	md := serverMetadataFromContext(ctx)
-	md.Lock()
-	defer md.Unlock()
-
-	replies, err := r.client.Query(ctx, &req, grpc.Header(&md.Header), grpc.Trailer(&md.Trailer))
+	replies, err := r.client.Query(ctx, &req)
 	if err != nil {
 		return nil, err
 	}
@@ -131,11 +121,7 @@ func (r graphQLResolver) QueryContent(ctx context.Context, args graphQLQueryCont
 		req.Dataset = append(req.Dataset, DatasetType(id))
 	}
 
-	md := serverMetadataFromContext(ctx)
-	md.Lock()
-	defer md.Unlock()
-
-	replies, err := r.client.Query(ctx, &req, grpc.Header(&md.Header), grpc.Trailer(&md.Trailer))
+	replies, err := r.client.Query(ctx, &req)
 	if err != nil {
 		return nil, err
 	}
@@ -148,11 +134,7 @@ func (r graphQLResolver) QueryContent(ctx context.Context, args graphQLQueryCont
 }
 
 func (r graphQLResolver) Result(ctx context.Context, args struct{ RequestID graphql.ID }) (*graphQLQueryResult, error) {
-	md := serverMetadataFromContext(ctx)
-	md.Lock()
-	defer md.Unlock()
-
-	result, err := r.client.Result(ctx, &RequestID{RequestId: string(args.RequestID)}, grpc.Header(&md.Header), grpc.Trailer(&md.Trailer))
+	result, err := r.client.Result(ctx, &RequestID{RequestId: string(args.RequestID)})
 	if err != nil {
 		return nil, err
 	}
