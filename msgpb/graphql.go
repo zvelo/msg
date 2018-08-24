@@ -63,7 +63,7 @@ func (r graphQLResolver) SuggestURL(ctx context.Context, args graphQLSuggestURL)
 	md.Lock()
 	defer md.Unlock()
 
-	_, err := r.client.Suggest(ctx, &s, grpc.Header(&md.Header))
+	_, err := r.client.Suggest(ctx, &s, grpc.Header(&md.Header), grpc.Trailer(&md.Trailer))
 	return err
 }
 
@@ -88,7 +88,7 @@ func (r graphQLResolver) QueryURL(ctx context.Context, args graphQLQueryURL) (*g
 	md.Lock()
 	defer md.Unlock()
 
-	replies, err := r.client.Query(ctx, &req, grpc.Header(&md.Header))
+	replies, err := r.client.Query(ctx, &req, grpc.Header(&md.Header), grpc.Trailer(&md.Trailer))
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +135,7 @@ func (r graphQLResolver) QueryContent(ctx context.Context, args graphQLQueryCont
 	md.Lock()
 	defer md.Unlock()
 
-	replies, err := r.client.Query(ctx, &req, grpc.Header(&md.Header))
+	replies, err := r.client.Query(ctx, &req, grpc.Header(&md.Header), grpc.Trailer(&md.Trailer))
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +152,7 @@ func (r graphQLResolver) Result(ctx context.Context, args struct{ RequestID grap
 	md.Lock()
 	defer md.Unlock()
 
-	result, err := r.client.Result(ctx, &RequestID{RequestId: string(args.RequestID)}, grpc.Header(&md.Header))
+	result, err := r.client.Result(ctx, &RequestID{RequestId: string(args.RequestID)}, grpc.Header(&md.Header), grpc.Trailer(&md.Trailer))
 	if err != nil {
 		return nil, err
 	}

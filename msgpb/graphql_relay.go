@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"net/textproto"
 	"strconv"
 	"strings"
 	"sync"
@@ -30,6 +31,9 @@ type relay struct {
 }
 
 const (
+	metadataHeaderPrefix  = "Grpc-Metadata-"
+	metadataPrefix        = "grpcgateway-"
+	metadataTrailerPrefix = "Grpc-Trailer-"
 	metadataGrpcTimeout   = "Grpc-Timeout"
 	xForwardedFor         = "X-Forwarded-For"
 	xForwardedHost        = "X-Forwarded-Host"
@@ -71,13 +75,57 @@ func timeoutDecode(s string) (time.Duration, error) {
 	return d * time.Duration(t), nil
 }
 
+// isPermanentHTTPHeader checks whether hdr belongs to the list of
+// permenant request headers maintained by IANA.
+// http://www.iana.org/assignments/message-headers/message-headers.xml
+func isPermanentHTTPHeader(hdr string) bool {
+	switch hdr {
+	case
+		"Accept",
+		"Accept-Charset",
+		"Accept-Language",
+		"Accept-Ranges",
+		"Authorization",
+		"Cache-Control",
+		"Content-Type",
+		"Cookie",
+		"Date",
+		"Expect",
+		"From",
+		"Host",
+		"If-Match",
+		"If-Modified-Since",
+		"If-None-Match",
+		"If-Schedule-Tag-Match",
+		"If-Unmodified-Since",
+		"Max-Forwards",
+		"Origin",
+		"Pragma",
+		"Referer",
+		"User-Agent",
+		"Via",
+		"Warning":
+		return true
+	}
+	return false
+}
+
+func incomingHeaderMatcher(key string) (string, bool) {
+	key = textproto.CanonicalMIMEHeaderKey(key)
+	if isPermanentHTTPHeader(key) {
+		return metadataPrefix + key, true
+	} else if strings.HasPrefix(key, metadataHeaderPrefix) {
+		return key[len(metadataHeaderPrefix):], true
+	}
+	return "", false
+}
+
 func annotateContext(req *http.Request) (context.Context, context.CancelFunc, error) {
 	var pairs []string
 	ctx := req.Context()
 	cancel := func() {}
 
 	timeout := defaultContextTimeout
-
 	if tm := req.Header.Get(metadataGrpcTimeout); tm != "" {
 		var err error
 		timeout, err = timeoutDecode(tm)
@@ -88,10 +136,15 @@ func annotateContext(req *http.Request) (context.Context, context.CancelFunc, er
 
 	for key, vals := range req.Header {
 		for _, val := range vals {
-			pairs = append(pairs, key, val)
+			// For backwards-compatibility, pass through 'authorization' header with no prefix.
+			if strings.ToLower(key) == "authorization" {
+				pairs = append(pairs, "authorization", val)
+			}
+			if h, ok := incomingHeaderMatcher(key); ok {
+				pairs = append(pairs, h, val)
+			}
 		}
 	}
-
 	if host := req.Header.Get(xForwardedHost); host != "" {
 		pairs = append(pairs, strings.ToLower(xForwardedHost), host)
 	} else if req.Host != "" {
@@ -111,19 +164,19 @@ func annotateContext(req *http.Request) (context.Context, context.CancelFunc, er
 	if timeout != 0 {
 		ctx, cancel = context.WithTimeout(ctx, timeout)
 	}
-
 	if len(pairs) == 0 {
 		return ctx, cancel, nil
 	}
-
-	return metadata.NewOutgoingContext(ctx, metadata.Pairs(pairs...)), cancel, nil
+	md := metadata.Pairs(pairs...)
+	return metadata.NewOutgoingContext(ctx, md), cancel, nil
 }
 
 type serverMetadataKey struct{}
 
 type serverMetadata struct {
 	sync.Mutex
-	Header metadata.MD
+	Header  metadata.MD
+	Trailer metadata.MD
 }
 
 func serverMetadataFromContext(ctx context.Context) *serverMetadata {
@@ -170,11 +223,24 @@ func (h relay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	for k, vs := range md.Header {
 		for _, v := range vs {
-			w.Header().Add(k, v)
+			key := textproto.CanonicalMIMEHeaderKey(metadataHeaderPrefix + k)
+			w.Header().Add(key, v)
 		}
+	}
+
+	for k := range md.Trailer {
+		key := textproto.CanonicalMIMEHeaderKey(metadataTrailerPrefix + k)
+		w.Header().Add("Trailer", key)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 
 	_, _ = w.Write(responseJSON) // #nosec
+
+	for k, vs := range md.Trailer {
+		key := textproto.CanonicalMIMEHeaderKey(metadataTrailerPrefix + k)
+		for _, v := range vs {
+			w.Header().Add(key, v)
+		}
+	}
 }
