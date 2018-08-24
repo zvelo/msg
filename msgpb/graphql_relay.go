@@ -165,8 +165,6 @@ func (h relay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-
 	md.Lock()
 	defer md.Unlock()
 
@@ -175,6 +173,8 @@ func (h relay) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.Header().Add(k, v)
 		}
 	}
+
+	w.Header().Set("Content-Type", "application/json")
 
 	_, _ = w.Write(responseJSON) // #nosec
 }
