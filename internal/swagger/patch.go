@@ -49,7 +49,7 @@ func Patch(file string) error {
 		"authorization": &spec.SecurityScheme{
 			SecuritySchemeProps: spec.SecuritySchemeProps{
 				Type:             "oauth2",
-				Flow:             "accessCode",
+				Flow:             "application",
 				AuthorizationURL: "https://auth.zvelo.com/oauth2/auth",
 				TokenURL:         "https://auth.zvelo.com/oauth2/token",
 				Scopes: map[string]string{

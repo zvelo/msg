@@ -874,7 +874,7 @@
   "securityDefinitions": {
     "authorization": {
       "type": "oauth2",
-      "flow": "accessCode",
+      "flow": "application",
       "authorizationUrl": "https://auth.zvelo.com/oauth2/auth",
       "tokenUrl": "https://auth.zvelo.com/oauth2/token",
       "scopes": {

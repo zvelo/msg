@@ -19,7 +19,7 @@ require (
 	github.com/graph-gophers/graphql-go v0.0.0-20180806175703-94da0f0031f9
 	github.com/grpc-ecosystem/grpc-gateway v1.4.1
 	github.com/kr/pretty v0.1.0 // indirect
-	github.com/magefile/mage v2.0.1+incompatible
+	github.com/magefile/mage v1.2.4
 	github.com/mailru/easyjson v0.0.0-20180823135443-60711f1a8329 // indirect
 	github.com/mitchellh/mapstructure v1.0.0 // indirect
 	github.com/opentracing/opentracing-go v1.0.2 // indirect
@@ -37,5 +37,5 @@ require (
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20180705113604-9856a29383ce // indirect
 	gopkg.in/yaml.v2 v2.2.1 // indirect
-	zvelo.io/zmage v4.1.3+incompatible
+	zvelo.io/zmage/v4 v4.1.4
 )

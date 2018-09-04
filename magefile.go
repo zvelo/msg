@@ -15,7 +15,7 @@ import (
 	"github.com/magefile/mage/sh"
 
 	"zvelo.io/msg/internal/swagger"
-	"zvelo.io/zmage"
+	"zvelo.io/zmage/v4"
 )
 
 // Default is the default mage target
