@@ -182,7 +182,7 @@
   version = "v1.4.1"
 
 [[projects]]
-  digest = "1:c09d2d03b6a410a31f4079cf325d061177e298747e0fc65fa8f1d11a0724d047"
+  digest = "1:b6f712a68b5e6234e8956cbd83db2f61f10c114444dd047b801515779fe51177"
   name = "github.com/magefile/mage"
   packages = [
     "mg",
@@ -191,8 +191,8 @@
     "types",
   ]
   pruneopts = "NUT"
-  revision = "771ebed3d686dce3d36cab4fc9ee55c295ed8905"
-  version = "2.1"
+  revision = "b0bfbc25e9471eaab0d92757ad084123cd2a0bc9"
+  version = "v1.2.4"
 
 [[projects]]
   branch = "master"
@@ -264,15 +264,15 @@
     "trace",
   ]
   pruneopts = "NUT"
-  revision = "922f4815f713f213882e8ef45e0d315b164d705c"
+  revision = "8a410e7b638dca158bf9e766925842f6651ff828"
 
 [[projects]]
   branch = "master"
-  digest = "1:eb50c3ef5dc70f737f1945c76e3129f4a36e04bbb09d8b144af3ed39022f3a6a"
+  digest = "1:7e7f0804044e91c06a78a4d1b28f59b93d2d8edb78f5a97036f840cf82e41500"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "NUT"
-  revision = "11551d06cbcc94edc80a0facaccbda56473c19c1"
+  revision = "2b024373dcd9800f0cae693839fac6ede8d64a8c"
 
 [[projects]]
   digest = "1:e33513a825fcd765e97b5de639a2f7547542d1a8245df0cef18e1fd390b778a9"
@@ -307,7 +307,7 @@
     "googleapis/rpc/status",
   ]
   pruneopts = "NUT"
-  revision = "c66870c02cf823ceb633bcd05be3c7cda29976f4"
+  revision = "11092d34479b07829b72e10713b159248caf5dad"
 
 [[projects]]
   digest = "1:c2d756dba3cf0bc2d50ff9b3e4b80cd327436cf678386a51c8417d084625a51d"
@@ -364,12 +364,12 @@
   version = "v2.2.1"
 
 [[projects]]
-  digest = "1:131cc557824f768c88a71bf141d08b0820e6dee490d2f3d0881ba64d23bbba87"
+  digest = "1:59c5a17f15cdbc74a433e2417acff7810510f843513c0eefde590bab6e1901d4"
   name = "zvelo.io/zmage"
-  packages = ["."]
+  packages = ["v4"]
   pruneopts = "NUT"
-  revision = "ade8b8a348bb0041b76f0c17a7fc3fe950295224"
-  version = "v4.1.3"
+  revision = "0706e30c48839c3385f9556aadfbeb352314f08f"
+  version = "v4.1.4"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -402,7 +402,7 @@
     "google.golang.org/grpc/grpclog",
     "google.golang.org/grpc/metadata",
     "google.golang.org/grpc/status",
-    "zvelo.io/zmage",
+    "zvelo.io/zmage/v4",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
