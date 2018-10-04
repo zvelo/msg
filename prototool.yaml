@@ -1,23 +1,34 @@
 ---
-protoc_version: 3.5.1
+protoc:
+  version: 3.6.1
+
+  includes:
+    - include
 
 excludes:
   - health/
   - include/
 
-protoc_includes:
-  - include/
-
 lint:
-  exclude_ids:
-    - ENUM_FIELD_PREFIXES
-    - ENUM_ZERO_VALUES_INVALID
-    - REQUEST_RESPONSE_TYPES_IN_SAME_FILE
-    - REQUEST_RESPONSE_TYPES_UNIQUE
+  ignores:
+    - id: ENUM_FIELD_PREFIXES
+      files:
+        - msg.proto
+    - id: ENUM_ZERO_VALUES_INVALID
+      files:
+        - msg.proto
+    - id: REQUEST_RESPONSE_TYPES_IN_SAME_FILE
+      files:
+        - msg.proto
+    - id: REQUEST_RESPONSE_TYPES_UNIQUE
+      files:
+        - msg.proto
 
-gen:
+generate:
   go_options:
     import_path: zvelo.io/msg
+    extra_modifiers:
+      google/protobuf/empty.proto: github.com/golang/protobuf/ptypes/empty
 
   plugins:
     - name: gozvelo
@@ -33,3 +44,16 @@ gen:
     - name: swagger
       flags: logtostderr=true
       output: .
+
+    - name: python
+      output: ./python
+
+# NOTE(jrubin): generate python grpc bindings with:
+#
+# python3                      \
+#   -m grpc_tools.protoc       \
+#   -I ./include               \
+#   -I .                       \
+#   --python_out=./python      \
+#   --grpc_python_out=./python \
+#   ./msg.proto

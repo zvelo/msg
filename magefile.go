@@ -45,7 +45,7 @@ func Prototool(ctx context.Context) error {
 		return nil
 	}
 
-	if err := sh.Run("prototool", "gen"); err != nil {
+	if err := sh.Run("prototool", "generate"); err != nil {
 		return err
 	}
 
@@ -116,7 +116,6 @@ func Static(ctx context.Context) error {
 
 	files := []string{
 		"schema.graphql",
-		"msg.swagger.json",
 	}
 
 	modified, err := zmage.Modified(out, files...)

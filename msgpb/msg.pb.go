@@ -1542,7 +1542,7 @@ var Category_value = map[string]int32{
 }
 
 func (Category) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{0}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{0}
 }
 
 type DatasetType int32
@@ -1572,7 +1572,7 @@ var DatasetType_value = map[string]int32{
 }
 
 func (DatasetType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{1}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{1}
 }
 
 type Status struct {
@@ -1589,7 +1589,7 @@ type Status struct {
 func (m *Status) Reset()      { *m = Status{} }
 func (*Status) ProtoMessage() {}
 func (*Status) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{0}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{0}
 }
 func (m *Status) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1641,7 +1641,7 @@ type RequestID struct {
 func (m *RequestID) Reset()      { *m = RequestID{} }
 func (*RequestID) ProtoMessage() {}
 func (*RequestID) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{1}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{1}
 }
 func (m *RequestID) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1687,7 +1687,7 @@ type Suggestion struct {
 func (m *Suggestion) Reset()      { *m = Suggestion{} }
 func (*Suggestion) ProtoMessage() {}
 func (*Suggestion) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{2}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{2}
 }
 func (m *Suggestion) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1745,7 +1745,7 @@ type QueryStatus struct {
 func (m *QueryStatus) Reset()      { *m = QueryStatus{} }
 func (*QueryStatus) ProtoMessage() {}
 func (*QueryStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{3}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{3}
 }
 func (m *QueryStatus) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1816,7 +1816,7 @@ type QueryResult struct {
 func (m *QueryResult) Reset()      { *m = QueryResult{} }
 func (*QueryResult) ProtoMessage() {}
 func (*QueryResult) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{4}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{4}
 }
 func (m *QueryResult) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1889,7 +1889,7 @@ type URLContent struct {
 func (m *URLContent) Reset()      { *m = URLContent{} }
 func (*URLContent) ProtoMessage() {}
 func (*URLContent) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{5}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{5}
 }
 func (m *URLContent) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -1956,7 +1956,7 @@ type QueryRequests struct {
 func (m *QueryRequests) Reset()      { *m = QueryRequests{} }
 func (*QueryRequests) ProtoMessage() {}
 func (*QueryRequests) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{6}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{6}
 }
 func (m *QueryRequests) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2025,7 +2025,7 @@ type QueryReply struct {
 func (m *QueryReply) Reset()      { *m = QueryReply{} }
 func (*QueryReply) ProtoMessage() {}
 func (*QueryReply) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{7}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{7}
 }
 func (m *QueryReply) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2078,7 +2078,7 @@ type QueryReplies struct {
 func (m *QueryReplies) Reset()      { *m = QueryReplies{} }
 func (*QueryReplies) ProtoMessage() {}
 func (*QueryReplies) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{8}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{8}
 }
 func (m *QueryReplies) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2127,7 +2127,7 @@ type Dataset struct {
 func (m *Dataset) Reset()      { *m = Dataset{} }
 func (*Dataset) ProtoMessage() {}
 func (*Dataset) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{9}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{9}
 }
 func (m *Dataset) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2195,7 +2195,7 @@ type Dataset_Categorization struct {
 func (m *Dataset_Categorization) Reset()      { *m = Dataset_Categorization{} }
 func (*Dataset_Categorization) ProtoMessage() {}
 func (*Dataset_Categorization) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{9, 0}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{9, 0}
 }
 func (m *Dataset_Categorization) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2248,7 +2248,7 @@ type Dataset_Language struct {
 func (m *Dataset_Language) Reset()      { *m = Dataset_Language{} }
 func (*Dataset_Language) ProtoMessage() {}
 func (*Dataset_Language) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{9, 1}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{9, 1}
 }
 func (m *Dataset_Language) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2302,7 +2302,7 @@ type Dataset_Malicious struct {
 func (m *Dataset_Malicious) Reset()      { *m = Dataset_Malicious{} }
 func (*Dataset_Malicious) ProtoMessage() {}
 func (*Dataset_Malicious) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{9, 2}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{9, 2}
 }
 func (m *Dataset_Malicious) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -2356,7 +2356,7 @@ type Dataset_Echo struct {
 func (m *Dataset_Echo) Reset()      { *m = Dataset_Echo{} }
 func (*Dataset_Echo) ProtoMessage() {}
 func (*Dataset_Echo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_msg_62f3293631f71ccc, []int{9, 3}
+	return fileDescriptor_msg_c48743c1d15ffc68, []int{9, 3}
 }
 func (m *Dataset_Echo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -6877,10 +6877,10 @@ var (
 	ErrIntOverflowMsg   = fmt.Errorf("proto: integer overflow")
 )
 
-func init() { proto.RegisterFile("msg.proto", fileDescriptor_msg_62f3293631f71ccc) }
-func init() { golang_proto.RegisterFile("msg.proto", fileDescriptor_msg_62f3293631f71ccc) }
+func init() { proto.RegisterFile("msg.proto", fileDescriptor_msg_c48743c1d15ffc68) }
+func init() { golang_proto.RegisterFile("msg.proto", fileDescriptor_msg_c48743c1d15ffc68) }
 
-var fileDescriptor_msg_62f3293631f71ccc = []byte{
+var fileDescriptor_msg_c48743c1d15ffc68 = []byte{
 	// 5021 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x7a, 0x57, 0x90, 0x1c, 0xc7,
 	0x91, 0x36, 0x16, 0xd8, 0x05, 0x76, 0x1b, 0x20, 0x34, 0x9a, 0x9f, 0x3f, 0x85, 0x58, 0xe9, 0x36,
